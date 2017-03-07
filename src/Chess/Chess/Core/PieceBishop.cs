@@ -2,14 +2,12 @@ namespace Chess.Core
 {
 	public class PieceBishop: IPieceTop
 	{
-	    private readonly Piece _mBase;
-
-		public PieceBishop(Piece pieceBase)
+	    public PieceBishop(Piece pieceBase)
 		{
-			_mBase = pieceBase;
+			Base = pieceBase;
 		}
 
-		public Piece Base => _mBase;
+		public Piece Base { get; }
 
 	    public string Abbreviation => "B";
 
@@ -37,11 +35,11 @@ namespace Chess.Core
 			{
 				var intPoints = 0;
 
-				intPoints += MAintSquareValues[_mBase.Square.Ordinal]<<1;
+				intPoints += MAintSquareValues[Base.Square.Ordinal]<<1;
 
 				if (Game.Stage!=Game.EnmStage.End)
 				{
-					if (_mBase.CanBeDrivenAwayByPawn())
+					if (Base.CanBeDrivenAwayByPawn())
 					{
 						intPoints-=30;
 					}
@@ -61,22 +59,22 @@ namespace Chess.Core
 				}
 				intPoints += (intSquareValue >> 2);
 */
-				intPoints += _mBase.DefensePoints;
+				intPoints += Base.DefensePoints;
 
 				return intPoints;
 			}
 		}
 
-		public int ImageIndex => _mBase.Player.Colour==Player.EnmColour.White ? 1 : 0;
+		public int ImageIndex => Base.Player.Colour==Player.EnmColour.White ? 1 : 0;
 
 	    public bool CanBeTaken => true;
 
 	    public void GenerateLazyMoves(Moves moves, Moves.EnmMovesType movesType)
 		{
-			Board.AppendPiecePath(moves, _mBase, _mBase.Player, 17, movesType);
-			Board.AppendPiecePath(moves, _mBase, _mBase.Player, 15, movesType);
-			Board.AppendPiecePath(moves, _mBase, _mBase.Player, -15, movesType);
-			Board.AppendPiecePath(moves, _mBase, _mBase.Player, -17, movesType);
+			Board.AppendPiecePath(moves, Base, Base.Player, 17, movesType);
+			Board.AppendPiecePath(moves, Base, Base.Player, 15, movesType);
+			Board.AppendPiecePath(moves, Base, Base.Player, -15, movesType);
+			Board.AppendPiecePath(moves, Base, Base.Player, -17, movesType);
 		}
 	}
 }

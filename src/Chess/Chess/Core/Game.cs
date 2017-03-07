@@ -15,30 +15,20 @@ namespace Chess.Core
 			,	End
 		}
 
-		private static readonly Player MPlayerWhite;
-		private static readonly Player MPlayerBlack;
-		private static Player _mPlayerToPlay;
-		private static int _mIntTurnNo;
-		private static readonly Moves MMovesHistory = new Moves();
-		private static readonly Moves MMovesRedoList = new Moves();
-		private static Moves _mMovesAnalysis = new Moves();
-		private static string _mStrFileName = "";
+	    private static string _mStrFileName = "";
 
-		private static bool _mBlnShowThinking;
-		private static bool _mBlnDisplayMoveAnalysisTree;
-
-		static Game()
+	    static Game()
 		{
-			MPlayerWhite = new PlayerWhite();
-			MPlayerBlack = new PlayerBlack();
-			_mPlayerToPlay = MPlayerWhite;
+			PlayerWhite = new PlayerWhite();
+			PlayerBlack = new PlayerBlack();
+			PlayerToPlay = PlayerWhite;
 			Board.EstablishHashKey();
 
 			var registryKeySoftware =Registry.CurrentUser.OpenSubKey("Software",true);
 			var registryKeyChess = registryKeySoftware?.CreateSubKey(@"PeterHughes.org\Chess");
 
-			_mBlnShowThinking = (string)registryKeyChess?.GetValue("ShowThinking")=="1";
-			_mBlnDisplayMoveAnalysisTree = (string)registryKeyChess?.GetValue("DisplayMoveAnalysisTree")=="1";
+			ShowThinking = (string)registryKeyChess?.GetValue("ShowThinking")=="1";
+			DisplayMoveAnalysisTree = (string)registryKeyChess?.GetValue("DisplayMoveAnalysisTree")=="1";
 
 			PlayerToPlay.Clock.Start();
 		}
@@ -48,8 +38,8 @@ namespace Chess.Core
 			var registryKeySoftware =Registry.CurrentUser.OpenSubKey("Software",true);
 			var registryKeyChess = registryKeySoftware?.CreateSubKey(@"PeterHughes.org\Chess");
 
-			registryKeyChess?.SetValue("ShowThinking", _mBlnShowThinking ? "1" : "0");
-			registryKeyChess?.SetValue("DisplayMoveAnalysisTree", _mBlnDisplayMoveAnalysisTree ? "1" : "0");
+			registryKeyChess?.SetValue("ShowThinking", ShowThinking ? "1" : "0");
+			registryKeyChess?.SetValue("DisplayMoveAnalysisTree", DisplayMoveAnalysisTree ? "1" : "0");
 		}
 
 		public static void New()
@@ -58,15 +48,15 @@ namespace Chess.Core
 			HashTablePawn.Clear();
 			HashTableCheck.Clear();
 			UndoAllMoves();
-			MMovesRedoList.Clear();
+			MoveRedoList.Clear();
 			_mStrFileName = "";
-			MPlayerWhite.Clock.Reset();
-			MPlayerBlack.Clock.Reset();
+			PlayerWhite.Clock.Reset();
+			PlayerBlack.Clock.Reset();
 		}
 
 		public static void Load(string fileName)
 		{
-			MMovesRedoList.Clear();
+			MoveRedoList.Clear();
 			LoadToTurnNo(fileName, -1);
 			_mStrFileName = fileName;
 		}
@@ -86,21 +76,21 @@ namespace Chess.Core
 		            TimeSpan tsnTimeStamp;
 		            if (xmlnode.GetAttribute("SecondsElapsed")=="")
 		            {
-		                if (MMovesHistory.Count<=2)
+		                if (MoveHistory.Count<=2)
 		                {
 		                    tsnTimeStamp = new TimeSpan(0);
 		                }
 		                else
 		                {
-		                    tsnTimeStamp = MMovesHistory.PenultimateForSameSide.TimeStamp + new TimeSpan(0,0,30);
+		                    tsnTimeStamp = MoveHistory.PenultimateForSameSide.TimeStamp + new TimeSpan(0,0,30);
 		                }
 		            }
 		            else
 		            {
 		                tsnTimeStamp = new TimeSpan(0,0, int.Parse(xmlnode.GetAttribute("SecondsElapsed")));
 		            }
-		            MMovesHistory.Last.TimeStamp = tsnTimeStamp;
-		            MMovesHistory.Last.Piece.Player.Clock.TimeElapsed = tsnTimeStamp;
+		            MoveHistory.Last.TimeStamp = tsnTimeStamp;
+		            MoveHistory.Last.Piece.Player.Clock.TimeElapsed = tsnTimeStamp;
 		            intTurnNo++;
 		        }
 		}
@@ -112,7 +102,7 @@ namespace Chess.Core
 			xmldoc.AppendChild(xmlnodeGame);
 			XmlElement xmlnodeMove;
 
-			foreach(Move move in MMovesHistory)
+			foreach(Move move in MoveHistory)
 			{
 				xmlnodeMove = xmldoc.CreateElement("Move");
 				xmlnodeGame.AppendChild( xmlnodeMove );
@@ -131,7 +121,7 @@ namespace Chess.Core
 
 		public static void UndoAllMoves()
 		{
-			while (MMovesHistory.Count>0)
+			while (MoveHistory.Count>0)
 			{
 				UndoMove();
 			}
@@ -139,7 +129,7 @@ namespace Chess.Core
 
 		public static void RedoAllMoves()
 		{
-			while (MMovesRedoList.Count>0)
+			while (MoveRedoList.Count>0)
 			{
 				RedoMove();
 			}
@@ -147,23 +137,15 @@ namespace Chess.Core
 
 		public static string FileName => _mStrFileName=="" ? "New Game" : _mStrFileName;
 
-	    public static Moves MoveHistory => MMovesHistory;
+	    public static Moves MoveHistory { get; } = new Moves();
 
-	    public static Moves MoveRedoList => MMovesRedoList;
+	    public static Moves MoveRedoList { get; } = new Moves();
 
-	    public static Moves MoveAnalysis
-		{
-			get { return _mMovesAnalysis; }
-			set { _mMovesAnalysis = value; }
-		} 
+	    public static Moves MoveAnalysis { get; set; } = new Moves();
 
-		public static int TurnNo 
-		{
-			get	{ return _mIntTurnNo; }
-			set { _mIntTurnNo = value; }
-		}
+	    public static int TurnNo { get; set; }
 
-		public static int MaxMaterialValue => 7;
+	    public static int MaxMaterialValue => 7;
 
 	    public static int LowestMaterialValue
 		{
@@ -191,87 +173,74 @@ namespace Chess.Core
 			}
 		}
 
-		public static Player PlayerWhite => MPlayerWhite;
+		public static Player PlayerWhite { get; }
 
-	    public static Player PlayerBlack => MPlayerBlack;
+	    public static Player PlayerBlack { get; }
 
-	    public static Player PlayerToPlay
+	    public static Player PlayerToPlay { get; set; }
+
+	    public static Move MakeAMove(Move.EnmName moveName, Piece piece, Square square)
 		{
-			get	{ return _mPlayerToPlay;	}
-			set	{ _mPlayerToPlay = value;	}
-		}
-
-		public static Move MakeAMove(Move.EnmName moveName, Piece piece, Square square)
-		{
-			MMovesRedoList.Clear();
+			MoveRedoList.Clear();
 
 			var move = piece.Move(moveName, square);
 			move.EnemyStatus = move.Piece.Player.OtherPlayer.Status;
-			_mPlayerToPlay.Clock.Stop();
-			MMovesHistory.Last.TimeStamp = _mPlayerToPlay.Clock.TimeElapsed;
-			_mPlayerToPlay = _mPlayerToPlay.OtherPlayer;
-			_mPlayerToPlay.Clock.Start();
+			PlayerToPlay.Clock.Stop();
+			MoveHistory.Last.TimeStamp = PlayerToPlay.Clock.TimeElapsed;
+			PlayerToPlay = PlayerToPlay.OtherPlayer;
+			PlayerToPlay.Clock.Start();
 			return move;
 		}
 
 		public static void UndoMove()
 		{
-			if (MMovesHistory.Count>0)
+			if (MoveHistory.Count>0)
 			{
-				var moveUndo = MMovesHistory.Item(MMovesHistory.Count-1);
-				_mPlayerToPlay.Clock.Revert();
-				MMovesRedoList.Add(moveUndo);
+				var moveUndo = MoveHistory.Item(MoveHistory.Count-1);
+				PlayerToPlay.Clock.Revert();
+				MoveRedoList.Add(moveUndo);
 				Move.Undo( moveUndo );
-				_mPlayerToPlay = _mPlayerToPlay.OtherPlayer;
-				if (MMovesHistory.Count>1)
+				PlayerToPlay = PlayerToPlay.OtherPlayer;
+				if (MoveHistory.Count>1)
 				{
-					var movePenultimate = MMovesHistory.Item(MMovesHistory.Count-2);
-					_mPlayerToPlay.Clock.TimeElapsed = movePenultimate.TimeStamp;
+					var movePenultimate = MoveHistory.Item(MoveHistory.Count-2);
+					PlayerToPlay.Clock.TimeElapsed = movePenultimate.TimeStamp;
 				}
 				else
 				{
-					_mPlayerToPlay.Clock.TimeElapsed = new TimeSpan(0);
+					PlayerToPlay.Clock.TimeElapsed = new TimeSpan(0);
 				}
-				_mPlayerToPlay.Clock.Start();
+				PlayerToPlay.Clock.Start();
 			}
 		}
 
 		public static void RedoMove()
 		{
-			if (MMovesRedoList.Count>0)
+			if (MoveRedoList.Count>0)
 			{
-				var moveRedo = MMovesRedoList.Item(MMovesRedoList.Count-1);
-				_mPlayerToPlay.Clock.Revert();
+				var moveRedo = MoveRedoList.Item(MoveRedoList.Count-1);
+				PlayerToPlay.Clock.Revert();
 				moveRedo.Piece.Move(moveRedo.Name, moveRedo.To);
-				_mPlayerToPlay.Clock.TimeElapsed = moveRedo.TimeStamp;
-				MMovesHistory.Last.TimeStamp = moveRedo.TimeStamp;
-				_mPlayerToPlay = _mPlayerToPlay.OtherPlayer;
-				MMovesRedoList.RemoveLast();
-				_mPlayerToPlay.Clock.Start();
+				PlayerToPlay.Clock.TimeElapsed = moveRedo.TimeStamp;
+				MoveHistory.Last.TimeStamp = moveRedo.TimeStamp;
+				PlayerToPlay = PlayerToPlay.OtherPlayer;
+				MoveRedoList.RemoveLast();
+				PlayerToPlay.Clock.Start();
 			}
 		}
 
 		public static void ResumePlay()
 		{
-			_mPlayerToPlay.Clock.Start();
+			PlayerToPlay.Clock.Start();
 		}
 
 		public static void PausePlay()
 		{
-			_mPlayerToPlay.Clock.Stop();
+			PlayerToPlay.Clock.Stop();
 		}
 
-		public static bool ShowThinking 
-		{
-			get	{ return _mBlnShowThinking;}
-			set { _mBlnShowThinking = value; }
-		}
+		public static bool ShowThinking { get; set; }
 
-		public static bool DisplayMoveAnalysisTree 
-		{
-			get	{ return _mBlnDisplayMoveAnalysisTree;}
-			set { _mBlnDisplayMoveAnalysisTree = value; }
-		}
-
+	    public static bool DisplayMoveAnalysisTree { get; set; }
 	}
 }

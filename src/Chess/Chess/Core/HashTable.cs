@@ -6,21 +6,15 @@ namespace Chess.Core
 		public const int HashTableSize = 1000777;
 
 
-		private static int _mIntProbes;
-		private static int _mIntHits;
-		private static int _mIntWrites;
-		private static int _mIntCollisions;
-		private static int _mIntOverwrites;
+	    public static int Probes { get; private set; }
 
-		public static int Probes => _mIntProbes;
+	    public static int Hits { get; private set; }
 
-	    public static int Hits => _mIntHits;
+	    public static int Writes { get; private set; }
 
-	    public static int Writes => _mIntWrites;
+	    public static int Collisions { get; private set; }
 
-	    public static int Collisions => _mIntCollisions;
-
-	    public static int Overwrites => _mIntOverwrites;
+	    public static int Overwrites { get; private set; }
 
 	    public enum EnmHashType
 		{
@@ -72,11 +66,11 @@ namespace Chess.Core
 
 		public static void ResetStats()
 		{
-			_mIntProbes = 0;
-			_mIntHits = 0;
-			_mIntWrites = 0;
-			_mIntCollisions = 0;
-			_mIntOverwrites = 0;
+			Probes = 0;
+			Hits = 0;
+			Writes = 0;
+			Collisions = 0;
+			Overwrites = 0;
 		}
 
 		public static void Clear()
@@ -94,7 +88,7 @@ namespace Chess.Core
 
 		public static unsafe int ProbeHash(ulong hashCodeA, ulong hashCodeB, int depth, int alpha, int beta, Player.EnmColour colour)
 		{
-			_mIntProbes++;
+			Probes++;
 
 			fixed (HashEntry* phashBase = &MArrHashEntry[0])
 			{
@@ -123,17 +117,17 @@ namespace Chess.Core
 					{
 						if ( phashEntry->Type==EnmHashType.Exact )
 						{
-							_mIntHits++;
+							Hits++;
 							return phashEntry->Result;
 						}
 						if ( (phashEntry->Type==EnmHashType.Alpha) && (phashEntry->Result<=alpha))
 						{
-							_mIntHits++;
+							Hits++;
 							return alpha;
 						}
 						if ( (phashEntry->Type==EnmHashType.Beta) && (phashEntry->Result>=beta))
 						{
-							_mIntHits++;
+							Hits++;
 							return beta;
 						}
 					}
@@ -144,7 +138,7 @@ namespace Chess.Core
 		
 		public static unsafe void RecordHash(ulong hashCodeA, ulong hashCodeB, int depth, int val, EnmHashType type, int @from, int to, Move.EnmName moveName, Player.EnmColour colour)
 		{
-			_mIntWrites++;
+			Writes++;
 			fixed (HashEntry* phashBase = &MArrHashEntry[0])
 			{
 			    var phashEntry = phashBase;
@@ -168,10 +162,10 @@ namespace Chess.Core
 
 				if (phashEntry->HashCodeA!=0)
 				{
-					_mIntCollisions++;
+					Collisions++;
 					if (phashEntry->HashCodeA!=hashCodeA || phashEntry->HashCodeB!=hashCodeB)
 					{
-						_mIntOverwrites++;
+						Overwrites++;
 						phashEntry->WhiteFrom = -1;
 						phashEntry->BlackFrom = -1;
 					}

@@ -2,14 +2,12 @@ namespace Chess.Core
 {
 	public class PieceKnight: IPieceTop
 	{
-	    private readonly Piece _mBase;
-
-		public PieceKnight(Piece pieceBase)
+	    public PieceKnight(Piece pieceBase)
 		{
-			_mBase = pieceBase;
+			Base = pieceBase;
 		}
 
-		public Piece Base => _mBase;
+		public Piece Base { get; }
 
 	    public string Abbreviation => "N";
 
@@ -39,26 +37,26 @@ namespace Chess.Core
 
 				if (Game.Stage==Game.EnmStage.End)
 				{
-					intPoints -= _mBase.TaxiCabDistanceToEnemyKingPenalty()<<4;
+					intPoints -= Base.TaxiCabDistanceToEnemyKingPenalty()<<4;
 				}
 				else
 				{
-					intPoints += MAintSquareValues[_mBase.Square.Ordinal]<<3;
+					intPoints += MAintSquareValues[Base.Square.Ordinal]<<3;
 
-					if (_mBase.CanBeDrivenAwayByPawn())
+					if (Base.CanBeDrivenAwayByPawn())
 					{
 						intPoints-=30;
 					}
 
 				}
 
-				intPoints += _mBase.DefensePoints;
+				intPoints += Base.DefensePoints;
 
 				return intPoints;
 			}
 		}
 
-		public int ImageIndex => _mBase.Player.Colour==Player.EnmColour.White ? 7 : 6;
+		public int ImageIndex => Base.Player.Colour==Player.EnmColour.White ? 7 : 6;
 
 	    public bool CanBeTaken => true;
 
@@ -69,26 +67,26 @@ namespace Chess.Core
 			switch (movesType)
 			{
 				case Moves.EnmMovesType.All:
-					square = Board.GetSquare(_mBase.Square.Ordinal+33); if ( square!=null && (square.Piece==null || (square.Piece.Player.Colour!=_mBase.Player.Colour && square.Piece.CanBeTaken))) moves.Add(0, 0, Move.EnmName.Standard, _mBase, _mBase.Square, square, square.Piece, 0, 0);
-					square = Board.GetSquare(_mBase.Square.Ordinal+18); if ( square!=null && (square.Piece==null || (square.Piece.Player.Colour!=_mBase.Player.Colour && square.Piece.CanBeTaken))) moves.Add(0, 0, Move.EnmName.Standard, _mBase, _mBase.Square, square, square.Piece, 0, 0);
-					square = Board.GetSquare(_mBase.Square.Ordinal-14); if ( square!=null && (square.Piece==null || (square.Piece.Player.Colour!=_mBase.Player.Colour && square.Piece.CanBeTaken))) moves.Add(0, 0, Move.EnmName.Standard, _mBase, _mBase.Square, square, square.Piece, 0, 0);
-					square = Board.GetSquare(_mBase.Square.Ordinal-31); if ( square!=null && (square.Piece==null || (square.Piece.Player.Colour!=_mBase.Player.Colour && square.Piece.CanBeTaken))) moves.Add(0, 0, Move.EnmName.Standard, _mBase, _mBase.Square, square, square.Piece, 0, 0);
-					square = Board.GetSquare(_mBase.Square.Ordinal-33); if ( square!=null && (square.Piece==null || (square.Piece.Player.Colour!=_mBase.Player.Colour && square.Piece.CanBeTaken))) moves.Add(0, 0, Move.EnmName.Standard, _mBase, _mBase.Square, square, square.Piece, 0, 0);
-					square = Board.GetSquare(_mBase.Square.Ordinal-18); if ( square!=null && (square.Piece==null || (square.Piece.Player.Colour!=_mBase.Player.Colour && square.Piece.CanBeTaken))) moves.Add(0, 0, Move.EnmName.Standard, _mBase, _mBase.Square, square, square.Piece, 0, 0);
-					square = Board.GetSquare(_mBase.Square.Ordinal+14); if ( square!=null && (square.Piece==null || (square.Piece.Player.Colour!=_mBase.Player.Colour && square.Piece.CanBeTaken))) moves.Add(0, 0, Move.EnmName.Standard, _mBase, _mBase.Square, square, square.Piece, 0, 0);
-					square = Board.GetSquare(_mBase.Square.Ordinal+31); if ( square!=null && (square.Piece==null || (square.Piece.Player.Colour!=_mBase.Player.Colour && square.Piece.CanBeTaken))) moves.Add(0, 0, Move.EnmName.Standard, _mBase, _mBase.Square, square, square.Piece, 0, 0);
+					square = Board.GetSquare(Base.Square.Ordinal+33); if ( square!=null && (square.Piece==null || (square.Piece.Player.Colour!=Base.Player.Colour && square.Piece.CanBeTaken))) moves.Add(0, 0, Move.EnmName.Standard, Base, Base.Square, square, square.Piece, 0, 0);
+					square = Board.GetSquare(Base.Square.Ordinal+18); if ( square!=null && (square.Piece==null || (square.Piece.Player.Colour!=Base.Player.Colour && square.Piece.CanBeTaken))) moves.Add(0, 0, Move.EnmName.Standard, Base, Base.Square, square, square.Piece, 0, 0);
+					square = Board.GetSquare(Base.Square.Ordinal-14); if ( square!=null && (square.Piece==null || (square.Piece.Player.Colour!=Base.Player.Colour && square.Piece.CanBeTaken))) moves.Add(0, 0, Move.EnmName.Standard, Base, Base.Square, square, square.Piece, 0, 0);
+					square = Board.GetSquare(Base.Square.Ordinal-31); if ( square!=null && (square.Piece==null || (square.Piece.Player.Colour!=Base.Player.Colour && square.Piece.CanBeTaken))) moves.Add(0, 0, Move.EnmName.Standard, Base, Base.Square, square, square.Piece, 0, 0);
+					square = Board.GetSquare(Base.Square.Ordinal-33); if ( square!=null && (square.Piece==null || (square.Piece.Player.Colour!=Base.Player.Colour && square.Piece.CanBeTaken))) moves.Add(0, 0, Move.EnmName.Standard, Base, Base.Square, square, square.Piece, 0, 0);
+					square = Board.GetSquare(Base.Square.Ordinal-18); if ( square!=null && (square.Piece==null || (square.Piece.Player.Colour!=Base.Player.Colour && square.Piece.CanBeTaken))) moves.Add(0, 0, Move.EnmName.Standard, Base, Base.Square, square, square.Piece, 0, 0);
+					square = Board.GetSquare(Base.Square.Ordinal+14); if ( square!=null && (square.Piece==null || (square.Piece.Player.Colour!=Base.Player.Colour && square.Piece.CanBeTaken))) moves.Add(0, 0, Move.EnmName.Standard, Base, Base.Square, square, square.Piece, 0, 0);
+					square = Board.GetSquare(Base.Square.Ordinal+31); if ( square!=null && (square.Piece==null || (square.Piece.Player.Colour!=Base.Player.Colour && square.Piece.CanBeTaken))) moves.Add(0, 0, Move.EnmName.Standard, Base, Base.Square, square, square.Piece, 0, 0);
 					break;
 
 				case Moves.EnmMovesType.RecapturesPromotions:
 				case Moves.EnmMovesType.CapturesChecksPromotions:
-					square = Board.GetSquare(_mBase.Square.Ordinal+33); if ( square!=null && square.Piece!=null && square.Piece.Player.Colour!=_mBase.Player.Colour && square.Piece.CanBeTaken) moves.Add(0, 0, Move.EnmName.Standard, _mBase, _mBase.Square, square, square.Piece, 0, 0);
-					square = Board.GetSquare(_mBase.Square.Ordinal+18); if ( square!=null && square.Piece!=null && square.Piece.Player.Colour!=_mBase.Player.Colour && square.Piece.CanBeTaken) moves.Add(0, 0, Move.EnmName.Standard, _mBase, _mBase.Square, square, square.Piece, 0, 0);
-					square = Board.GetSquare(_mBase.Square.Ordinal-14); if ( square!=null && square.Piece!=null && square.Piece.Player.Colour!=_mBase.Player.Colour && square.Piece.CanBeTaken) moves.Add(0, 0, Move.EnmName.Standard, _mBase, _mBase.Square, square, square.Piece, 0, 0);
-					square = Board.GetSquare(_mBase.Square.Ordinal-31); if ( square!=null && square.Piece!=null && square.Piece.Player.Colour!=_mBase.Player.Colour && square.Piece.CanBeTaken) moves.Add(0, 0, Move.EnmName.Standard, _mBase, _mBase.Square, square, square.Piece, 0, 0);
-					square = Board.GetSquare(_mBase.Square.Ordinal-33); if ( square!=null && square.Piece!=null && square.Piece.Player.Colour!=_mBase.Player.Colour && square.Piece.CanBeTaken) moves.Add(0, 0, Move.EnmName.Standard, _mBase, _mBase.Square, square, square.Piece, 0, 0);
-					square = Board.GetSquare(_mBase.Square.Ordinal-18); if ( square!=null && square.Piece!=null && square.Piece.Player.Colour!=_mBase.Player.Colour && square.Piece.CanBeTaken) moves.Add(0, 0, Move.EnmName.Standard, _mBase, _mBase.Square, square, square.Piece, 0, 0);
-					square = Board.GetSquare(_mBase.Square.Ordinal+14); if ( square!=null && square.Piece!=null && square.Piece.Player.Colour!=_mBase.Player.Colour && square.Piece.CanBeTaken) moves.Add(0, 0, Move.EnmName.Standard, _mBase, _mBase.Square, square, square.Piece, 0, 0);
-					square = Board.GetSquare(_mBase.Square.Ordinal+31); if ( square!=null && square.Piece!=null && square.Piece.Player.Colour!=_mBase.Player.Colour && square.Piece.CanBeTaken) moves.Add(0, 0, Move.EnmName.Standard, _mBase, _mBase.Square, square, square.Piece, 0, 0);
+					square = Board.GetSquare(Base.Square.Ordinal+33); if ( square!=null && square.Piece!=null && square.Piece.Player.Colour!=Base.Player.Colour && square.Piece.CanBeTaken) moves.Add(0, 0, Move.EnmName.Standard, Base, Base.Square, square, square.Piece, 0, 0);
+					square = Board.GetSquare(Base.Square.Ordinal+18); if ( square!=null && square.Piece!=null && square.Piece.Player.Colour!=Base.Player.Colour && square.Piece.CanBeTaken) moves.Add(0, 0, Move.EnmName.Standard, Base, Base.Square, square, square.Piece, 0, 0);
+					square = Board.GetSquare(Base.Square.Ordinal-14); if ( square!=null && square.Piece!=null && square.Piece.Player.Colour!=Base.Player.Colour && square.Piece.CanBeTaken) moves.Add(0, 0, Move.EnmName.Standard, Base, Base.Square, square, square.Piece, 0, 0);
+					square = Board.GetSquare(Base.Square.Ordinal-31); if ( square!=null && square.Piece!=null && square.Piece.Player.Colour!=Base.Player.Colour && square.Piece.CanBeTaken) moves.Add(0, 0, Move.EnmName.Standard, Base, Base.Square, square, square.Piece, 0, 0);
+					square = Board.GetSquare(Base.Square.Ordinal-33); if ( square!=null && square.Piece!=null && square.Piece.Player.Colour!=Base.Player.Colour && square.Piece.CanBeTaken) moves.Add(0, 0, Move.EnmName.Standard, Base, Base.Square, square, square.Piece, 0, 0);
+					square = Board.GetSquare(Base.Square.Ordinal-18); if ( square!=null && square.Piece!=null && square.Piece.Player.Colour!=Base.Player.Colour && square.Piece.CanBeTaken) moves.Add(0, 0, Move.EnmName.Standard, Base, Base.Square, square, square.Piece, 0, 0);
+					square = Board.GetSquare(Base.Square.Ordinal+14); if ( square!=null && square.Piece!=null && square.Piece.Player.Colour!=Base.Player.Colour && square.Piece.CanBeTaken) moves.Add(0, 0, Move.EnmName.Standard, Base, Base.Square, square, square.Piece, 0, 0);
+					square = Board.GetSquare(Base.Square.Ordinal+31); if ( square!=null && square.Piece!=null && square.Piece.Player.Colour!=Base.Player.Colour && square.Piece.CanBeTaken) moves.Add(0, 0, Move.EnmName.Standard, Base, Base.Square, square, square.Piece, 0, 0);
 					break;
 			}
 		}

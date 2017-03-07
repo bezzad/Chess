@@ -29,9 +29,7 @@ namespace Chess.Core
 		private const int MinScore = int.MinValue+1;
 		private const int MaxScore = int.MaxValue;
 		private Move _mMoveCurrent;
-		private Move _mMoveBest;
-		private bool _mBlnHasCastled;
-		protected EnmColour MColour;
+	    protected EnmColour MColour;
 		protected Piece MKing;
 		protected Piece MQueen;
 		protected Piece MKingsPawn;
@@ -53,18 +51,15 @@ namespace Chess.Core
 		protected int MIntEvaluations;
 		protected int MIntPositionsSearched;
 		protected bool MBlnIsThinking;
-		private int _mIntSearchDepth;
 
-		private const int MIntGameMoves = 120;
+	    private const int MIntGameMoves = 120;
 
 		private TimeSpan _mTsnThinkingTimeMaxAllowed;
-		private TimeSpan _mTsnThinkingTimeAllotted;
-		private TimeSpan _mTsnThinkingTimeHalved;
+	    private TimeSpan _mTsnThinkingTimeHalved;
 
 		public EnmIntellegence Intellegence;
-		private int _mIntMaxQDepth;
-		
-		private const int MIntMinSearchDepth = 1;
+
+	    private const int MIntMinSearchDepth = 1;
 		private const int MIntMaxSearchDepth = 32;
 		private const int MIntMinimumPlys = 4;
 		private int _r = 3;
@@ -76,10 +71,7 @@ namespace Chess.Core
 
 		public class PlayerClock
 		{
-			private readonly TimeSpan _mTsnTimeLimit = new TimeSpan(0,60,0);
-			private TimeSpan _mTsnTimeElapsed;
-			private DateTime _mDtmTurnStart;
-			private bool _mBlnIsTicking;
+		    private TimeSpan _mTsnTimeElapsed;
 		    private Player _mPlayer;
 
 			public PlayerClock(Player player)
@@ -88,15 +80,15 @@ namespace Chess.Core
 				Reset();
 			}
 
-			public DateTime TurnStartTime => _mDtmTurnStart;
+			public DateTime TurnStartTime { get; private set; }
 
-		    public bool IsTicking => _mBlnIsTicking;
+		    public bool IsTicking { get; private set; }
 
 		    public TimeSpan TimeElapsed
 			{
 				get
 				{
-					return _mBlnIsTicking ? _mTsnTimeElapsed + (DateTime.Now - _mDtmTurnStart) : _mTsnTimeElapsed;
+					return IsTicking ? _mTsnTimeElapsed + (DateTime.Now - TurnStartTime) : _mTsnTimeElapsed;
 				}
 				set
 				{
@@ -104,32 +96,32 @@ namespace Chess.Core
 				}
 			}
 
-			public TimeSpan TimeLimit => _mTsnTimeLimit;
+			public TimeSpan TimeLimit { get; } = new TimeSpan(0,60,0);
 
 		    public TimeSpan TimeRemaining => TimeLimit - TimeElapsed;
 
 		    public void Reset()
 			{
 				_mTsnTimeElapsed = new TimeSpan(0,0,0);
-				_mDtmTurnStart = DateTime.Now;
+				TurnStartTime = DateTime.Now;
 			}
 
 			public void Start()
 			{
-				_mBlnIsTicking = true;
-				_mDtmTurnStart = DateTime.Now;
+				IsTicking = true;
+				TurnStartTime = DateTime.Now;
 			}
 
 			public void Stop()
 			{
-				_mBlnIsTicking = false;
-				_mTsnTimeElapsed += DateTime.Now - _mDtmTurnStart;
+				IsTicking = false;
+				_mTsnTimeElapsed += DateTime.Now - TurnStartTime;
 			}
 
 			public void Revert()
 			{
-				_mBlnIsTicking = false;
-				_mDtmTurnStart = DateTime.Now;
+				IsTicking = false;
+				TurnStartTime = DateTime.Now;
 			}
 		}
 
@@ -161,11 +153,11 @@ namespace Chess.Core
 
 	    public int MaxSearchDepth => MIntMaxSearchDepth;
 
-	    public int SearchDepth => _mIntSearchDepth;
+	    public int SearchDepth { get; private set; }
 
-	    public TimeSpan ThinkingTimeAllotted => _mTsnThinkingTimeAllotted;
+	    public TimeSpan ThinkingTimeAllotted { get; private set; }
 
-	    public TimeSpan ThinkingTimeRemaining => _mTsnThinkingTimeAllotted-(DateTime.Now-MPlayerClock.TurnStartTime);
+	    public TimeSpan ThinkingTimeRemaining => ThinkingTimeAllotted-(DateTime.Now-MPlayerClock.TurnStartTime);
 
 	    public EnmStatus Status
 		{
@@ -239,13 +231,9 @@ namespace Chess.Core
 			}
 		}
 
-		public bool HasCastled
-		{
-			get { return _mBlnHasCastled; }
-			set { _mBlnHasCastled = value; }
-		}
+		public bool HasCastled { get; set; }
 
-		public Piece King
+	    public Piece King
 		{
 			get { return MKing; }
 			set { MKing = value; }
@@ -307,11 +295,11 @@ namespace Chess.Core
 
 		public int TotalMoves => MIntTotalMoves;
 
-	    public int MaxQuiesDepth => _mIntMaxQDepth;
+	    public int MaxQuiesDepth { get; private set; }
 
 	    public Move CurrentMove => _mMoveCurrent;
 
-	    public Move BestMove => _mMoveBest;
+	    public Move BestMove { get; private set; }
 
 	    public int CurrentMoveNo => MIntCurrentMoveNo;
 
@@ -441,7 +429,7 @@ namespace Chess.Core
 			MBlnIsThinking = true;
 
 			var player = this;
-			_mMoveBest = null;
+			BestMove = null;
 			Move moveHash = null;
 			var alphaStart = Score;
 
@@ -460,9 +448,9 @@ namespace Chess.Core
 
 			_mIntRootScore = Score;
 
-			_mTsnThinkingTimeAllotted = new TimeSpan( MPlayerClock.TimeRemaining.Ticks / Math.Max(MIntGameMoves-Game.TurnNo/2, 1) );
-			_mTsnThinkingTimeMaxAllowed = new TimeSpan( _mTsnThinkingTimeAllotted.Ticks*3 );
-			_mTsnThinkingTimeHalved = new TimeSpan( _mTsnThinkingTimeAllotted.Ticks/3);
+			ThinkingTimeAllotted = new TimeSpan( MPlayerClock.TimeRemaining.Ticks / Math.Max(MIntGameMoves-Game.TurnNo/2, 1) );
+			_mTsnThinkingTimeMaxAllowed = new TimeSpan( ThinkingTimeAllotted.Ticks*3 );
+			_mTsnThinkingTimeHalved = new TimeSpan( ThinkingTimeAllotted.Ticks/3);
 
 			MIntEvaluations = 0;
 			MIntPositionsSearched = 0;
@@ -473,7 +461,7 @@ namespace Chess.Core
 			HashTablePawn.ResetStats();
 			History.Clear();
 
-			for (_mIntSearchDepth=MIntMinSearchDepth; _mIntSearchDepth<=MIntMaxSearchDepth; _mIntSearchDepth++)
+			for (SearchDepth=MIntMinSearchDepth; SearchDepth<=MIntMaxSearchDepth; SearchDepth++)
 			{
 
 
@@ -481,7 +469,7 @@ if (Game.DisplayMoveAnalysisTree)
 {
 	Game.MoveAnalysis = new Moves();
 }
-				_mIntMaxQDepth = _mIntSearchDepth;
+				MaxQuiesDepth = SearchDepth;
 
 				// Get last iteration's best move from the HashTable
 				moveHash = HashTable.ProbeForBestMove(player.Colour);
@@ -536,12 +524,12 @@ if (Game.DisplayMoveAnalysisTree)
 
 					if (_mMoveCurrent.IsInCheck) { Move.Undo(_mMoveCurrent); continue; }
 
-					move.Score = _mMoveCurrent.Score = -AlphaBeta(player.OtherPlayer, _mIntSearchDepth-1, -alpha-1, -alpha, true, ref _mMoveCurrent);
+					move.Score = _mMoveCurrent.Score = -AlphaBeta(player.OtherPlayer, SearchDepth-1, -alpha-1, -alpha, true, ref _mMoveCurrent);
 					if (DateTime.Now-MPlayerClock.TurnStartTime > _mTsnThinkingTimeMaxAllowed) { Move.Undo(_mMoveCurrent); goto TimeExpired;}
 
 					if ((move.Score > alpha) && (move.Score < beta)) /* fail */
 					{
-						move.Score = _mMoveCurrent.Score = -AlphaBeta(player.OtherPlayer, _mIntSearchDepth-1, -beta, -alpha, true, ref _mMoveCurrent);
+						move.Score = _mMoveCurrent.Score = -AlphaBeta(player.OtherPlayer, SearchDepth-1, -beta, -alpha, true, ref _mMoveCurrent);
 						if (DateTime.Now-MPlayerClock.TurnStartTime > _mTsnThinkingTimeMaxAllowed) { Move.Undo(_mMoveCurrent); goto TimeExpired;}
 					}
 					
@@ -560,7 +548,7 @@ if (Game.DisplayMoveAnalysisTree)
 					{
 						alpha = _mMoveCurrent.Score;
 						moveDepthBest = _mMoveCurrent;
-						History.Record(player.Colour, _mMoveCurrent.From.Ordinal, _mMoveCurrent.To.Ordinal, alpha-alphaStart, 1<<(_mIntSearchDepth+6)); // Update history heuristic data
+						History.Record(player.Colour, _mMoveCurrent.From.Ordinal, _mMoveCurrent.To.Ordinal, alpha-alphaStart, 1<<(SearchDepth+6)); // Update history heuristic data
 					}
 
 					_mMoveCurrent.Alpha = alpha;
@@ -570,16 +558,16 @@ if (Game.DisplayMoveAnalysisTree)
 
 			MoveSelected:
 
-				_mMoveBest = moveDepthBest;
+				BestMove = moveDepthBest;
 
 				// Record best move
-				HashTable.RecordHash(Board.HashCodeA, Board.HashCodeB, _mIntSearchDepth, _mMoveBest.Score, HashTable.EnmHashType.Exact, _mMoveBest.From.Ordinal, _mMoveBest.To.Ordinal, _mMoveBest.Name, player.Colour);
+				HashTable.RecordHash(Board.HashCodeA, Board.HashCodeB, SearchDepth, BestMove.Score, HashTable.EnmHashType.Exact, BestMove.From.Ordinal, BestMove.To.Ordinal, BestMove.Name, player.Colour);
 
 				MoveConsidered();
 
-				if (DateTime.Now-MPlayerClock.TurnStartTime > _mTsnThinkingTimeHalved && _mIntSearchDepth >= MIntMinimumPlys ) goto TimeExpired;
+				if (DateTime.Now-MPlayerClock.TurnStartTime > _mTsnThinkingTimeHalved && SearchDepth >= MIntMinimumPlys ) goto TimeExpired;
 
-				if (_mMoveBest.Score > 99999) break; // Checkmate found so dont bother searching any deeper
+				if (BestMove.Score > 99999) break; // Checkmate found so dont bother searching any deeper
 			}
 
 
@@ -589,7 +577,7 @@ if (Game.DisplayMoveAnalysisTree)
 			MBlnIsThinking = false;
 			MoveConsidered();
 
-			return _mMoveBest;
+			return BestMove;
 		}
 
 
@@ -625,12 +613,12 @@ if (Game.DisplayMoveAnalysisTree)
 			// Depth <=0 means we're into Quiescence searching
 			if (depth <= 0)
 			{
-				if (depth < _mIntMaxQDepth)
+				if (depth < MaxQuiesDepth)
 				{	
-					_mIntMaxQDepth = depth;
-					if (_mIntMaxQDepth<0)
+					MaxQuiesDepth = depth;
+					if (MaxQuiesDepth<0)
 					{
-						_mIntMaxQDepth+=0;
+						MaxQuiesDepth+=0;
 					}
 				}
 				intScoreAtEntry = val = -player.OtherPlayer.Score;	MIntEvaluations++;

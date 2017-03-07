@@ -2,21 +2,15 @@ namespace Chess.Core
 {
 	public class HashTablePawn
 	{
-		private static int _mIntProbes;
-		private static int _mIntHits;
-		private static int _mIntWrites;
-		private static int _mIntCollisions;
-		private static int _mIntOverwrites;
+	    public static int Probes { get; private set; }
 
-		public static int Probes => _mIntProbes;
+	    public static int Hits { get; private set; }
 
-	    public static int Hits => _mIntHits;
+	    public static int Writes { get; private set; }
 
-	    public static int Writes => _mIntWrites;
+	    public static int Collisions { get; private set; }
 
-	    public static int Collisions => _mIntCollisions;
-
-	    public static int Overwrites => _mIntOverwrites;
+	    public static int Overwrites { get; private set; }
 
 	    private struct HashEntry
 		{
@@ -53,11 +47,11 @@ namespace Chess.Core
 
 		public static void ResetStats()
 		{
-			_mIntProbes = 0;
-			_mIntHits = 0;
-			_mIntWrites = 0;
-			_mIntCollisions = 0;
-			_mIntOverwrites = 0;
+			Probes = 0;
+			Hits = 0;
+			Writes = 0;
+			Collisions = 0;
+			Overwrites = 0;
 		}
 
 		public static void Clear()
@@ -87,7 +81,7 @@ namespace Chess.Core
 				hashCodeB &= 0xFFFFFFFFFFFFFFFE;
 			}
 
-			_mIntProbes++;
+			Probes++;
 
 			fixed (HashEntry* phashBase = &MArrHashEntry[0])
 			{
@@ -96,7 +90,7 @@ namespace Chess.Core
 				
 				if (phashEntry->HashCodeA == hashCodeA && phashEntry->HashCodeB == hashCodeB)
 				{
-					_mIntHits++;
+					Hits++;
 					return phashEntry->Points;
 				}
 			}
@@ -128,7 +122,7 @@ namespace Chess.Core
 				phashEntry->HashCodeB = hashCodeB;
 				phashEntry->Points = val;
 			}
-			_mIntWrites++;
+			Writes++;
 		}
 
 	}

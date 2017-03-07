@@ -2,14 +2,12 @@ namespace Chess.Core
 {
 	public class PieceRook: IPieceTop
 	{
-	    private readonly Piece _mBase;
-
-		public PieceRook(Piece pieceBase)
+	    public PieceRook(Piece pieceBase)
 		{
-			_mBase = pieceBase;
+			Base = pieceBase;
 		}
 
-		public Piece Base => _mBase;
+		public Piece Base { get; }
 
 	    public string Abbreviation => "R";
 
@@ -40,7 +38,7 @@ namespace Chess.Core
 				// After the opening, Rooks are penalized slightly depending on "taxicab" distance to the enemy king.
 				if (Game.Stage != Game.EnmStage.Opening)
 				{
-					intPoints -= _mBase.TaxiCabDistanceToEnemyKingPenalty();
+					intPoints -= Base.TaxiCabDistanceToEnemyKingPenalty();
 				}
 
 				if (Game.Stage != Game.EnmStage.End)
@@ -49,14 +47,14 @@ namespace Chess.Core
 					// 4(0) points if no enemy pawns lie on that file. 
 					var blnHasFiendlyPawn = false;
 					var blnHasEnemyPawn = false;
-					var squareThis = Board.GetSquare(_mBase.Square.File, 0);
+					var squareThis = Board.GetSquare(Base.Square.File, 0);
 					Piece piece;
 					while (squareThis!=null)
 					{
 						piece = squareThis.Piece;
 						if (piece!=null && piece.Name==Piece.EnmName.Pawn)
 						{
-							if (piece.Player.Colour==_mBase.Player.Colour)
+							if (piece.Player.Colour==Base.Player.Colour)
 							{
 								blnHasFiendlyPawn = true;
 							}
@@ -79,31 +77,31 @@ namespace Chess.Core
 
 
 					// 7th rank
-					if ( _mBase.Player.Colour==Player.EnmColour.White && _mBase.Square.Rank==6
+					if ( Base.Player.Colour==Player.EnmColour.White && Base.Square.Rank==6
 						||
-						_mBase.Player.Colour==Player.EnmColour.Black && _mBase.Square.Rank==1
+						Base.Player.Colour==Player.EnmColour.Black && Base.Square.Rank==1
 						)
 					{
 						intPoints += 30;
 					}
 
-					intPoints += _mBase.DefensePoints;
+					intPoints += Base.DefensePoints;
 				}
 
 				return intPoints;
 			}
 		}
 
-		public int ImageIndex => _mBase.Player.Colour==Player.EnmColour.White ? 3 : 2;
+		public int ImageIndex => Base.Player.Colour==Player.EnmColour.White ? 3 : 2;
 
 	    public bool CanBeTaken => true;
 
 	    public void GenerateLazyMoves(Moves moves, Moves.EnmMovesType movesType)
 		{
-			Board.AppendPiecePath(moves, _mBase, _mBase.Player,  1, movesType);
-			Board.AppendPiecePath(moves, _mBase, _mBase.Player, -1, movesType);
-			Board.AppendPiecePath(moves, _mBase, _mBase.Player, -16, movesType);
-			Board.AppendPiecePath(moves, _mBase, _mBase.Player, 16, movesType);
+			Board.AppendPiecePath(moves, Base, Base.Player,  1, movesType);
+			Board.AppendPiecePath(moves, Base, Base.Player, -1, movesType);
+			Board.AppendPiecePath(moves, Base, Base.Player, -16, movesType);
+			Board.AppendPiecePath(moves, Base, Base.Player, 16, movesType);
 		}
 
 	}

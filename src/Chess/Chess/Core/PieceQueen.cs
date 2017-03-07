@@ -2,14 +2,12 @@ namespace Chess.Core
 {
 	public class PieceQueen: IPieceTop
 	{
-	    private readonly Piece _mBase;
-
-		public PieceQueen(Piece pieceBase)
+	    public PieceQueen(Piece pieceBase)
 		{
-			_mBase = pieceBase;
+			Base = pieceBase;
 		}
 
-		public Piece Base => _mBase;
+		public Piece Base { get; }
 
 	    public string Abbreviation => "Q";
 
@@ -29,40 +27,40 @@ namespace Chess.Core
 				// "taxicab" distance to the enemy king.
 				if (Game.Stage == Game.EnmStage.Opening)
 				{
-					if (_mBase.Player.Colour==Player.EnmColour.White)
+					if (Base.Player.Colour==Player.EnmColour.White)
 					{
-						intPoints -= _mBase.Square.Rank * 7;
+						intPoints -= Base.Square.Rank * 7;
 					}
 					else
 					{
-						intPoints -= (7-_mBase.Square.Rank) * 7;
+						intPoints -= (7-Base.Square.Rank) * 7;
 					}
 				}
 				else
 				{
-					intPoints -= _mBase.TaxiCabDistanceToEnemyKingPenalty();
+					intPoints -= Base.TaxiCabDistanceToEnemyKingPenalty();
 				}
 
-				intPoints += _mBase.DefensePoints;
+				intPoints += Base.DefensePoints;
 
 				return intPoints;
 			}
 		}
 
-		public int ImageIndex => _mBase.Player.Colour==Player.EnmColour.White ? 11 : 10;
+		public int ImageIndex => Base.Player.Colour==Player.EnmColour.White ? 11 : 10;
 
 	    public bool CanBeTaken => true;
 
 	    public void GenerateLazyMoves(Moves moves, Moves.EnmMovesType movesType)
 		{
-			Board.AppendPiecePath(moves, _mBase, _mBase.Player, 17, movesType);
-			Board.AppendPiecePath(moves, _mBase, _mBase.Player, 15, movesType);
-			Board.AppendPiecePath(moves, _mBase, _mBase.Player, -15, movesType);
-			Board.AppendPiecePath(moves, _mBase, _mBase.Player, -17, movesType);
-			Board.AppendPiecePath(moves, _mBase, _mBase.Player, 16, movesType);
-			Board.AppendPiecePath(moves, _mBase, _mBase.Player,  1, movesType);
-			Board.AppendPiecePath(moves, _mBase, _mBase.Player, -1, movesType);
-			Board.AppendPiecePath(moves, _mBase, _mBase.Player, -16, movesType);
+			Board.AppendPiecePath(moves, Base, Base.Player, 17, movesType);
+			Board.AppendPiecePath(moves, Base, Base.Player, 15, movesType);
+			Board.AppendPiecePath(moves, Base, Base.Player, -15, movesType);
+			Board.AppendPiecePath(moves, Base, Base.Player, -17, movesType);
+			Board.AppendPiecePath(moves, Base, Base.Player, 16, movesType);
+			Board.AppendPiecePath(moves, Base, Base.Player,  1, movesType);
+			Board.AppendPiecePath(moves, Base, Base.Player, -1, movesType);
+			Board.AppendPiecePath(moves, Base, Base.Player, -16, movesType);
 		}
 
 	}

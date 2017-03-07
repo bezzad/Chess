@@ -14,44 +14,24 @@ namespace Chess.Core
 			,	NullMove
 		}
 
-		private Piece _mPiece;
-		private readonly Square _mFrom;
-		private readonly Square _mTo;
-		private readonly Piece _mPieceTaken;
-		private Moves _mMoves;
-		private readonly EnmName _mName;
-		private readonly int _mTurnNo;
-		private readonly int _mLastMoveTurnNo;
-		private readonly int _mPieceTakenOrdinal;
-		private int _mScore;
-		private int _mPoints;
-		private int _mAlpha;
-		private int _mBeta;
-		private ulong _mHashCodeA;
-		private ulong _mHashCodeB;
-		private bool _mIsInCheck;
-		private bool _mIsEnemyInCheck;
-		private Player.EnmStatus _mEnemyStatus = Player.EnmStatus.Normal;
-		private TimeSpan _mTsnTimeStamp;
-
-		public Move(int turnNo, int lastMoveTurnNo, EnmName name, Piece piece, Square @from, Square to, Piece pieceTaken, int pieceTakenOrdinal, int score)
+	    public Move(int turnNo, int lastMoveTurnNo, EnmName name, Piece piece, Square @from, Square to, Piece pieceTaken, int pieceTakenOrdinal, int score)
 		{
-			_mTurnNo = turnNo;
-			_mLastMoveTurnNo = lastMoveTurnNo;
-			_mName = name;
-			_mPiece = piece;
-			_mFrom = @from;
-			_mTo = to;
-			_mPieceTaken = pieceTaken;
-			_mPieceTakenOrdinal = pieceTakenOrdinal;
+			TurnNo = turnNo;
+			LastMoveTurnNo = lastMoveTurnNo;
+			Name = name;
+			Piece = piece;
+			From = @from;
+			To = to;
+			PieceTaken = pieceTaken;
+			PieceTakenOrdinal = pieceTakenOrdinal;
 
-			_mScore = score;
+			Score = score;
 		}
 
 		public int CompareTo(object move)
 		{
-			if ( _mScore < ((Move)move).Score) return 1;
-			if ( _mScore > ((Move)move).Score) return -1;
+			if ( Score < ((Move)move).Score) return 1;
+			if ( Score > ((Move)move).Score) return -1;
 			return 0;
 		}
 
@@ -63,12 +43,12 @@ namespace Chess.Core
 			{
 				var strDescription = "";
 				
-				if (_mPieceTaken!=null)
+				if (PieceTaken!=null)
 				{
-					strDescription += "-" + _mPieceTaken.Name.ToString() + ".";
+					strDescription += "-" + PieceTaken.Name.ToString() + ".";
 				}
 
-				switch (_mEnemyStatus)
+				switch (EnemyStatus)
 				{
 					case Player.EnmStatus.InCheckMate:
 						strDescription += " CHECKMATE!";
@@ -83,7 +63,7 @@ namespace Chess.Core
 						break;
 				}
 
-				switch (_mName)
+				switch (Name)
 				{
 					case EnmName.CastleKingSide:
 						strDescription += " Castle king-side";
@@ -106,95 +86,47 @@ namespace Chess.Core
 			}
 		}
 
-		public Moves Moves
-		{
-			get { return _mMoves; }
-			set { _mMoves = value; }
-		}
+		public Moves Moves { get; set; }
 
-		public int TurnNo => _mTurnNo;
+	    public int TurnNo { get; }
 
-	    public int LastMoveTurnNo => _mLastMoveTurnNo;
+	    public int LastMoveTurnNo { get; }
 
-	    public int MoveNo => _mTurnNo/2+1;
+	    public int MoveNo => TurnNo/2+1;
 
-	    public EnmName Name => _mName;
+	    public EnmName Name { get; }
 
-	    public Piece Piece
-		{
-			get {return _mPiece;}
-			set {_mPiece = value;}
-		}
+	    public Piece Piece { get; set; }
 
-		public Player.EnmStatus EnemyStatus
-		{
-			get {return _mEnemyStatus;}
-			set {_mEnemyStatus = value;}
-		}
+	    public Player.EnmStatus EnemyStatus { get; set; } = Player.EnmStatus.Normal;
 
-		public Square From => _mFrom;
+	    public Square From { get; }
 
-	    public Square To => _mTo;
+	    public Square To { get; }
 
-	    public Piece PieceTaken => _mPieceTaken;
+	    public Piece PieceTaken { get; }
 
-	    public int PieceTakenOrdinal => _mPieceTakenOrdinal;
+	    public int PieceTakenOrdinal { get; }
 
-	    public ulong HashCodeA
-		{
-			get {return _mHashCodeA;}
-			set {_mHashCodeA = value;}
-		}
+	    public ulong HashCodeA { get; set; }
 
-		public ulong HashCodeB
-		{
-			get {return _mHashCodeB;}
-			set {_mHashCodeB = value;}
-		}
+	    public ulong HashCodeB { get; set; }
 
-		public int Score
-		{
-			get {return _mScore;}
-			set {_mScore = value;}
-		}
+	    public int Score { get; set; }
 
-		public int Points
-		{
-			get {return _mPoints;}
-			set {_mPoints = value;}
-		}
+	    public int Points { get; set; }
 
-		public int Alpha
-		{
-			get {return _mAlpha;}
-			set {_mAlpha = value;}
-		}
+	    public int Alpha { get; set; }
 
-		public int Beta
-		{
-			get {return _mBeta;}
-			set {_mBeta = value;}
-		}
+	    public int Beta { get; set; }
 
-		public bool IsInCheck
-		{
-			get {return _mIsInCheck;}
-			set {_mIsInCheck = value;}
-		}
+	    public bool IsInCheck { get; set; }
 
-		public bool IsEnemyInCheck
-		{
-			get {return _mIsEnemyInCheck;}
-			set {_mIsEnemyInCheck = value;}
-		}
+	    public bool IsEnemyInCheck { get; set; }
 
-		public TimeSpan TimeStamp
-		{
-			get { return _mTsnTimeStamp; }
-			set { _mTsnTimeStamp = value; }
-		}
+	    public TimeSpan TimeStamp { get; set; }
 
-		public static void Undo(Move move)
+	    public static void Undo(Move move)
 		{
 			Board.HashCodeA ^= move.To.Piece.HashCodeA; // un_XOR the piece from where it was previously moved to
 			Board.HashCodeB ^= move.To.Piece.HashCodeB; // un_XOR the piece from where it was previously moved to
