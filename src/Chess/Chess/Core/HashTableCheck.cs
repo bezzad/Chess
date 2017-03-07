@@ -8,32 +8,17 @@ namespace Chess.Core
 		private static int _mIntCollisions;
 		private static int _mIntOverwrites;
 
-		public static int Probes
-		{
-			get {return _mIntProbes;}
-		}
+		public static int Probes => _mIntProbes;
 
-		public static int Hits
-		{
-			get {return _mIntHits;}
-		}
+	    public static int Hits => _mIntHits;
 
-		public static int Writes
-		{
-			get {return _mIntWrites;}
-		}
+	    public static int Writes => _mIntWrites;
 
-		public static int Collisions
-		{
-			get { return _mIntCollisions; }
-		}
+	    public static int Collisions => _mIntCollisions;
 
-		public static int Overwrites
-		{
-			get { return _mIntOverwrites; }
-		}
+	    public static int Overwrites => _mIntOverwrites;
 
-		private struct HashEntry
+	    private struct HashEntry
 		{
 			public ulong	HashCodeA;
 			public ulong	HashCodeB;
@@ -86,7 +71,7 @@ namespace Chess.Core
 				}
 
 				var phashEntry = phashBase;
-				phashEntry += ((uint)(hashCodeA % HashTableSize));
+				phashEntry += (uint)(hashCodeA % HashTableSize);
 				
 				if (phashEntry->HashCodeA!=hashCodeA || phashEntry->HashCodeB!=hashCodeB)
 				{

@@ -9,35 +9,17 @@ namespace Chess.Core
 			_mBase = pieceBase;
 		}
 
-		public Piece Base
-		{
-			get { return _mBase; }
-		}
+		public Piece Base => _mBase;
 
-		public string Abbreviation
-		{
-			get {return "B";}
-		}
+	    public string Abbreviation => "B";
 
-		public Piece.EnmName Name
-		{
-			get {return Piece.EnmName.Bishop;}
-		}
+	    public Piece.EnmName Name => Piece.EnmName.Bishop;
 
-		public int BasicValue
-		{
-			get { return 3;	}
-		}
+	    public int BasicValue => 3;
 
-		public int Value
-		{
-			get
-			{
-				return 3250;
-			}
-		}
+	    public int Value => 3250;
 
-		private static readonly int[] MAintSquareValues =
+	    private static readonly int[] MAintSquareValues =
 		{
 			10,10,10,10,10,10,10,10,    0,0,0,0,0,0,0,0,
 			10,20,20,20,20,20,20,10,    0,0,0,0,0,0,0,0,
@@ -55,7 +37,7 @@ namespace Chess.Core
 			{
 				var intPoints = 0;
 
-				intPoints += (MAintSquareValues[_mBase.Square.Ordinal]<<1);
+				intPoints += MAintSquareValues[_mBase.Square.Ordinal]<<1;
 
 				if (Game.Stage!=Game.EnmStage.End)
 				{
@@ -85,20 +67,11 @@ namespace Chess.Core
 			}
 		}
 
-		public int ImageIndex
-		{
-			get { return (_mBase.Player.Colour==Player.EnmColour.White ? 1 : 0); }
-		}
-	
-		public bool CanBeTaken
-		{
-			get
-			{
-				return true;
-			}
-		}
+		public int ImageIndex => _mBase.Player.Colour==Player.EnmColour.White ? 1 : 0;
 
-		public void GenerateLazyMoves(Moves moves, Moves.EnmMovesType movesType)
+	    public bool CanBeTaken => true;
+
+	    public void GenerateLazyMoves(Moves moves, Moves.EnmMovesType movesType)
 		{
 			Board.AppendPiecePath(moves, _mBase, _mBase.Player, 17, movesType);
 			Board.AppendPiecePath(moves, _mBase, _mBase.Player, 15, movesType);

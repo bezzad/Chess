@@ -170,7 +170,7 @@ namespace Chess.Core
 
 			intOrdinal += offset;
 			 
-			while ( intSquareCount<=2 && ((square = GetSquare(intOrdinal))!=null && (square.Piece==null || (square.Piece.Name!=Piece.EnmName.Pawn && square.Piece.Name!=Piece.EnmName.Rook) || square.Piece.Player.Colour!=colour)))
+			while ( intSquareCount<=2 && (square = GetSquare(intOrdinal))!=null && (square.Piece==null || (square.Piece.Name!=Piece.EnmName.Pawn && square.Piece.Name!=Piece.EnmName.Rook) || square.Piece.Player.Colour!=colour))
 			{
 				intPenalty += 75;
 				intSquareCount++;
@@ -225,7 +225,7 @@ namespace Chess.Core
 							}
 							else
 							{
-								strOutput += (square.Colour==Square.EnmColour.White ? "." : "#");
+								strOutput += square.Colour==Square.EnmColour.White ? "." : "#";
 							}
 						}
 						strOutput += Convert.ToChar(13) + Convert.ToChar(10);

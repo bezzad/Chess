@@ -28,37 +28,22 @@ namespace Chess.Core
 			return _mColMoves.GetEnumerator();
 		}
 
-		public Piece Parent
-		{
-			get { return _mPieceParent; }
-		}
+		public Piece Parent => _mPieceParent;
 
-		public int Count
-		{
-			get { return _mColMoves.Count; }
-		}
+	    public int Count => _mColMoves.Count;
 
-		public Move Item(int intIndex)
+	    public Move Item(int intIndex)
 		{
 			return (Move)_mColMoves[intIndex];
 		}
 
-		public Move Last
-		{
-			get { return _mColMoves.Count>0 ? (Move)_mColMoves[_mColMoves.Count-1] : null; }
-		}
+		public Move Last => _mColMoves.Count>0 ? (Move)_mColMoves[_mColMoves.Count-1] : null;
 
-		public Move PenultimateForSameSide
-		{
-			get { return _mColMoves.Count>2 ? (Move)_mColMoves[_mColMoves.Count-3] : null;  }
-		}
+	    public Move PenultimateForSameSide => _mColMoves.Count>2 ? (Move)_mColMoves[_mColMoves.Count-3] : null;
 
-		public Move Penultimate
-		{
-			get { return _mColMoves.Count>1 ? (Move)_mColMoves[_mColMoves.Count-2] : null;  }
-		}
+	    public Move Penultimate => _mColMoves.Count>1 ? (Move)_mColMoves[_mColMoves.Count-2] : null;
 
-		public void Add(int turnNo, int lastMoveTurnNo, Move.EnmName name, Piece piece, Square @from, Square to, Piece pieceTaken, int pieceTakenOrdinal, int score)
+	    public void Add(int turnNo, int lastMoveTurnNo, Move.EnmName name, Piece piece, Square @from, Square to, Piece pieceTaken, int pieceTakenOrdinal, int score)
 		{
 			_mColMoves.Add(new Move(turnNo, lastMoveTurnNo, name, piece, @from, to, pieceTaken, pieceTakenOrdinal, score));
 		}

@@ -60,17 +60,11 @@ namespace Chess.Core
 		private int _mPoints;
 		private readonly EnmId _mId;
 
-		public Piece Base
-		{
-			get { return this; }
-		}
+		public Piece Base => this;
 
-		public IPieceTop Top
-		{
-			get { return _mTop; }
-		}
+	    public IPieceTop Top => _mTop;
 
-		public Piece(EnmName name, Player player, int col, int row, EnmId id)
+	    public Piece(EnmName name, Player player, int col, int row, EnmId id)
 		{
 			var square = Board.GetSquare(col, row);
 
@@ -109,62 +103,42 @@ namespace Chess.Core
 
 		public ulong HashCodeAForSquareOrdinal(int ordinal)
 		{
-			var a = (uint)(_mId);
-			var x = (((uint)(_mId))<<7);
-			return MAulongHashCodesA[(((uint)(_mId))<<7) + ordinal] + (_mHasBeenPromoted ? 13UL: 0UL);
+			var x = (uint)_mId<<7;
+			return MAulongHashCodesA[x + ordinal] + (_mHasBeenPromoted ? 13UL: 0UL);
 		}
 
 		public ulong HashCodeBForSquareOrdinal(int ordinal)
 		{
-			var a = (uint)(_mId);
-			var x = (((uint)(_mId))<<7);
-			return MAulongHashCodesB[(((uint)(_mId))<<7) + ordinal] + (_mHasBeenPromoted ? 111UL: 0UL);
+			var x = (uint)_mId<<7;
+			return MAulongHashCodesB[x + ordinal] + (_mHasBeenPromoted ? 111UL: 0UL);
 		}
 
-		public ulong HashCodeA
-		{
-			get { return HashCodeAForSquareOrdinal(_mSquare.Ordinal); }
-		}
+		public ulong HashCodeA => HashCodeAForSquareOrdinal(_mSquare.Ordinal);
 
-		public ulong HashCodeB
-		{
-			get { return HashCodeBForSquareOrdinal(_mSquare.Ordinal); }
-		}
+	    public ulong HashCodeB => HashCodeBForSquareOrdinal(_mSquare.Ordinal);
 
-		public int CompareTo(object piece)
+	    public int CompareTo(object piece)
 		{
 			if ( _mPoints==((Piece)piece).Points) return 0;
 			if ( _mPoints> ((Piece)piece).Points) return 1;
 			return -1;
 		}
 
-		public string Abbreviation
-		{
-			get { return _mTop.Abbreviation; }
-		}
-	
-		public EnmName Name
-		{
-			get { return _mTop.Name; }
-		}
-	
-		public int LastMoveTurnNo
+		public string Abbreviation => _mTop.Abbreviation;
+
+	    public EnmName Name => _mTop.Name;
+
+	    public int LastMoveTurnNo
 		{
 			get { return _mLastMoveTurnNo; }
 			set { _mLastMoveTurnNo = value; }
 		}
 
-		public int ImageIndex
-		{
-			get { return _mTop.ImageIndex; }
-		}
-	
-		public bool HasMoved
-		{
-			get { return _mLastMoveTurnNo!=0; }
-		}
+		public int ImageIndex => _mTop.ImageIndex;
 
-		public bool HasBeenPromoted
+	    public bool HasMoved => _mLastMoveTurnNo!=0;
+
+	    public bool HasBeenPromoted
 		{
 			get { return _mHasBeenPromoted; }
 			set { _mHasBeenPromoted = value; }
@@ -182,44 +156,29 @@ namespace Chess.Core
 			set { _mNoOfMoves = value; }
 		}
 
-		public bool MovedLastMove
-		{
-			get {return _mLastMoveTurnNo == Game.TurnNo-2;}
-		}
+		public bool MovedLastMove => _mLastMoveTurnNo == Game.TurnNo-2;
 
-		public Square Square
+	    public Square Square
 		{
 			get { return _mSquare; }
 			set { _mSquare = value; }
 		}
 	
-		public Player Player
-		{
-			get { return _mPlayer; }
-		}
-	
-		public int BasicValue
-		{
-			get { return _mTop.BasicValue;	}
-		}
+		public Player Player => _mPlayer;
 
-		public int Value
-		{
-			get { return _mTop.Value; }
-		}
+	    public int BasicValue => _mTop.BasicValue;
 
-		public int Points
+	    public int Value => _mTop.Value;
+
+	    public int Points
 		{
 			get {return _mPoints;}
 			set {_mPoints = value;}
 		}
 
-		public bool CanBeTaken
-		{
-			get { return _mTop.CanBeTaken; }
-		}
+		public bool CanBeTaken => _mTop.CanBeTaken;
 
-		public void GenerateLegalMoves(Moves moves)
+	    public void GenerateLegalMoves(Moves moves)
 		{
 			GenerateLazyMoves(moves, Moves.EnmMovesType.All);
 			Move move;
@@ -453,24 +412,12 @@ namespace Chess.Core
 			return this;
 		}
 
-		public int PointsTotal
-		{
-			get
-			{
-				return	Value //+ m_square.Value;
-					  + PositionalValue;
-			}
-		}
+		public int PointsTotal => Value //+ m_square.Value;
+		                          + PositionalValue;
 
-		public int PositionalValue
-		{
-			get 
-			{
-					return _mTop.PositionalValue;
-			}
-		}
+	    public int PositionalValue => _mTop.PositionalValue;
 
-		public int DefensePoints
+	    public int DefensePoints
 		{
 			get
 			{	
@@ -523,7 +470,7 @@ namespace Chess.Core
 
 		public int TaxiCabDistanceToEnemyKingPenalty()
 		{
-			return (Math.Abs(_mSquare.Rank-_mPlayer.OtherPlayer.King.Square.Rank) + Math.Abs(_mSquare.File-_mPlayer.OtherPlayer.King.Square.File));
+			return Math.Abs(_mSquare.Rank-_mPlayer.OtherPlayer.King.Square.Rank) + Math.Abs(_mSquare.File-_mPlayer.OtherPlayer.King.Square.File);
 		}
 
 

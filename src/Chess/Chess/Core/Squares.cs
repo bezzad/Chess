@@ -16,12 +16,9 @@ namespace Chess.Core
 			return (Square)_mColSquares[intIndex];
 		}
 
-		public int Count
-		{
-			get { return _mColSquares.Count; }
-		}
+		public int Count => _mColSquares.Count;
 
-		public void Add(Square square)
+	    public void Add(Square square)
 		{
 			_mColSquares.Add(square);
 		}

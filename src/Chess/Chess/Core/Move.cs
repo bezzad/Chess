@@ -55,15 +55,9 @@ namespace Chess.Core
 			return 0;
 		}
 
-		public string DebugText
-		{
-			get
-			{
-				return (Piece!=null ? Piece.Player.Colour.ToString() + " " + Piece.Name.ToString() : "") + " " + From.Name+"-"+To.Name + " " + Description + " A: " + Alpha + " B: " + Beta + " Score: " + Score;// + " h: " + this.m_HashEntries.ToString() + " c:" + this.m_HashCaptures.ToString();
-			}
-		}
+		public string DebugText => (Piece!=null ? Piece.Player.Colour.ToString() + " " + Piece.Name.ToString() : "") + " " + From.Name+"-"+To.Name + " " + Description + " A: " + Alpha + " B: " + Beta + " Score: " + Score;
 
-		public string Description
+	    public string Description
 		{
 			get
 			{
@@ -118,27 +112,15 @@ namespace Chess.Core
 			set { _mMoves = value; }
 		}
 
-		public int TurnNo
-		{
-			get {return _mTurnNo;}
-		}
+		public int TurnNo => _mTurnNo;
 
-		public int LastMoveTurnNo
-		{
-			get {return _mLastMoveTurnNo;}
-		}
+	    public int LastMoveTurnNo => _mLastMoveTurnNo;
 
-		public int MoveNo
-		{
-			get { return _mTurnNo/2+1; }
-		}
+	    public int MoveNo => _mTurnNo/2+1;
 
-		public EnmName Name
-		{
-			get {return _mName;}
-		}
+	    public EnmName Name => _mName;
 
-		public Piece Piece
+	    public Piece Piece
 		{
 			get {return _mPiece;}
 			set {_mPiece = value;}
@@ -150,27 +132,15 @@ namespace Chess.Core
 			set {_mEnemyStatus = value;}
 		}
 
-		public Square From
-		{
-			get {return _mFrom;}
-		}
+		public Square From => _mFrom;
 
-		public Square To
-		{
-			get {return _mTo;}
-		}
+	    public Square To => _mTo;
 
-		public Piece PieceTaken
-		{
-			get {return _mPieceTaken;}
-		}
+	    public Piece PieceTaken => _mPieceTaken;
 
-		public int PieceTakenOrdinal
-		{
-			get {return _mPieceTakenOrdinal;}
-		}
+	    public int PieceTakenOrdinal => _mPieceTakenOrdinal;
 
-		public ulong HashCodeA
+	    public ulong HashCodeA
 		{
 			get {return _mHashCodeA;}
 			set {_mHashCodeA = value;}

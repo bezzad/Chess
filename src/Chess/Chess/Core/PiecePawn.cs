@@ -9,33 +9,15 @@ namespace Chess.Core
 			_mBase = pieceBase;
 		}
 
-		public Piece Base
-		{
-			get { return _mBase; }
-		}
+		public Piece Base => _mBase;
 
-		public string Abbreviation
-		{
-			get {return "P";}
-		}
+	    public string Abbreviation => "P";
 
-		public Piece.EnmName Name
-		{
-			get {return Piece.EnmName.Pawn;}
-		}
+	    public Piece.EnmName Name => Piece.EnmName.Pawn;
 
-		public int BasicValue
-		{
-			get { return 1;	}
-		}
+	    public int BasicValue => 1;
 
-		public int Value
-		{
-			get
-			{
-				return _mBase.Square.Rank==0 || _mBase.Square.Rank==7 ? 850 : 1000;
-			}
-		}
+	    public int Value => _mBase.Square.Rank==0 || _mBase.Square.Rank==7 ? 850 : 1000;
 
 	    private static readonly int[] AintAdvancementBonus = {0,0,0,45,75,120,240,999};
 	    private static readonly int[] AintFileBonus = {0,4,8,16,16,8,4,0};
@@ -199,20 +181,11 @@ namespace Chess.Core
 			}
 		}
 
-		public int ImageIndex
-		{
-			get { return (_mBase.Player.Colour==Player.EnmColour.White ? 9 : 8); }
-		}
-	
-		public bool CanBeTaken
-		{
-			get
-			{
-				return true;
-			}
-		}
+		public int ImageIndex => _mBase.Player.Colour==Player.EnmColour.White ? 9 : 8;
 
-		private Move.EnmName MoveName(Player.EnmColour colourPlayer, Square squareTo)
+	    public bool CanBeTaken => true;
+
+	    private Move.EnmName MoveName(Player.EnmColour colourPlayer, Square squareTo)
 		{
 			if (colourPlayer==Player.EnmColour.White && squareTo.Rank==7 || colourPlayer==Player.EnmColour.Black && squareTo.Rank==0)
 			{
@@ -236,7 +209,7 @@ namespace Chess.Core
 			{
 				if ( (square = Board.GetSquare(_mBase.Square.Ordinal+_mBase.Player.PawnForwardOffset))!=null && square.Piece == null)
 				{
-					moves.Add(0, 0, (blnIsPromotion ? Move.EnmName.PawnPromotion : Move.EnmName.Standard), _mBase, _mBase.Square, square, square.Piece, 0, 0);
+					moves.Add(0, 0, blnIsPromotion ? Move.EnmName.PawnPromotion : Move.EnmName.Standard, _mBase, _mBase.Square, square, square.Piece, 0, 0);
 				}
 			}
 

@@ -88,17 +88,11 @@ namespace Chess.Core
 				Reset();
 			}
 
-			public DateTime TurnStartTime
-			{
-				get { return _mDtmTurnStart; }
-			}
+			public DateTime TurnStartTime => _mDtmTurnStart;
 
-			public bool IsTicking
-			{
-				get { return _mBlnIsTicking; }
-			}
+		    public bool IsTicking => _mBlnIsTicking;
 
-			public TimeSpan TimeElapsed
+		    public TimeSpan TimeElapsed
 			{
 				get
 				{
@@ -110,23 +104,11 @@ namespace Chess.Core
 				}
 			}
 
-			public TimeSpan TimeLimit
-			{
-				get
-				{
-					return _mTsnTimeLimit;
-				}
-			}
+			public TimeSpan TimeLimit => _mTsnTimeLimit;
 
-			public TimeSpan TimeRemaining
-			{
-				get
-				{
-					return TimeLimit - TimeElapsed;
-				}
-			}
+		    public TimeSpan TimeRemaining => TimeLimit - TimeElapsed;
 
-			public void Reset()
+		    public void Reset()
 			{
 				_mTsnTimeElapsed = new TimeSpan(0,0,0);
 				_mDtmTurnStart = DateTime.Now;
@@ -141,7 +123,7 @@ namespace Chess.Core
 			public void Stop()
 			{
 				_mBlnIsTicking = false;
-				_mTsnTimeElapsed += (DateTime.Now - _mDtmTurnStart);
+				_mTsnTimeElapsed += DateTime.Now - _mDtmTurnStart;
 			}
 
 			public void Revert()
@@ -171,42 +153,21 @@ namespace Chess.Core
 			get;
 		}
 
-		public bool IsThinking
-		{
-			get {return MBlnIsThinking;}
-		}
+		public bool IsThinking => MBlnIsThinking;
 
-		public int Evaluations
-		{
-			get {return MIntEvaluations;}
-		}
+	    public int Evaluations => MIntEvaluations;
 
-		public int PositionsSearched
-		{
-			get {return MIntEvaluations;}
-		}
+	    public int PositionsSearched => MIntEvaluations;
 
-		public int MaxSearchDepth
-		{
-			get { return MIntMaxSearchDepth; }
-		}
+	    public int MaxSearchDepth => MIntMaxSearchDepth;
 
-		public int SearchDepth
-		{
-			get { return _mIntSearchDepth; }
-		}
+	    public int SearchDepth => _mIntSearchDepth;
 
-		public TimeSpan ThinkingTimeAllotted
-		{
-			get { return _mTsnThinkingTimeAllotted; }
-		}
+	    public TimeSpan ThinkingTimeAllotted => _mTsnThinkingTimeAllotted;
 
-		public TimeSpan ThinkingTimeRemaining
-		{
-			get { return _mTsnThinkingTimeAllotted-(DateTime.Now-MPlayerClock.TurnStartTime); }
-		}
+	    public TimeSpan ThinkingTimeRemaining => _mTsnThinkingTimeAllotted-(DateTime.Now-MPlayerClock.TurnStartTime);
 
-		public EnmStatus Status
+	    public EnmStatus Status
 		{
 			get
 			{
@@ -217,15 +178,9 @@ namespace Chess.Core
 			}
 		}
 
-		public int MaterialCount
-		{
-			get
-			{
-				return MMaterialCount;
-			}
-		}
+		public int MaterialCount => MMaterialCount;
 
-		public int MaterialBasicValue
+	    public int MaterialBasicValue
 		{
 			get
 			{
@@ -350,33 +305,18 @@ namespace Chess.Core
 			set { MQueensKnight = value; }
 		}
 
-		public int TotalMoves
-		{
-			get { return MIntTotalMoves; }
-		}
+		public int TotalMoves => MIntTotalMoves;
 
-		public int MaxQuiesDepth
-		{
-			get { return _mIntMaxQDepth; }
-		}
+	    public int MaxQuiesDepth => _mIntMaxQDepth;
 
-		public Move CurrentMove
-		{
-			get { return _mMoveCurrent; }
-		}
+	    public Move CurrentMove => _mMoveCurrent;
 
-		public Move BestMove
-		{
-			get { return _mMoveBest; }
-		}
+	    public Move BestMove => _mMoveBest;
 
-		public int CurrentMoveNo
-		{
-			get { return MIntCurrentMoveNo; }
-		}
+	    public int CurrentMoveNo => MIntCurrentMoveNo;
 
 
-		public Player()
+	    public Player()
 		{
 			MColPieces = new Pieces(this);
 			MColPawns = new Pieces(this);
@@ -384,12 +324,9 @@ namespace Chess.Core
 			MColCapturedEnemyPieces = new Pieces(this);
 		}
 
-		public int PawnsInPlay
-		{
-			get { return MNoOfPawnsInPlay; } 
-		}
+		public int PawnsInPlay => MNoOfPawnsInPlay;
 
-		public void DecreasePawnCount()
+	    public void DecreasePawnCount()
 		{
 			MNoOfPawnsInPlay--;
 		}
@@ -432,15 +369,9 @@ namespace Chess.Core
 			return ((PieceKing)King.Top).DetermineCheckStatus();
 		}
 
-		public bool IsInCheck
-		{
-			get
-			{
-				return HashTableCheck.IsPlayerInCheck(this);
-			}
-		}
+		public bool IsInCheck => HashTableCheck.IsPlayerInCheck(this);
 
-		public bool IsInCheckMate
+	    public bool IsInCheckMate
 		{
 			get
 			{ 
@@ -448,7 +379,7 @@ namespace Chess.Core
 
 				var moves = new Moves();
 				GenerateLegalMoves(moves);
-				return (moves.Count==0);
+				return moves.Count==0;
 			}
 		}
 
@@ -529,7 +460,7 @@ namespace Chess.Core
 
 			_mIntRootScore = Score;
 
-			_mTsnThinkingTimeAllotted = new TimeSpan( MPlayerClock.TimeRemaining.Ticks / Math.Max(MIntGameMoves-(Game.TurnNo/2), 1) );
+			_mTsnThinkingTimeAllotted = new TimeSpan( MPlayerClock.TimeRemaining.Ticks / Math.Max(MIntGameMoves-Game.TurnNo/2, 1) );
 			_mTsnThinkingTimeMaxAllowed = new TimeSpan( _mTsnThinkingTimeAllotted.Ticks*3 );
 			_mTsnThinkingTimeHalved = new TimeSpan( _mTsnThinkingTimeAllotted.Ticks/3);
 
@@ -606,12 +537,12 @@ if (Game.DisplayMoveAnalysisTree)
 					if (_mMoveCurrent.IsInCheck) { Move.Undo(_mMoveCurrent); continue; }
 
 					move.Score = _mMoveCurrent.Score = -AlphaBeta(player.OtherPlayer, _mIntSearchDepth-1, -alpha-1, -alpha, true, ref _mMoveCurrent);
-					if ((DateTime.Now-MPlayerClock.TurnStartTime) > _mTsnThinkingTimeMaxAllowed) { Move.Undo(_mMoveCurrent); goto TimeExpired;}
+					if (DateTime.Now-MPlayerClock.TurnStartTime > _mTsnThinkingTimeMaxAllowed) { Move.Undo(_mMoveCurrent); goto TimeExpired;}
 
 					if ((move.Score > alpha) && (move.Score < beta)) /* fail */
 					{
 						move.Score = _mMoveCurrent.Score = -AlphaBeta(player.OtherPlayer, _mIntSearchDepth-1, -beta, -alpha, true, ref _mMoveCurrent);
-						if ((DateTime.Now-MPlayerClock.TurnStartTime) > _mTsnThinkingTimeMaxAllowed) { Move.Undo(_mMoveCurrent); goto TimeExpired;}
+						if (DateTime.Now-MPlayerClock.TurnStartTime > _mTsnThinkingTimeMaxAllowed) { Move.Undo(_mMoveCurrent); goto TimeExpired;}
 					}
 					
 					MoveConsidered();
@@ -646,7 +577,7 @@ if (Game.DisplayMoveAnalysisTree)
 
 				MoveConsidered();
 
-				if ((DateTime.Now-MPlayerClock.TurnStartTime) > _mTsnThinkingTimeHalved && _mIntSearchDepth >= MIntMinimumPlys ) goto TimeExpired;
+				if (DateTime.Now-MPlayerClock.TurnStartTime > _mTsnThinkingTimeHalved && _mIntSearchDepth >= MIntMinimumPlys ) goto TimeExpired;
 
 				if (_mMoveBest.Score > 99999) break; // Checkmate found so dont bother searching any deeper
 			}
@@ -681,7 +612,7 @@ if (Game.DisplayMoveAnalysisTree)
 				// High values of "val" indicate that a checkmate has been found
 				if (val>1000000 || val<-1000000)
 				{
-					val /= (MIntMaxSearchDepth-depth);
+					val /= MIntMaxSearchDepth-depth;
 				}
 				return val;
 			}
@@ -706,16 +637,14 @@ if (Game.DisplayMoveAnalysisTree)
 
 				if (val>100000000 || val<-100000000) 
 				{
-					val /= (MIntMaxSearchDepth-depth);
+					val /= MIntMaxSearchDepth-depth;
 				}
 				// Allow a deeper ply of search if a piece was captured or if a pawn was promoted, 
 				// or either side is in check.
 				if ( !( 
 						moveAnalysed.PieceTaken != null 
 						||
-						moveAnalysed.Name == Move.EnmName.PawnPromotion
-						||
-						( moveAnalysed.IsInCheck || moveAnalysed.IsEnemyInCheck )
+						moveAnalysed.Name == Move.EnmName.PawnPromotion || moveAnalysed.IsInCheck || moveAnalysed.IsEnemyInCheck
 					  )
 					)
 				{
@@ -739,13 +668,13 @@ if (Game.DisplayMoveAnalysisTree)
 //			{
 
 			// "Adaptive" Null-move forward pruning
-			_r = (depth>6 && Game.Stage!=Game.EnmStage.End) ? 3 : 2; //  << This is the "adaptive" bit
+			_r = depth>6 && Game.Stage!=Game.EnmStage.End ? 3 : 2; //  << This is the "adaptive" bit
 			// The rest is normal Null-move forward pruning
 			if (depth >= 3 )
 			{
 				var moveNull = new Move(Game.TurnNo, 0, Move.EnmName.NullMove, null, null, null, null, 0, 0);
 				val = -AlphaBeta(player.OtherPlayer, depth - _r - 1, -beta, -beta + 1, verify, ref moveNull);
-				if ((DateTime.Now-MPlayerClock.TurnStartTime) > _mTsnThinkingTimeMaxAllowed) goto TimeExpired;
+				if (DateTime.Now-MPlayerClock.TurnStartTime > _mTsnThinkingTimeMaxAllowed) goto TimeExpired;
 				if (val >= beta)
 				{
 //					if (verify) 
@@ -767,7 +696,7 @@ if (Game.DisplayMoveAnalysisTree)
 			// Generate moves
 			var movesPossible = new Moves();
 
-			blnAllMovesWereGenerated=( depth>0 || (moveAnalysed.IsInCheck || moveAnalysed.IsEnemyInCheck));
+			blnAllMovesWereGenerated=depth>0 || moveAnalysed.IsInCheck || moveAnalysed.IsEnemyInCheck;
 			if ( blnAllMovesWereGenerated ) 
 			{
 				player.GenerateLazyMoves(depth, movesPossible, Moves.EnmMovesType.All, null);
@@ -815,12 +744,12 @@ if (Game.DisplayMoveAnalysisTree)
 //						else
 //						{
 						// MVV/LVA (Most Valuable Victim/Least Valuable Attacker)
-						movex.Score += (movex.PieceTaken.Value - movex.Piece.Value/10);
+						movex.Score += movex.PieceTaken.Value - movex.Piece.Value/10;
 //						}
 				}
 				else
 				{
-					movex.Score += (History.Retrieve(player.Colour, movex.From.Ordinal, movex.To.Ordinal)>>6);
+					movex.Score += History.Retrieve(player.Colour, movex.From.Ordinal, movex.To.Ordinal)>>6;
 				}
 			}
 			movesPossible.SortByScore();
@@ -883,17 +812,17 @@ moveAnalysed.Moves.Add(moveThis);
 				if (blnPvNode)
 				{
 					val = -AlphaBeta(player.OtherPlayer, depth - 1, -alpha-1, -alpha, verify, ref moveThis);
-					if ((DateTime.Now-MPlayerClock.TurnStartTime) > _mTsnThinkingTimeMaxAllowed) { Move.Undo(moveThis); goto TimeExpired;}
+					if (DateTime.Now-MPlayerClock.TurnStartTime > _mTsnThinkingTimeMaxAllowed) { Move.Undo(moveThis); goto TimeExpired;}
 					if ((val > alpha) && (val < beta)) /* fail */
 					{
 						val = -AlphaBeta(player.OtherPlayer, depth - 1, -beta, -alpha, verify, ref moveThis);
-						if ((DateTime.Now-MPlayerClock.TurnStartTime) > _mTsnThinkingTimeMaxAllowed) { Move.Undo(moveThis); goto TimeExpired;}
+						if (DateTime.Now-MPlayerClock.TurnStartTime > _mTsnThinkingTimeMaxAllowed) { Move.Undo(moveThis); goto TimeExpired;}
 					}
 				}
 				else
 				{
 					val = -AlphaBeta(player.OtherPlayer, depth - 1, -beta, -alpha, verify, ref moveThis);
-					if ((DateTime.Now-MPlayerClock.TurnStartTime) > _mTsnThinkingTimeMaxAllowed) { Move.Undo(moveThis); goto TimeExpired;}
+					if (DateTime.Now-MPlayerClock.TurnStartTime > _mTsnThinkingTimeMaxAllowed) { Move.Undo(moveThis); goto TimeExpired;}
 				}
 
 				if (!blnAllMovesWereGenerated && val<intScoreAtEntry)
@@ -984,7 +913,7 @@ TimeExpired:
 				// Sort moves
 				foreach (Move movex in movesPossible)
 				{
-					movex.Score = (movex.PieceTaken.Value - movex.Piece.Value/10);
+					movex.Score = movex.PieceTaken.Value - movex.Piece.Value/10;
 				}
 				movesPossible.SortByScore();
 
@@ -1019,38 +948,23 @@ TimeExpired:
 			return alpha;
 		}
 
-		public Player OtherPlayer
-		{
-			get { return MColour==EnmColour.White ? Game.PlayerBlack : Game.PlayerWhite; }
-		}
+		public Player OtherPlayer => MColour==EnmColour.White ? Game.PlayerBlack : Game.PlayerWhite;
 
-		public EnmColour Colour
+	    public EnmColour Colour
 		{
 			get { return MColour; }
 			set	{ MColour = value;	}
 		}
 
-		public Pieces Pieces
-		{
-			get	{ return MColPieces; }
-		}
+		public Pieces Pieces => MColPieces;
 
-		public Pieces Pawns
-		{
-			get	{ return MColPawns; }
-		}
+	    public Pieces Pawns => MColPawns;
 
-		public Pieces Material
-		{
-			get	{ return MColMaterial; }
-		}
+	    public Pieces Material => MColMaterial;
 
-		public Pieces CapturedEnemyPieces
-		{
-			get	{ return MColCapturedEnemyPieces; }
-		}
+	    public Pieces CapturedEnemyPieces => MColCapturedEnemyPieces;
 
-		public int CapturedEnemyPiecesTotalBasicValue
+	    public int CapturedEnemyPiecesTotalBasicValue
 		{
 			get
 			{
@@ -1136,7 +1050,7 @@ TimeExpired:
 				// If this player is "human" then a draw if scored high, else a draw is scored low
 				if (CanClaimThreeMoveRepetition)
 				{
-					intPoints += (Intellegence==EnmIntellegence.Human ? 1000000000: 0 );
+					intPoints += Intellegence==EnmIntellegence.Human ? 1000000000: 0;
 				}
 
 
@@ -1188,12 +1102,9 @@ TimeExpired:
 
 		}
 
-		public int Score
-		{
-			get { return Points - OtherPlayer.Points; }
-		}
+		public int Score => Points - OtherPlayer.Points;
 
-		public int SeePoints
+	    public int SeePoints
 		{
 			get	
 			{ 
@@ -1210,10 +1121,6 @@ TimeExpired:
 			}
 		}
 
-		public int SeeScore
-		{
-			get { return SeePoints - OtherPlayer.SeePoints; }
-		}
-
+		public int SeeScore => SeePoints - OtherPlayer.SeePoints;
 	}
 }

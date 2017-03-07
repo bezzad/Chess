@@ -9,35 +9,17 @@ namespace Chess.Core
 			_mBase = pieceBase;
 		}
 
-		public Piece Base
-		{
-			get { return _mBase; }
-		}
+		public Piece Base => _mBase;
 
-		public string Abbreviation
-		{
-			get {return "R";}
-		}
+	    public string Abbreviation => "R";
 
-		public Piece.EnmName Name
-		{
-			get {return Piece.EnmName.Rook;}
-		}
+	    public Piece.EnmName Name => Piece.EnmName.Rook;
 
-		public int BasicValue
-		{
-			get { return 5;	}
-		}
+	    public int BasicValue => 5;
 
-		public int Value
-		{
-			get
-			{
-				return 5000;// - ((m_Base.Player.PawnsInPlay-5) * 125);  // lower the rook's value by 1/8 for each pawn above five of the side being valued, with the opposite adjustment for each pawn short of five
-			}
-		}
+	    public int Value => 5000;
 
-		private static int[] _mAintSquareValues =
+	    private static int[] _mAintSquareValues =
 		{
 			10,10,10,10,10,10,10,10,    0,0,0,0,0,0,0,0,
 			10,20,20,20,20,20,20,10,    0,0,0,0,0,0,0,0,
@@ -112,20 +94,11 @@ namespace Chess.Core
 			}
 		}
 
-		public int ImageIndex
-		{
-			get { return (_mBase.Player.Colour==Player.EnmColour.White ? 3 : 2); }
-		}
-	
-		public bool CanBeTaken
-		{
-			get
-			{
-				return true;
-			}
-		}
+		public int ImageIndex => _mBase.Player.Colour==Player.EnmColour.White ? 3 : 2;
 
-		public void GenerateLazyMoves(Moves moves, Moves.EnmMovesType movesType)
+	    public bool CanBeTaken => true;
+
+	    public void GenerateLazyMoves(Moves moves, Moves.EnmMovesType movesType)
 		{
 			Board.AppendPiecePath(moves, _mBase, _mBase.Player,  1, movesType);
 			Board.AppendPiecePath(moves, _mBase, _mBase.Player, -1, movesType);

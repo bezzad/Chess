@@ -12,32 +12,17 @@ namespace Chess.Core
 		private static int _mIntCollisions;
 		private static int _mIntOverwrites;
 
-		public static int Probes
-		{
-			get {return _mIntProbes;}
-		}
+		public static int Probes => _mIntProbes;
 
-		public static int Hits
-		{
-			get {return _mIntHits;}
-		}
+	    public static int Hits => _mIntHits;
 
-		public static int Writes
-		{
-			get {return _mIntWrites;}
-		}
+	    public static int Writes => _mIntWrites;
 
-		public static int Collisions
-		{
-			get { return _mIntCollisions; }
-		}
+	    public static int Collisions => _mIntCollisions;
 
-		public static int Overwrites
-		{
-			get { return _mIntOverwrites; }
-		}
+	    public static int Overwrites => _mIntOverwrites;
 
-		public enum EnmHashType
+	    public enum EnmHashType
 		{
 				Exact
 			,	Alpha
@@ -114,7 +99,7 @@ namespace Chess.Core
 			fixed (HashEntry* phashBase = &MArrHashEntry[0])
 			{
 				var phashEntry = phashBase;
-				phashEntry += ((uint)(hashCodeA % HashTableSize));
+				phashEntry += (uint)(hashCodeA % HashTableSize);
 
 				var intAttempt = 0;
 				while (phashEntry>=phashBase && (phashEntry->HashCodeA!=hashCodeA || phashEntry->HashCodeB!=hashCodeB || phashEntry->Depth < depth) )
@@ -162,12 +147,10 @@ namespace Chess.Core
 			_mIntWrites++;
 			fixed (HashEntry* phashBase = &MArrHashEntry[0])
 			{
-				int intAttempt;
-				var phashEntry = phashBase;
-				phashEntry += ((uint)(hashCodeA % HashTableSize));
-				var phashFirst = phashEntry;
+			    var phashEntry = phashBase;
+				phashEntry += (uint)(hashCodeA % HashTableSize);
 
-				intAttempt = 0;
+			    var intAttempt = 0;
 				while (phashEntry>=phashBase && phashEntry->HashCodeA!=0 && phashEntry->Depth > depth)
 				{
 					phashEntry--;
@@ -227,7 +210,7 @@ namespace Chess.Core
 				var hashCodeB = Board.HashCodeB;
 
 				var phashEntry = phashBase;
-				phashEntry += ((uint)(hashCodeA % HashTableSize));
+				phashEntry += (uint)(hashCodeA % HashTableSize);
 				
 				var intAttempt = 0;
 				while (phashEntry>=phashBase && (phashEntry->HashCodeA!=hashCodeA || phashEntry->HashCodeB!=hashCodeB) )

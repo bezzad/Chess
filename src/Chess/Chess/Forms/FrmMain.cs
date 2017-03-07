@@ -50,7 +50,7 @@ namespace Chess.Forms
 
 			if (_mSquareLastFrom != null)
 			{
-				_mPicSquares[_mSquareLastFrom.File, _mSquareLastFrom.Rank].BackColor = (_mSquareLastFrom.Colour==Square.EnmColour.White ? _boardSquareColourWhite : _boardSquareColourBlack);
+				_mPicSquares[_mSquareLastFrom.File, _mSquareLastFrom.Rank].BackColor = _mSquareLastFrom.Colour==Square.EnmColour.White ? _boardSquareColourWhite : _boardSquareColourBlack;
 				_mPicSquares[_mSquareLastFrom.File, _mSquareLastFrom.Rank].Refresh();
 			}
 			if (Game.ShowThinking)
@@ -62,7 +62,7 @@ namespace Chess.Forms
 
 			if (_mSquareLastTo != null)
 			{
-				_mPicSquares[_mSquareLastTo.File, _mSquareLastTo.Rank].BackColor = (_mSquareLastTo.Colour==Square.EnmColour.White ? _boardSquareColourWhite : _boardSquareColourBlack);
+				_mPicSquares[_mSquareLastTo.File, _mSquareLastTo.Rank].BackColor = _mSquareLastTo.Colour==Square.EnmColour.White ? _boardSquareColourWhite : _boardSquareColourBlack;
 				_mPicSquares[_mSquareLastTo.File, _mSquareLastTo.Rank].Refresh();
 			}
 			if (Game.ShowThinking)
@@ -226,19 +226,17 @@ namespace Chess.Forms
 		{
 			var playerToPlay = Game.PlayerToPlay;
 
-			sbr.Text = (playerToPlay.SearchDepth==0) ? "" : 
-				(
-					"Ply: " + playerToPlay.SearchDepth.ToString() + "/" + playerToPlay.MaxSearchDepth.ToString() 
-					+ ". Move: " + playerToPlay.CurrentMoveNo.ToString() + " / " + playerToPlay.TotalMoves.ToString() 
-					+ ". Secs: " + ((int)(playerToPlay.ThinkingTimeRemaining.TotalSeconds)).ToString() + "/" + ((int)playerToPlay.ThinkingTimeAllotted.TotalSeconds).ToString() 
-					+ (!Game.ShowThinking ? "" : (". Best: " + ((playerToPlay.BestMove==null) ? "" : playerToPlay.BestMove.Piece.Name.ToString() + " " + playerToPlay.BestMove.From.Name+"-"+playerToPlay.BestMove.To.Name + " " + playerToPlay.BestMove.Description + " Score: " + playerToPlay.BestMove.Score)))
-					+ " Positions: " + playerToPlay.PositionsSearched + " MaxQDepth: " + playerToPlay.MaxQuiesDepth
-					+ " P:" + HashTable.Probes
-					+ " H:" + HashTable.Hits
-					+ " W:" + HashTable.Writes 
-					+ " C:" + HashTable.Collisions
-					+ " O:" + HashTable.Overwrites
-				);
+			sbr.Text = playerToPlay.SearchDepth==0 ? "" : 
+				"Ply: " + playerToPlay.SearchDepth.ToString() + "/" + playerToPlay.MaxSearchDepth.ToString() 
+				+ ". Move: " + playerToPlay.CurrentMoveNo.ToString() + " / " + playerToPlay.TotalMoves.ToString() 
+				+ ". Secs: " + ((int)playerToPlay.ThinkingTimeRemaining.TotalSeconds).ToString() + "/" + ((int)playerToPlay.ThinkingTimeAllotted.TotalSeconds).ToString() 
+				+ (!Game.ShowThinking ? "" : ". Best: " + (playerToPlay.BestMove==null ? "" : playerToPlay.BestMove.Piece.Name.ToString() + " " + playerToPlay.BestMove.From.Name+"-"+playerToPlay.BestMove.To.Name + " " + playerToPlay.BestMove.Description + " Score: " + playerToPlay.BestMove.Score))
+				+ " Positions: " + playerToPlay.PositionsSearched + " MaxQDepth: " + playerToPlay.MaxQuiesDepth
+				+ " P:" + HashTable.Probes
+				+ " H:" + HashTable.Hits
+				+ " W:" + HashTable.Writes 
+				+ " C:" + HashTable.Collisions
+				+ " O:" + HashTable.Overwrites;
 
 			pbr.Maximum = Math.Max(playerToPlay.TotalMoves, playerToPlay.CurrentMoveNo);
 			pbr.Value = playerToPlay.CurrentMoveNo;
@@ -251,13 +249,13 @@ namespace Chess.Forms
 			mnuNew.Enabled = !Game.PlayerToPlay.IsThinking;
 			mnuOpen.Enabled = !Game.PlayerToPlay.IsThinking;
 			mnuSave.Enabled = !Game.PlayerToPlay.IsThinking;
-			mnuUndoMove.Enabled = (!Game.PlayerToPlay.IsThinking && Game.MoveHistory.Count>0);
-			mnuRedoMove.Enabled = (!Game.PlayerToPlay.IsThinking && Game.MoveRedoList.Count>0);
+			mnuUndoMove.Enabled = !Game.PlayerToPlay.IsThinking && Game.MoveHistory.Count>0;
+			mnuRedoMove.Enabled = !Game.PlayerToPlay.IsThinking && Game.MoveRedoList.Count>0;
 			mnuUndoAllMoves.Enabled = mnuUndoMove.Enabled;
 			mnuRedoAllMoves.Enabled = mnuRedoMove.Enabled;
-			mnuForceComputerMove.Enabled = (!Game.PlayerToPlay.IsThinking && Game.PlayerToPlay.CanMove);
-			mnuResumePlay.Enabled = (!Game.PlayerToPlay.IsThinking && !Game.PlayerToPlay.Clock.IsTicking); 
-			mnuPausePlay.Enabled = (!Game.PlayerToPlay.IsThinking && Game.PlayerToPlay.Clock.IsTicking);
+			mnuForceComputerMove.Enabled = !Game.PlayerToPlay.IsThinking && Game.PlayerToPlay.CanMove;
+			mnuResumePlay.Enabled = !Game.PlayerToPlay.IsThinking && !Game.PlayerToPlay.Clock.IsTicking; 
+			mnuPausePlay.Enabled = !Game.PlayerToPlay.IsThinking && Game.PlayerToPlay.Clock.IsTicking;
 
 			tbrNew.Enabled = mnuNew.Enabled;
 			tbrOpen.Enabled = mnuOpen.Enabled;
@@ -285,7 +283,7 @@ namespace Chess.Forms
 			{
 				lblRank = new Label();
 				lblRank.BackColor = Color.Transparent;
-				lblRank.Font = new Font("Arial", 12F, FontStyle.Bold, GraphicsUnit.Point, ((Byte)(0)));
+				lblRank.Font = new Font("Arial", 12F, FontStyle.Bold, GraphicsUnit.Point, (Byte)0);
 				lblRank.Name = "lblRank" + intRank.ToString();
 				lblRank.Size = new Size(24, 48);
 				lblRank.TabIndex = 12;
@@ -303,14 +301,14 @@ namespace Chess.Forms
 
 				lblFile = new Label();
 				lblFile.BackColor = Color.Transparent;
-				lblFile.Font = new Font("Arial", 12F, FontStyle.Bold, GraphicsUnit.Point, ((Byte)(0)));
+				lblFile.Font = new Font("Arial", 12F, FontStyle.Bold, GraphicsUnit.Point, (Byte)0);
 				lblFile.Name = "lblFile" + intFile.ToString();
 				lblFile.Size = new Size(48, 24);
 				lblFile.TabIndex = 12;
 				lblFile.Text = Board.GetSquare(intFile, 0).FileName;
 				lblFile.TextAlign = ContentAlignment.MiddleCenter;
 				lblFile.Left = intFile*SquareSize + 30;
-				lblFile.Top = (Board.RankCount)*SquareSize + 24;
+				lblFile.Top = Board.RankCount*SquareSize + 24;
 				pnlMain.Controls.Add( lblFile );
 				
 			}

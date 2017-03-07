@@ -35,10 +35,10 @@ namespace Chess.Core
 			Board.EstablishHashKey();
 
 			var registryKeySoftware =Registry.CurrentUser.OpenSubKey("Software",true);
-			var registryKeyChess = registryKeySoftware.CreateSubKey(@"PeterHughes.org\Chess");
+			var registryKeyChess = registryKeySoftware?.CreateSubKey(@"PeterHughes.org\Chess");
 
-			_mBlnShowThinking = ((string)registryKeyChess.GetValue("ShowThinking")=="1");
-			_mBlnDisplayMoveAnalysisTree = ((string)registryKeyChess.GetValue("DisplayMoveAnalysisTree")=="1");
+			_mBlnShowThinking = (string)registryKeyChess?.GetValue("ShowThinking")=="1";
+			_mBlnDisplayMoveAnalysisTree = (string)registryKeyChess?.GetValue("DisplayMoveAnalysisTree")=="1";
 
 			PlayerToPlay.Clock.Start();
 		}
@@ -46,10 +46,10 @@ namespace Chess.Core
 		~Game()
 		{
 			var registryKeySoftware =Registry.CurrentUser.OpenSubKey("Software",true);
-			var registryKeyChess = registryKeySoftware.CreateSubKey(@"PeterHughes.org\Chess");
+			var registryKeyChess = registryKeySoftware?.CreateSubKey(@"PeterHughes.org\Chess");
 
-			registryKeyChess.SetValue("ShowThinking", _mBlnShowThinking ? "1" : "0");
-			registryKeyChess.SetValue("DisplayMoveAnalysisTree", _mBlnDisplayMoveAnalysisTree ? "1" : "0");
+			registryKeyChess?.SetValue("ShowThinking", _mBlnShowThinking ? "1" : "0");
+			registryKeyChess?.SetValue("DisplayMoveAnalysisTree", _mBlnDisplayMoveAnalysisTree ? "1" : "0");
 		}
 
 		public static void New()
@@ -76,33 +76,33 @@ namespace Chess.Core
 			New();
 			var xmldoc = new XmlDocument();
 			xmldoc.Load(strFileName);
-			XmlNodeList xmlnodelist;
-			xmlnodelist = xmldoc.SelectNodes("/Game/Move");
+		    var xmlnodelist = xmldoc.SelectNodes("/Game/Move");
 			var intTurnNo = 0;
-			TimeSpan tsnTimeStamp;
-			foreach (XmlElement xmlnode in xmlnodelist)
-			{
-				if (noOfTurns!=-1 && intTurnNo>noOfTurns) break;
-				MakeAMove( Move.MoveNameFromString(xmlnode.GetAttribute("Name")), Board.GetPiece(Convert.ToInt32(xmlnode.GetAttribute("FromFile")), Convert.ToInt32(xmlnode.GetAttribute("FromRank"))), Board.GetSquare(Convert.ToInt32(xmlnode.GetAttribute("ToFile")), Convert.ToInt32(xmlnode.GetAttribute("ToRank"))) );
-				if (xmlnode.GetAttribute("SecondsElapsed")=="")
-				{
-					if (MMovesHistory.Count<=2)
-					{
-						tsnTimeStamp = (new TimeSpan(0));
-					}
-					else
-					{
-						tsnTimeStamp = ( MMovesHistory.PenultimateForSameSide.TimeStamp + (new TimeSpan(0,0,30)) );
-					}
-				}
-				else
-				{
-					tsnTimeStamp = new TimeSpan(0,0, int.Parse(xmlnode.GetAttribute("SecondsElapsed")));
-				}
-				MMovesHistory.Last.TimeStamp = tsnTimeStamp;
-				MMovesHistory.Last.Piece.Player.Clock.TimeElapsed = tsnTimeStamp;
-				intTurnNo++;
-			}
+		    if (xmlnodelist != null)
+		        foreach (XmlElement xmlnode in xmlnodelist)
+		        {
+		            if (noOfTurns!=-1 && intTurnNo>noOfTurns) break;
+		            MakeAMove( Move.MoveNameFromString(xmlnode.GetAttribute("Name")), Board.GetPiece(Convert.ToInt32(xmlnode.GetAttribute("FromFile")), Convert.ToInt32(xmlnode.GetAttribute("FromRank"))), Board.GetSquare(Convert.ToInt32(xmlnode.GetAttribute("ToFile")), Convert.ToInt32(xmlnode.GetAttribute("ToRank"))) );
+		            TimeSpan tsnTimeStamp;
+		            if (xmlnode.GetAttribute("SecondsElapsed")=="")
+		            {
+		                if (MMovesHistory.Count<=2)
+		                {
+		                    tsnTimeStamp = new TimeSpan(0);
+		                }
+		                else
+		                {
+		                    tsnTimeStamp = MMovesHistory.PenultimateForSameSide.TimeStamp + new TimeSpan(0,0,30);
+		                }
+		            }
+		            else
+		            {
+		                tsnTimeStamp = new TimeSpan(0,0, int.Parse(xmlnode.GetAttribute("SecondsElapsed")));
+		            }
+		            MMovesHistory.Last.TimeStamp = tsnTimeStamp;
+		            MMovesHistory.Last.Piece.Player.Clock.TimeElapsed = tsnTimeStamp;
+		            intTurnNo++;
+		        }
 		}
 
 		public static void Save(string fileName)
@@ -122,7 +122,7 @@ namespace Chess.Core
 				xmlnodeMove.SetAttribute("FromFile", move.From.File.ToString());
 				xmlnodeMove.SetAttribute("ToRank", move.To.Rank.ToString());
 				xmlnodeMove.SetAttribute("ToFile", move.To.File.ToString());
-				xmlnodeMove.SetAttribute("SecondsElapsed", (Convert.ToInt32(move.TimeStamp.TotalSeconds)).ToString() );
+				xmlnodeMove.SetAttribute("SecondsElapsed", Convert.ToInt32(move.TimeStamp.TotalSeconds).ToString() );
 			}
 
 			xmldoc.Save(fileName);
@@ -145,22 +145,13 @@ namespace Chess.Core
 			}
 		}
 
-		public static string FileName
-		{
-			get { return _mStrFileName=="" ? "New Game" : _mStrFileName; }
-		} 
+		public static string FileName => _mStrFileName=="" ? "New Game" : _mStrFileName;
 
-		public static Moves MoveHistory
-		{
-			get { return MMovesHistory; }
-		} 
+	    public static Moves MoveHistory => MMovesHistory;
 
-		public static Moves MoveRedoList
-		{
-			get { return MMovesRedoList; }
-		} 
+	    public static Moves MoveRedoList => MMovesRedoList;
 
-		public static Moves MoveAnalysis
+	    public static Moves MoveAnalysis
 		{
 			get { return _mMovesAnalysis; }
 			set { _mMovesAnalysis = value; }
@@ -172,12 +163,9 @@ namespace Chess.Core
 			set { _mIntTurnNo = value; }
 		}
 
-		public static int MaxMaterialValue
-		{
-			get { return 7; }
-		}
+		public static int MaxMaterialValue => 7;
 
-		public static int LowestMaterialValue
+	    public static int LowestMaterialValue
 		{
 			get
 			{
@@ -203,17 +191,11 @@ namespace Chess.Core
 			}
 		}
 
-		public static Player PlayerWhite
-		{
-			get	{ return MPlayerWhite;	}
-		}
+		public static Player PlayerWhite => MPlayerWhite;
 
-		public static Player PlayerBlack
-		{
-			get	{ return MPlayerBlack;	}
-		}
+	    public static Player PlayerBlack => MPlayerBlack;
 
-		public static Player PlayerToPlay
+	    public static Player PlayerToPlay
 		{
 			get	{ return _mPlayerToPlay;	}
 			set	{ _mPlayerToPlay = value;	}

@@ -12,12 +12,9 @@ namespace Chess.Core
 			_mPlayer = player;
 		}
 
-		public Player Player
-		{
-			get { return _mPlayer; }
-		}
+		public Player Player => _mPlayer;
 
-		public IEnumerator GetEnumerator()
+	    public IEnumerator GetEnumerator()
 		{
 			return _mColPieces.GetEnumerator();
 		}
@@ -27,12 +24,9 @@ namespace Chess.Core
 			return (Piece)_mColPieces[intIndex];
 		}
 
-		public int Count
-		{
-			get { return _mColPieces.Count; }
-		}
+		public int Count => _mColPieces.Count;
 
-		public void Add(Piece piece)
+	    public void Add(Piece piece)
 		{
 			_mColPieces.Add(piece);
 		}

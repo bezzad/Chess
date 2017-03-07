@@ -9,35 +9,17 @@ namespace Chess.Core
 			_mBase = pieceBase;
 		}
 
-		public Piece Base
-		{
-			get { return _mBase; }
-		}
+		public Piece Base => _mBase;
 
-		public string Abbreviation
-		{
-			get {return "Q";}
-		}
+	    public string Abbreviation => "Q";
 
-		public Piece.EnmName Name
-		{
-			get {return Piece.EnmName.Queen;}
-		}
+	    public Piece.EnmName Name => Piece.EnmName.Queen;
 
-		public int BasicValue
-		{
-			get { return 9;	}
-		}
+	    public int BasicValue => 9;
 
-		public int Value
-		{
-			get
-			{
-				return 9750;
-			}
-		}
+	    public int Value => 9750;
 
-		public int PositionalValue
+	    public int PositionalValue
 		{
 			get
 			{
@@ -67,20 +49,11 @@ namespace Chess.Core
 			}
 		}
 
-		public int ImageIndex
-		{
-			get { return (_mBase.Player.Colour==Player.EnmColour.White ? 11 : 10); }
-		}
-	
-		public bool CanBeTaken
-		{
-			get
-			{
-				return true;
-			}
-		}
+		public int ImageIndex => _mBase.Player.Colour==Player.EnmColour.White ? 11 : 10;
 
-		public void GenerateLazyMoves(Moves moves, Moves.EnmMovesType movesType)
+	    public bool CanBeTaken => true;
+
+	    public void GenerateLazyMoves(Moves moves, Moves.EnmMovesType movesType)
 		{
 			Board.AppendPiecePath(moves, _mBase, _mBase.Player, 17, movesType);
 			Board.AppendPiecePath(moves, _mBase, _mBase.Player, 15, movesType);

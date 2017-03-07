@@ -143,51 +143,21 @@ namespace Chess.Core
 
 		}
 
-		public int Value
-		{
-			get
-			{
-				return MAintSquareValues[Ordinal];
-			}
-		}
+		public int Value => MAintSquareValues[Ordinal];
 
-		public EnmColour Colour
-		{
-			get { return _mColour; }
-		}
-	
-		public int File
-		{
-			get { return _mIntFile; }
-		}
+	    public EnmColour Colour => _mColour;
 
-		public int Rank
-		{
-			get { return _mIntRank; }
-		}
+	    public int File => _mIntFile;
 
-		public int Ordinal
-		{
-			get { return _mIntOrdinal; }
-		}
+	    public int Rank => _mIntRank;
 
-		public ulong HashCodeA
-		{
-			get
-			{
-				return Piece==null ? 0UL : Piece.HashCodeAForSquareOrdinal(Ordinal) ;
-			}
-		}
+	    public int Ordinal => _mIntOrdinal;
 
-		public ulong HashCodeB
-		{
-			get
-			{
-				return Piece==null ? 0UL : Piece.HashCodeBForSquareOrdinal(Ordinal) ;
-			}
-		}
+	    public ulong HashCodeA => Piece==null ? 0UL : Piece.HashCodeAForSquareOrdinal(Ordinal);
 
-		public string FileName
+	    public ulong HashCodeB => Piece==null ? 0UL : Piece.HashCodeBForSquareOrdinal(Ordinal);
+
+	    public string FileName
 		{
 			get
 			{
@@ -196,23 +166,11 @@ namespace Chess.Core
 			}
 		}
 
-		public string RankName
-		{
-			get
-			{
-				return (_mIntRank+1).ToString();
-			}
-		}
+		public string RankName => (_mIntRank+1).ToString();
 
-		public string Name
-		{
-			get
-			{
-				return FileName + RankName;
-			}
-		}
+	    public string Name => FileName + RankName;
 
-		public Piece Piece
+	    public Piece Piece
 		{
 			get	{ return _mPiece; }
 			set {  _mPiece = value; }
