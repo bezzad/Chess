@@ -1,0 +1,160 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{1715B5F2-5C78-49D7-B291-F92E30C41C35}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Chess</RootNamespace>
+    <AssemblyName>Chess</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>App.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Core\Board.cs" />
+    <Compile Include="Core\Game.cs" />
+    <Compile Include="Core\HashTable.cs" />
+    <Compile Include="Core\HashTableCheck.cs" />
+    <Compile Include="Core\HashTablePawn.cs" />
+    <Compile Include="Core\History.cs" />
+    <Compile Include="Core\IPieceTop.cs" />
+    <Compile Include="Core\Move.cs" />
+    <Compile Include="Core\Moves.cs" />
+    <Compile Include="Core\Piece.cs" />
+    <Compile Include="Core\PieceBishop.cs" />
+    <Compile Include="Core\PieceKing.cs" />
+    <Compile Include="Core\PieceKnight.cs" />
+    <Compile Include="Core\PiecePawn.cs" />
+    <Compile Include="Core\PieceQueen.cs" />
+    <Compile Include="Core\PieceRook.cs" />
+    <Compile Include="Core\Pieces.cs" />
+    <Compile Include="Core\Player.cs" />
+    <Compile Include="Core\PlayerBlack.cs" />
+    <Compile Include="Core\PlayerWhite.cs" />
+    <Compile Include="Core\Square.cs" />
+    <Compile Include="Core\Squares.cs" />
+    <Compile Include="Forms\FrmAbout.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmOptions.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmTest.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmTest.Designer.cs">
+      <DependentUpon>FrmTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App.ico" />
+    <Content Include="Data\Chess.xml" />
+    <Content Include="Data\classdiagram.jpg" />
+    <Content Include="Images\PieceGraphics\Bishop_Black.gif" />
+    <Content Include="Images\PieceGraphics\Bishop_White.gif" />
+    <Content Include="Images\PieceGraphics\King_Black.gif" />
+    <Content Include="Images\PieceGraphics\King_White.gif" />
+    <Content Include="Images\PieceGraphics\Knight_Black.gif" />
+    <Content Include="Images\PieceGraphics\Knight_White.gif" />
+    <Content Include="Images\PieceGraphics\Pawn_Black.gif" />
+    <Content Include="Images\PieceGraphics\Pawn_White.gif" />
+    <Content Include="Images\PieceGraphics\Queen_Black.gif" />
+    <Content Include="Images\PieceGraphics\Queen_White.gif" />
+    <Content Include="Images\PieceGraphics\Rook_Black.gif" />
+    <Content Include="Images\PieceGraphics\Rook_White.gif" />
+    <Content Include="Images\ToolbarGraphics\Computer.gif" />
+    <Content Include="Images\ToolbarGraphics\Knight.gif" />
+    <Content Include="Images\ToolbarGraphics\New.gif" />
+    <Content Include="Images\ToolbarGraphics\Open.gif" />
+    <Content Include="Images\ToolbarGraphics\Pause.gif" />
+    <Content Include="Images\ToolbarGraphics\Play.gif" />
+    <Content Include="Images\ToolbarGraphics\Redo.gif" />
+    <Content Include="Images\ToolbarGraphics\RedoAll.gif" />
+    <Content Include="Images\ToolbarGraphics\Save.gif" />
+    <Content Include="Images\ToolbarGraphics\Undo.gif" />
+    <Content Include="Images\ToolbarGraphics\UndoAll.gif" />
+    <Content Include="Properties\AutoVersionUpdater.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>AutoVersionUpdater.txt</LastGenOutput>
+    </Content>
+    <Content Include="Properties\AutoVersionUpdater.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AutoVersionUpdater.tt</DependentUpon>
+    </Content>
+    <Content Include="SharpChessLogo.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Forms\FrmAbout.resx" />
+    <EmbeddedResource Include="Forms\FrmMain.resx" />
+    <EmbeddedResource Include="Forms\FrmOptions.resx" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\Clarius.TransformOnBuild-unofficial.1.20\build\Clarius.TransformOnBuild-unofficial.targets" Condition="Exists('..\packages\Clarius.TransformOnBuild-unofficial.1.20\build\Clarius.TransformOnBuild-unofficial.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Clarius.TransformOnBuild-unofficial.1.20\build\Clarius.TransformOnBuild-unofficial.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Clarius.TransformOnBuild-unofficial.1.20\build\Clarius.TransformOnBuild-unofficial.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
