@@ -2,8 +2,6 @@ namespace Chess.Core
 {
 	public class PieceKing: IPieceTop
 	{
-	    private static int[] _checkValues = { 0, 60, 180, 360, 500};
-
 	    public PieceKing(Piece pieceBase)
 		{
 			Base = pieceBase;

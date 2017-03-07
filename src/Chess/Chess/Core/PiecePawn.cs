@@ -92,8 +92,8 @@ namespace Chess.Core
 
 				// Backward pawn
 				var blnIsBackward = true;
-				if ( blnIsBackward && (piece = Board.GetPiece(Base.Square.Ordinal-1                                       ))!=null && piece.Name==Piece.EnmName.Pawn && piece.Player.Colour==Base.Player.Colour) blnIsBackward = false;
-				if ( blnIsBackward && (piece = Board.GetPiece(Base.Square.Ordinal+1                                       ))!=null && piece.Name==Piece.EnmName.Pawn && piece.Player.Colour==Base.Player.Colour) blnIsBackward = false;
+				if ( blnIsBackward && (piece = Board.GetPiece(Base.Square.Ordinal-1))!=null && piece.Name==Piece.EnmName.Pawn && piece.Player.Colour==Base.Player.Colour) blnIsBackward = false;
+				if ( blnIsBackward && (piece = Board.GetPiece(Base.Square.Ordinal+1))!=null && piece.Name==Piece.EnmName.Pawn && piece.Player.Colour==Base.Player.Colour) blnIsBackward = false;
 				if ( blnIsBackward && (piece = Board.GetPiece(Base.Square.Ordinal-Base.Player.PawnAttackLeftOffset ))!=null && piece.Name==Piece.EnmName.Pawn && piece.Player.Colour==Base.Player.Colour) blnIsBackward = false;
 				if ( blnIsBackward && (piece = Board.GetPiece(Base.Square.Ordinal-Base.Player.PawnAttackRightOffset))!=null && piece.Name==Piece.EnmName.Pawn && piece.Player.Colour==Base.Player.Colour) blnIsBackward = false;
 				if (blnIsBackward)

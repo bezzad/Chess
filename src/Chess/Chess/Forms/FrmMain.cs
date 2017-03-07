@@ -24,7 +24,6 @@ namespace Chess.Forms
 
 	    private Square _mSquareFrom;
 	    private Moves _mMovesPossible = new Moves();
-		private Game _mGame;
 	    private PictureBox[,] _mPicSquares;
 	    private PictureBox[] _mPicWhitesCaptures;
 	    private PictureBox[] _mPicBlacksCaptures;
@@ -79,7 +78,7 @@ namespace Chess.Forms
 
 		private void frmMain_Load(object sender, EventArgs e)
 		{
-			_mGame = new Game();
+			new Game();
 
 			Game.PlayerWhite.MoveConsidered += new DelegateGameEvent(MoveConsidered);
 			Game.PlayerBlack.MoveConsidered += new DelegateGameEvent(MoveConsidered);

@@ -197,10 +197,8 @@ namespace Chess.Core
 	
 		public void AttackerMoveList(Moves moves, Player player)
 		{
-			Piece piece;
-
-			// Pawns
-			piece = Board.GetPiece( Ordinal-player.PawnAttackLeftOffset ); if (piece!=null && piece.Name==Piece.EnmName.Pawn && piece.Player.Colour==player.Colour) moves.Add(0, 0, Move.EnmName.Standard, Board.GetPiece(Ordinal-player.PawnAttackLeftOffset), Board.GetSquare(Ordinal-player.PawnAttackLeftOffset), this, Piece, 0, 0);
+		    // Pawns
+			var piece = Board.GetPiece( Ordinal-player.PawnAttackLeftOffset ); if (piece!=null && piece.Name==Piece.EnmName.Pawn && piece.Player.Colour==player.Colour) moves.Add(0, 0, Move.EnmName.Standard, Board.GetPiece(Ordinal-player.PawnAttackLeftOffset), Board.GetSquare(Ordinal-player.PawnAttackLeftOffset), this, Piece, 0, 0);
 			piece = Board.GetPiece( Ordinal-player.PawnAttackRightOffset ); if (piece!=null && piece.Name==Piece.EnmName.Pawn && piece.Player.Colour==player.Colour) moves.Add(0, 0, Move.EnmName.Standard, Board.GetPiece(Ordinal-player.PawnAttackRightOffset), Board.GetSquare(Ordinal-player.PawnAttackRightOffset), this, Piece, 0, 0);
 
 			// Knights
@@ -245,12 +243,10 @@ namespace Chess.Core
 
 		public int DefencePointsFor(Player player)
 		{
-			Piece piece;
-			var value = 0;
-			var bestValue = 0;
+		    var bestValue = 0;
 
 			// Pawn
-			piece = Board.GetPiece( Ordinal-player.PawnAttackLeftOffset ); if (piece!=null && piece.Name==Piece.EnmName.Pawn && piece.Player.Colour==player.Colour) return piece.Value;
+			var piece = Board.GetPiece( Ordinal-player.PawnAttackLeftOffset ); if (piece!=null && piece.Name==Piece.EnmName.Pawn && piece.Player.Colour==player.Colour) return piece.Value;
 			piece = Board.GetPiece( Ordinal-player.PawnAttackRightOffset ); if (piece!=null && piece.Name==Piece.EnmName.Pawn && piece.Player.Colour==player.Colour) return piece.Value;
 				
 			// Knight
@@ -264,7 +260,7 @@ namespace Chess.Core
 			piece = Board.GetPiece( Ordinal+31 ); if (piece!=null && piece.Name==Piece.EnmName.Knight && piece.Player.Colour==player.Colour) return piece.Value;
 
 			// Bishop & Queen
-			piece = Board.LinesFirstPiece(player.Colour, Piece.EnmName.Bishop, this, 15); value = piece!=null ? piece.Value : 0; if (value>0 && value <9000 ) return value; if (value>0) bestValue=value;
+			piece = Board.LinesFirstPiece(player.Colour, Piece.EnmName.Bishop, this, 15); var value = piece!=null ? piece.Value : 0; if (value>0 && value <9000 ) return value; if (value>0) bestValue=value;
 			piece = Board.LinesFirstPiece(player.Colour, Piece.EnmName.Bishop, this, 17); value = piece!=null ? piece.Value : 0; if (value>0 && value <9000 ) return value; if (value>0) bestValue=value;
 			piece = Board.LinesFirstPiece(player.Colour, Piece.EnmName.Bishop, this, -15); value = piece!=null ? piece.Value : 0; if (value>0 && value <9000 ) return value; if (value>0) bestValue=value;
 			piece = Board.LinesFirstPiece(player.Colour, Piece.EnmName.Bishop, this, -17); value = piece!=null ? piece.Value : 0; if (value>0 && value <9000 ) return value; if (value>0) bestValue=value;
@@ -292,11 +288,10 @@ namespace Chess.Core
 
 		public Piece DefencedBy(Player player)
 		{
-			Piece piece;
-			Piece pieceBest = null;
+		    Piece pieceBest = null;
 
 			// Pawn
-			piece = Board.GetPiece( Ordinal-player.PawnAttackLeftOffset ); if (piece!=null && piece.Name==Piece.EnmName.Pawn && piece.Player.Colour==player.Colour) return piece;
+			var piece = Board.GetPiece( Ordinal-player.PawnAttackLeftOffset ); if (piece!=null && piece.Name==Piece.EnmName.Pawn && piece.Player.Colour==player.Colour) return piece;
 			piece = Board.GetPiece( Ordinal-player.PawnAttackRightOffset ); if (piece!=null && piece.Name==Piece.EnmName.Pawn && piece.Player.Colour==player.Colour) return piece;
 				
 			// Knight
