@@ -8,10 +8,10 @@ namespace Chess.Core
 		public const byte FileCount = 8;
 		public const byte MatrixWidth = 16;
 		public const byte SquareCount = 128;
-		public static ulong HashCodeA = 0;
-		public static ulong HashCodeB = 0;
-		public static ulong PawnHashCodeA = 0;
-		public static ulong PawnHashCodeB = 0;
+		public static ulong HashCodeA;
+		public static ulong HashCodeB;
+		public static ulong PawnHashCodeA;
+		public static ulong PawnHashCodeB;
 
 	    private static readonly Square[] MArrSquare = new Square[RankCount * MatrixWidth];
 

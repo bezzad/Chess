@@ -4,7 +4,7 @@ namespace Chess.Core
 {
 	public class Moves: IEnumerable
 	{
-		private readonly Piece _mPieceParent = null;
+		private readonly Piece _mPieceParent;
 		private readonly ArrayList _mColMoves = new ArrayList(48);
 
 		public enum EnmMovesType

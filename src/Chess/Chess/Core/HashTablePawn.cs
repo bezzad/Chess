@@ -2,11 +2,11 @@ namespace Chess.Core
 {
 	public class HashTablePawn
 	{
-		private static int _mIntProbes = 0;
-		private static int _mIntHits = 0;
-		private static int _mIntWrites = 0;
-		private static int _mIntCollisions = 0;
-		private static int _mIntOverwrites = 0;
+		private static int _mIntProbes;
+		private static int _mIntHits;
+		private static int _mIntWrites;
+		private static int _mIntCollisions;
+		private static int _mIntOverwrites;
 
 		public static int Probes
 		{

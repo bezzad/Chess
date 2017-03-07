@@ -2,7 +2,7 @@ namespace Chess.Core
 {
 	public class PieceBishop: IPieceTop
 	{
-	    private readonly Piece _mBase = null;
+	    private readonly Piece _mBase;
 
 		public PieceBishop(Piece pieceBase)
 		{

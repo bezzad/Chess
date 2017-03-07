@@ -53,11 +53,11 @@ namespace Chess.Core
 		private IPieceTop _mTop;
 		private Square _mSquare;
 		private readonly Player _mPlayer;
-		private int _mLastMoveTurnNo = 0;
-		private int _mNoOfMoves = 0;
-		private bool _mHasBeenPromoted = false;
+		private int _mLastMoveTurnNo;
+		private int _mNoOfMoves;
+		private bool _mHasBeenPromoted;
 		private bool _mIsInPlay = true;
-		private int _mPoints = 0;
+		private int _mPoints;
 		private readonly EnmId _mId;
 
 		public Piece Base

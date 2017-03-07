@@ -18,14 +18,14 @@ namespace Chess.Core
 		private static readonly Player MPlayerWhite;
 		private static readonly Player MPlayerBlack;
 		private static Player _mPlayerToPlay;
-		private static int _mIntTurnNo = 0;
+		private static int _mIntTurnNo;
 		private static readonly Moves MMovesHistory = new Moves();
 		private static readonly Moves MMovesRedoList = new Moves();
 		private static Moves _mMovesAnalysis = new Moves();
 		private static string _mStrFileName = "";
 
-		private static bool _mBlnShowThinking = false;
-		private static bool _mBlnDisplayMoveAnalysisTree = false;
+		private static bool _mBlnShowThinking;
+		private static bool _mBlnDisplayMoveAnalysisTree;
 
 		static Game()
 		{

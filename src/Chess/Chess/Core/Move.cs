@@ -29,8 +29,8 @@ namespace Chess.Core
 		private int _mBeta;
 		private ulong _mHashCodeA;
 		private ulong _mHashCodeB;
-		private bool _mIsInCheck = false;
-		private bool _mIsEnemyInCheck = false;
+		private bool _mIsInCheck;
+		private bool _mIsEnemyInCheck;
 		private Player.EnmStatus _mEnemyStatus = Player.EnmStatus.Normal;
 		private TimeSpan _mTsnTimeStamp;
 

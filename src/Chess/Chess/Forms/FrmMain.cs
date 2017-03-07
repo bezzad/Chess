@@ -22,14 +22,14 @@ namespace Chess.Forms
 		private readonly Color _boardSquareColourWhite = Color.FromArgb(229,197,105);
 		private readonly Color _boardSquareColourBlack = Color.FromArgb(189,117,53);
 
-	    private Square _mSquareFrom = null;
+	    private Square _mSquareFrom;
 	    private Moves _mMovesPossible = new Moves();
 		private Game _mGame;
 	    private PictureBox[,] _mPicSquares;
 	    private PictureBox[] _mPicWhitesCaptures;
 	    private PictureBox[] _mPicBlacksCaptures;
-	    private Square _mSquareLastFrom = null;
-	    private Square _mSquareLastTo = null;
+	    private Square _mSquareLastFrom;
+	    private Square _mSquareLastTo;
 
         public FrmMain()
 		{

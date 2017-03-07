@@ -4,7 +4,7 @@ namespace Chess.Core
 	{
 	    private static int[] _checkValues = { 0, 60, 180, 360, 500};
 
-	    private readonly Piece _mBase = null;
+	    private readonly Piece _mBase;
 
 		public PieceKing(Piece pieceBase)
 		{

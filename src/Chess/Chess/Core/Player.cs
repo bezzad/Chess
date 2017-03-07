@@ -28,9 +28,9 @@ namespace Chess.Core
 		public event DelegateGameEvent MoveConsidered;
 		private const int MinScore = int.MinValue+1;
 		private const int MaxScore = int.MaxValue;
-		private Move _mMoveCurrent = null;
-		private Move _mMoveBest = null;
-		private bool _mBlnHasCastled = false;
+		private Move _mMoveCurrent;
+		private Move _mMoveBest;
+		private bool _mBlnHasCastled;
 		protected EnmColour MColour;
 		protected Piece MKing;
 		protected Piece MQueen;
@@ -48,12 +48,12 @@ namespace Chess.Core
 		protected Pieces MColCapturedEnemyPieces;
 		protected int MNoOfPawnsInPlay = 8;
 		protected int MMaterialCount = 7;
-		protected int MIntTotalMoves = 0;
-		protected int MIntCurrentMoveNo = 0;
-		protected int MIntEvaluations = 0;
-		protected int MIntPositionsSearched = 0;
-		protected bool MBlnIsThinking = false;
-		private int _mIntSearchDepth = 0;
+		protected int MIntTotalMoves;
+		protected int MIntCurrentMoveNo;
+		protected int MIntEvaluations;
+		protected int MIntPositionsSearched;
+		protected bool MBlnIsThinking;
+		private int _mIntSearchDepth;
 
 		private const int MIntGameMoves = 120;
 
@@ -62,7 +62,7 @@ namespace Chess.Core
 		private TimeSpan _mTsnThinkingTimeHalved;
 
 		public EnmIntellegence Intellegence;
-		private int _mIntMaxQDepth = 0;
+		private int _mIntMaxQDepth;
 		
 		private const int MIntMinSearchDepth = 1;
 		private const int MIntMaxSearchDepth = 32;
@@ -79,7 +79,7 @@ namespace Chess.Core
 			private readonly TimeSpan _mTsnTimeLimit = new TimeSpan(0,60,0);
 			private TimeSpan _mTsnTimeElapsed;
 			private DateTime _mDtmTurnStart;
-			private bool _mBlnIsTicking = false;
+			private bool _mBlnIsTicking;
 		    private Player _mPlayer;
 
 			public PlayerClock(Player player)
