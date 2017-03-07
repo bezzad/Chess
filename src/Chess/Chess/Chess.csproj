@@ -83,14 +83,11 @@
     <Compile Include="Forms\FrmMain.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Forms\FrmMain.Designer.cs">
+      <DependentUpon>FrmMain.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\FrmOptions.cs">
       <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\FrmTest.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\FrmTest.Designer.cs">
-      <DependentUpon>FrmTest.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -154,9 +151,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FrmOptions.resx">
       <DependentUpon>FrmOptions.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FrmTest.resx">
-      <DependentUpon>FrmTest.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
