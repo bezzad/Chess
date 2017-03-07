@@ -4,43 +4,43 @@ namespace Chess.Core
 {
 	public class Board
 	{
-		public const byte RANK_COUNT = 8;
-		public const byte FILE_COUNT = 8;
-		public const byte MATRIX_WIDTH = 16;
-		public const byte SQUARE_COUNT = 128;
+		public const byte RankCount = 8;
+		public const byte FileCount = 8;
+		public const byte MatrixWidth = 16;
+		public const byte SquareCount = 128;
 		public static ulong HashCodeA = 0;
 		public static ulong HashCodeB = 0;
 		public static ulong PawnHashCodeA = 0;
 		public static ulong PawnHashCodeB = 0;
 
-		static Square[] m_arrSquare = new Square[RANK_COUNT * MATRIX_WIDTH];
+	    private static Square[] _mArrSquare = new Square[RankCount * MatrixWidth];
 
 		static Board()
 		{
-			for (int intOrdinal=0; intOrdinal<SQUARE_COUNT; intOrdinal++)
+			for (int intOrdinal=0; intOrdinal<SquareCount; intOrdinal++)
 			{
-				m_arrSquare[intOrdinal] = new Square(intOrdinal);
+				_mArrSquare[intOrdinal] = new Square(intOrdinal);
 			}
 		}
 
-		public static Square GetSquare(int Ordinal)
+		public static Square GetSquare(int ordinal)
 		{
-			return (Ordinal & 0x88) == 0 ? m_arrSquare[Ordinal] : null;
+			return (ordinal & 0x88) == 0 ? _mArrSquare[ordinal] : null;
 		}
 
-		public static Square GetSquare(int File, int Rank)
+		public static Square GetSquare(int file, int rank)
 		{
-			return (OrdinalFromFileRank(File, Rank) & 0x88) == 0 ? m_arrSquare[OrdinalFromFileRank(File, Rank)] : null;
+			return (OrdinalFromFileRank(file, rank) & 0x88) == 0 ? _mArrSquare[OrdinalFromFileRank(file, rank)] : null;
 		}
 
-		public static Square GetSquare(string Label)
+		public static Square GetSquare(string label)
 		{
-			return m_arrSquare[ OrdinalFromFileRank( FileFromName(Label.Substring(0,1)), int.Parse(Label.Substring(1,1))-1 ) ] ;
+			return _mArrSquare[ OrdinalFromFileRank( FileFromName(label.Substring(0,1)), int.Parse(label.Substring(1,1))-1 ) ] ;
 		}
 
-		private static int FileFromName(string FileName)
+		private static int FileFromName(string fileName)
 		{
-			switch (FileName)
+			switch (fileName)
 			{
 				case "a":
 					return 0;
@@ -62,27 +62,27 @@ namespace Chess.Core
 			return -1;
 		}
 
-		public static Piece GetPiece(int Ordinal)
+		public static Piece GetPiece(int ordinal)
 		{
-			return (Ordinal & 0x88) == 0 ? m_arrSquare[Ordinal].Piece : null;
+			return (ordinal & 0x88) == 0 ? _mArrSquare[ordinal].Piece : null;
 		}
 
-		public static Piece GetPiece(int File, int Rank)
+		public static Piece GetPiece(int file, int rank)
 		{
-			return (OrdinalFromFileRank(File, Rank) & 0x88) == 0 ? m_arrSquare[OrdinalFromFileRank(File, Rank)].Piece : null;
+			return (OrdinalFromFileRank(file, rank) & 0x88) == 0 ? _mArrSquare[OrdinalFromFileRank(file, rank)].Piece : null;
 		}
 
-		private static int OrdinalFromFileRank(int File, int Rank)
+		private static int OrdinalFromFileRank(int file, int rank)
 		{
-			return (Rank << 4) | File;
+			return (rank << 4) | file;
 		}
 
-		public static void LineThreatenedBy(Player player, Squares squares, Square squareStart, int Offset)
+		public static void LineThreatenedBy(Player player, Squares squares, Square squareStart, int offset)
 		{
 			int intOrdinal = squareStart.Ordinal;
 			Square square;
 
-			intOrdinal += Offset;
+			intOrdinal += offset;
 			while ( (square = Board.GetSquare(intOrdinal))!=null )
 			{
 
@@ -99,45 +99,45 @@ namespace Chess.Core
 				{
 					break;
 				}
-				intOrdinal += Offset;
+				intOrdinal += offset;
 			}				
 		}
 
-		public static void AppendPiecePath(Moves moves, Piece piece, Player player, int Offset, Moves.enmMovesType movesType)
+		public static void AppendPiecePath(Moves moves, Piece piece, Player player, int offset, Moves.EnmMovesType movesType)
 		{
 			int intOrdinal = piece.Square.Ordinal;
 			Square square;
 
-			intOrdinal += Offset;
+			intOrdinal += offset;
 			while ( (square = Board.GetSquare(intOrdinal))!=null )
 			{
 
 				if ( square.Piece==null )
 				{
-					if (movesType==Moves.enmMovesType.All)
+					if (movesType==Moves.EnmMovesType.All)
 					{
-						moves.Add(0, 0, Move.enmName.Standard, piece, piece.Square, square, null, 0, 0);
+						moves.Add(0, 0, Move.EnmName.Standard, piece, piece.Square, square, null, 0, 0);
 					}
 				}
 				else if ( square.Piece.Player.Colour!=player.Colour && square.Piece.CanBeTaken )
 				{
-					moves.Add(0, 0, Move.enmName.Standard, piece, piece.Square, square, square.Piece, 0, 0);
+					moves.Add(0, 0, Move.EnmName.Standard, piece, piece.Square, square, square.Piece, 0, 0);
 					break;
 				}
 				else
 				{
 					break;
 				}
-				intOrdinal += Offset;
+				intOrdinal += offset;
 			}				
 		}
 
-		public static Piece LinesFirstPiece(Player.enmColour colour, Piece.enmName PieceName, Square squareStart, int Offset)
+		public static Piece LinesFirstPiece(Player.EnmColour colour, Piece.EnmName pieceName, Square squareStart, int offset)
 		{
 			int intOrdinal = squareStart.Ordinal;
 			Square square;
 
-			intOrdinal += Offset;
+			intOrdinal += offset;
 			while ( (square = Board.GetSquare(intOrdinal))!=null )
 			{
 
@@ -148,7 +148,7 @@ namespace Chess.Core
 				{
 					return null;
 				}
-				else if ( square.Piece.Name==PieceName || square.Piece.Name==Piece.enmName.Queen )
+				else if ( square.Piece.Name==pieceName || square.Piece.Name==Piece.EnmName.Queen )
 				{
 					return square.Piece;
 				}
@@ -156,25 +156,25 @@ namespace Chess.Core
 				{
 					return null;
 				}
-				intOrdinal += Offset;
+				intOrdinal += offset;
 			}
 			return null;
 		}
 
-		public static int LineIsOpen(Player.enmColour colour, Square squareStart, int Offset)
+		public static int LineIsOpen(Player.EnmColour colour, Square squareStart, int offset)
 		{
 			int intOrdinal = squareStart.Ordinal;
 			int intSquareCount = 0;
 			int intPenalty = 0;
 			Square square;
 
-			intOrdinal += Offset;
+			intOrdinal += offset;
 			 
-			while ( intSquareCount<=2 && ((square = Board.GetSquare(intOrdinal))!=null && (square.Piece==null || (square.Piece.Name!=Piece.enmName.Pawn && square.Piece.Name!=Piece.enmName.Rook) || square.Piece.Player.Colour!=colour)))
+			while ( intSquareCount<=2 && ((square = Board.GetSquare(intOrdinal))!=null && (square.Piece==null || (square.Piece.Name!=Piece.EnmName.Pawn && square.Piece.Name!=Piece.EnmName.Rook) || square.Piece.Player.Colour!=colour)))
 			{
 				intPenalty += 75;
 				intSquareCount++;
-				intOrdinal += Offset;
+				intOrdinal += offset;
 			}
 			return intPenalty;
 		}
@@ -186,14 +186,14 @@ namespace Chess.Core
 			HashCodeB = 0UL;
 			PawnHashCodeA = 0UL;
 			PawnHashCodeB = 0UL;
-			for (int intOrdinal=0; intOrdinal<SQUARE_COUNT; intOrdinal++)
+			for (int intOrdinal=0; intOrdinal<SquareCount; intOrdinal++)
 			{
 				piece = Board.GetPiece(intOrdinal);
 				if (piece!=null)
 				{
 					HashCodeA ^= piece.HashCodeAForSquareOrdinal(intOrdinal);
 					HashCodeB ^= piece.HashCodeBForSquareOrdinal(intOrdinal);
-					if (piece.Name==Piece.enmName.Pawn)
+					if (piece.Name==Piece.EnmName.Pawn)
 					{
 						PawnHashCodeA ^= piece.HashCodeAForSquareOrdinal(intOrdinal);
 						PawnHashCodeB ^= piece.HashCodeBForSquareOrdinal(intOrdinal);
@@ -210,11 +210,11 @@ namespace Chess.Core
 				Square square;
 				Piece piece;
 				string strOutput = "";
-				int intOrdinal = Board.SQUARE_COUNT-1;
+				int intOrdinal = Board.SquareCount-1;
 
-				for (int intRank=0; intRank<Board.RANK_COUNT; intRank++)
+				for (int intRank=0; intRank<Board.RankCount; intRank++)
 				{
-					for (int intFile=0; intFile<Board.FILE_COUNT; intFile++)
+					for (int intFile=0; intFile<Board.FileCount; intFile++)
 					{
 						square = Board.GetSquare(intOrdinal);
 						if (square!=null)
@@ -225,7 +225,7 @@ namespace Chess.Core
 							}
 							else
 							{
-								strOutput += (square.Colour==Square.enmColour.White ? "." : "#");
+								strOutput += (square.Colour==Square.EnmColour.White ? "." : "#");
 							}
 						}
 						strOutput += Convert.ToChar(13) + Convert.ToChar(10);

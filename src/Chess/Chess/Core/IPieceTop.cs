@@ -12,7 +12,7 @@ namespace Chess.Core
 			get;
 		}
 
-		Piece.enmName Name
+		Piece.EnmName Name
 		{
 			get;
 		}
@@ -43,6 +43,6 @@ namespace Chess.Core
 		}
 
 
-		void GenerateLazyMoves(Moves moves, Moves.enmMovesType movesType);
+		void GenerateLazyMoves(Moves moves, Moves.EnmMovesType movesType);
 	}
 }

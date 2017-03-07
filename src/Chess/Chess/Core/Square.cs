@@ -4,7 +4,7 @@ namespace Chess.Core
 {
 	public class Square
 	{
-		static int[] m_aintVectors =
+	    private static int[] _mAintVectors =
 		{
 			0,  0,  0,  0,  0,  0,  0,  0,   -15,-17,  0,  0,  0,  0,  0,  0,
 			-16,  0,  0,  0,  0,  0,  0,-15,     0,  0,-17,  0,  0,  0,  0,  0,
@@ -25,7 +25,7 @@ namespace Chess.Core
 			0,  0,  0,  0,  0,  0, 17, 15 ,    0,  0,  0,  0,  0,  0,  0,  0
 		};
 
-		static char[] m_aintMinorAttackers =
+	    private static char[] _mAintMinorAttackers =
 		{
 			'.','.','.','.','.','.','.','.',   'B','B','.','.','.','.','.','.',
 			'R','.','.','.','.','.','.','B',   '.','.','B','.','.','.','.','.',
@@ -46,7 +46,7 @@ namespace Chess.Core
 			'.','.','.','.','.','.','B','B' ,  '.','.','.','.','.','.','.','.'
 		};
 
-		static char[] m_aintQueenAttackers =
+	    private static char[] _mAintQueenAttackers =
 		{
 			'.','.','.','.','.','.','.','.',   'Q','Q','.','.','.','.','.','.',
 			'Q','.','.','.','.','.','.','Q',   '.','.','Q','.','.','.','.','.',
@@ -67,7 +67,7 @@ namespace Chess.Core
 			'.','.','.','.','.','.','Q','Q' ,  '.','.','.','.','.','.','.','.'
 		};
 
-		static char[] m_aintKingAttackers =
+	    private static char[] _mAintKingAttackers =
 		{
 			'.','.','.','.','.','.','.','.',   '.','.','.','.','.','.','.','.',
 			'.','.','.','.','.','.','.','.',   '.','.','.','.','.','.','.','.',
@@ -88,7 +88,7 @@ namespace Chess.Core
 			'.','.','.','.','.','.','.','.' ,  '.','.','.','.','.','.','.','.'
 		};
 
-		private static int[] m_aintSquareValues =
+		private static int[] _mAintSquareValues =
 		{
 			1, 1, 1, 1, 1, 1, 1, 1,    0,0,0,0,0,0,0,0,
 			1,10,10,10,10,10,10, 1,    0,0,0,0,0,0,0,0,
@@ -100,44 +100,44 @@ namespace Chess.Core
 			1, 1, 1, 1, 1, 1, 1, 1 ,   0,0,0,0,0,0,0,0
 		};
 
-		public enum enmColour
+		public enum EnmColour
 		{
 				White
 			,	Black
 		}
 
-		private enmColour m_colour;
-		private Piece m_piece;
-		private int m_intFile;
-		private int m_intRank;
-		private int m_intOrdinal;
+		private EnmColour _mColour;
+		private Piece _mPiece;
+		private int _mIntFile;
+		private int _mIntRank;
+		private int _mIntOrdinal;
 
-		public Square(int Ordinal)
+		public Square(int ordinal)
 		{
-			m_intOrdinal = Ordinal;
-			m_intFile = Ordinal % Board.MATRIX_WIDTH;
-			m_intRank = Ordinal / Board.MATRIX_WIDTH;
+			_mIntOrdinal = ordinal;
+			_mIntFile = ordinal % Board.MatrixWidth;
+			_mIntRank = ordinal / Board.MatrixWidth;
 
-			if (m_intFile==0 || m_intFile==2 || m_intFile==4 || m_intFile==6)
+			if (_mIntFile==0 || _mIntFile==2 || _mIntFile==4 || _mIntFile==6)
 			{
-				if (m_intRank==0 || m_intRank==2 || m_intRank==4 || m_intRank==6)
+				if (_mIntRank==0 || _mIntRank==2 || _mIntRank==4 || _mIntRank==6)
 				{
-					m_colour = enmColour.Black;
+					_mColour = EnmColour.Black;
 				}
 				else
 				{
-					m_colour = enmColour.White;
+					_mColour = EnmColour.White;
 				}
 			}
 			else
 			{
-				if (m_intRank==0 || m_intRank==2 || m_intRank==4 || m_intRank==6)
+				if (_mIntRank==0 || _mIntRank==2 || _mIntRank==4 || _mIntRank==6)
 				{
-					m_colour = enmColour.White;
+					_mColour = EnmColour.White;
 				}
 				else
 				{
-					m_colour = enmColour.Black;
+					_mColour = EnmColour.Black;
 				}
 			}
 
@@ -147,28 +147,28 @@ namespace Chess.Core
 		{
 			get
 			{
-				return m_aintSquareValues[this.Ordinal];
+				return _mAintSquareValues[this.Ordinal];
 			}
 		}
 
-		public enmColour Colour
+		public EnmColour Colour
 		{
-			get { return m_colour; }
+			get { return _mColour; }
 		}
 	
 		public int File
 		{
-			get { return m_intFile; }
+			get { return _mIntFile; }
 		}
 
 		public int Rank
 		{
-			get { return m_intRank; }
+			get { return _mIntRank; }
 		}
 
 		public int Ordinal
 		{
-			get { return m_intOrdinal; }
+			get { return _mIntOrdinal; }
 		}
 
 		public ulong HashCodeA
@@ -191,8 +191,8 @@ namespace Chess.Core
 		{
 			get
 			{
-				string[] FileNames = {"a", "b", "c", "d", "e", "f", "g", "h"};
-				return FileNames[m_intFile];
+				string[] fileNames = {"a", "b", "c", "d", "e", "f", "g", "h"};
+				return fileNames[_mIntFile];
 			}
 		}
 
@@ -200,7 +200,7 @@ namespace Chess.Core
 		{
 			get
 			{
-				return (m_intRank+1).ToString();
+				return (_mIntRank+1).ToString();
 			}
 		}
 
@@ -214,8 +214,8 @@ namespace Chess.Core
 
 		public Piece Piece
 		{
-			get	{ return m_piece; }
-			set {  m_piece = value; }
+			get	{ return _mPiece; }
+			set {  _mPiece = value; }
 		}
 
 		public bool CanBeMovedToBy(Player player)
@@ -223,26 +223,26 @@ namespace Chess.Core
 			Piece piece;
 
 			// Pawns
-			piece = Board.GetPiece( m_intOrdinal-player.PawnAttackLeftOffset ); if (piece!=null && piece.Name==Piece.enmName.Pawn && piece.Player.Colour==player.Colour) return true;
-			piece = Board.GetPiece( m_intOrdinal-player.PawnAttackRightOffset ); if (piece!=null && piece.Name==Piece.enmName.Pawn && piece.Player.Colour==player.Colour) return true;
+			piece = Board.GetPiece( _mIntOrdinal-player.PawnAttackLeftOffset ); if (piece!=null && piece.Name==Piece.EnmName.Pawn && piece.Player.Colour==player.Colour) return true;
+			piece = Board.GetPiece( _mIntOrdinal-player.PawnAttackRightOffset ); if (piece!=null && piece.Name==Piece.EnmName.Pawn && piece.Player.Colour==player.Colour) return true;
 
 			// Knights
-			if (player.QueensKnight.IsInPlay && m_aintMinorAttackers[m_intOrdinal-player.QueensKnight.Square.Ordinal+128]=='N') return true;
-			if (player.KingsKnight.IsInPlay && m_aintMinorAttackers[m_intOrdinal-player.KingsKnight.Square.Ordinal+128]=='N') return true;
+			if (player.QueensKnight.IsInPlay && _mAintMinorAttackers[_mIntOrdinal-player.QueensKnight.Square.Ordinal+128]=='N') return true;
+			if (player.KingsKnight.IsInPlay && _mAintMinorAttackers[_mIntOrdinal-player.KingsKnight.Square.Ordinal+128]=='N') return true;
 
 			// Bishops
-			if (player.QueensBishop.IsInPlay && m_aintMinorAttackers[m_intOrdinal-player.QueensBishop.Square.Ordinal+128]=='B' && CanSlideToHereFrom(player.QueensBishop.Square, m_aintVectors[m_intOrdinal-player.QueensBishop.Square.Ordinal+128]))  return true;
-			if (player.KingsBishop.IsInPlay && m_aintMinorAttackers[m_intOrdinal-player.KingsBishop.Square.Ordinal+128]=='B' && CanSlideToHereFrom(player.KingsBishop.Square, m_aintVectors[m_intOrdinal-player.KingsBishop.Square.Ordinal+128]))  return true;
+			if (player.QueensBishop.IsInPlay && _mAintMinorAttackers[_mIntOrdinal-player.QueensBishop.Square.Ordinal+128]=='B' && CanSlideToHereFrom(player.QueensBishop.Square, _mAintVectors[_mIntOrdinal-player.QueensBishop.Square.Ordinal+128]))  return true;
+			if (player.KingsBishop.IsInPlay && _mAintMinorAttackers[_mIntOrdinal-player.KingsBishop.Square.Ordinal+128]=='B' && CanSlideToHereFrom(player.KingsBishop.Square, _mAintVectors[_mIntOrdinal-player.KingsBishop.Square.Ordinal+128]))  return true;
 				
 			// Rooks
-			if (player.QueensRook.IsInPlay && m_aintMinorAttackers[m_intOrdinal-player.QueensRook.Square.Ordinal+128]=='R' && CanSlideToHereFrom(player.QueensRook.Square, m_aintVectors[m_intOrdinal-player.QueensRook.Square.Ordinal+128]))  return true;
-			if (player.KingsRook.IsInPlay && m_aintMinorAttackers[m_intOrdinal-player.KingsRook.Square.Ordinal+128]=='R' && CanSlideToHereFrom(player.KingsRook.Square, m_aintVectors[m_intOrdinal-player.KingsRook.Square.Ordinal+128]))  return true;
+			if (player.QueensRook.IsInPlay && _mAintMinorAttackers[_mIntOrdinal-player.QueensRook.Square.Ordinal+128]=='R' && CanSlideToHereFrom(player.QueensRook.Square, _mAintVectors[_mIntOrdinal-player.QueensRook.Square.Ordinal+128]))  return true;
+			if (player.KingsRook.IsInPlay && _mAintMinorAttackers[_mIntOrdinal-player.KingsRook.Square.Ordinal+128]=='R' && CanSlideToHereFrom(player.KingsRook.Square, _mAintVectors[_mIntOrdinal-player.KingsRook.Square.Ordinal+128]))  return true;
 
 			// Queen
-			if (player.Queen.IsInPlay && m_aintQueenAttackers[m_intOrdinal-player.Queen.Square.Ordinal+128]=='Q' && CanSlideToHereFrom(player.Queen.Square, m_aintVectors[m_intOrdinal-player.Queen.Square.Ordinal+128]))  return true;
+			if (player.Queen.IsInPlay && _mAintQueenAttackers[_mIntOrdinal-player.Queen.Square.Ordinal+128]=='Q' && CanSlideToHereFrom(player.Queen.Square, _mAintVectors[_mIntOrdinal-player.Queen.Square.Ordinal+128]))  return true;
 
 			// King
-			if (m_aintKingAttackers[m_intOrdinal-player.King.Square.Ordinal+128]=='K')  return true;
+			if (_mAintKingAttackers[_mIntOrdinal-player.King.Square.Ordinal+128]=='K')  return true;
 
 			return false;
 		}
@@ -252,34 +252,34 @@ namespace Chess.Core
 			Piece piece;
 
 			// Pawns
-			piece = Board.GetPiece( m_intOrdinal-player.PawnAttackLeftOffset ); if (piece!=null && piece.Name==Piece.enmName.Pawn && piece.Player.Colour==player.Colour) moves.Add(0, 0, Move.enmName.Standard, Board.GetPiece(m_intOrdinal-player.PawnAttackLeftOffset), Board.GetSquare(m_intOrdinal-player.PawnAttackLeftOffset), this, this.Piece, 0, 0);
-			piece = Board.GetPiece( m_intOrdinal-player.PawnAttackRightOffset ); if (piece!=null && piece.Name==Piece.enmName.Pawn && piece.Player.Colour==player.Colour) moves.Add(0, 0, Move.enmName.Standard, Board.GetPiece(m_intOrdinal-player.PawnAttackRightOffset), Board.GetSquare(m_intOrdinal-player.PawnAttackRightOffset), this, this.Piece, 0, 0);
+			piece = Board.GetPiece( _mIntOrdinal-player.PawnAttackLeftOffset ); if (piece!=null && piece.Name==Piece.EnmName.Pawn && piece.Player.Colour==player.Colour) moves.Add(0, 0, Move.EnmName.Standard, Board.GetPiece(_mIntOrdinal-player.PawnAttackLeftOffset), Board.GetSquare(_mIntOrdinal-player.PawnAttackLeftOffset), this, this.Piece, 0, 0);
+			piece = Board.GetPiece( _mIntOrdinal-player.PawnAttackRightOffset ); if (piece!=null && piece.Name==Piece.EnmName.Pawn && piece.Player.Colour==player.Colour) moves.Add(0, 0, Move.EnmName.Standard, Board.GetPiece(_mIntOrdinal-player.PawnAttackRightOffset), Board.GetSquare(_mIntOrdinal-player.PawnAttackRightOffset), this, this.Piece, 0, 0);
 
 			// Knights
-			if (player.QueensKnight.IsInPlay && m_aintMinorAttackers[m_intOrdinal-player.QueensKnight.Square.Ordinal+128]=='N') moves.Add(0, 0, Move.enmName.Standard, player.QueensKnight, player.QueensKnight.Square, this, this.Piece, 0, 0);
-			if (player.KingsKnight.IsInPlay && m_aintMinorAttackers[m_intOrdinal-player.KingsKnight.Square.Ordinal+128]=='N') moves.Add(0, 0, Move.enmName.Standard, player.KingsKnight, player.KingsKnight.Square, this, this.Piece, 0, 0);
+			if (player.QueensKnight.IsInPlay && _mAintMinorAttackers[_mIntOrdinal-player.QueensKnight.Square.Ordinal+128]=='N') moves.Add(0, 0, Move.EnmName.Standard, player.QueensKnight, player.QueensKnight.Square, this, this.Piece, 0, 0);
+			if (player.KingsKnight.IsInPlay && _mAintMinorAttackers[_mIntOrdinal-player.KingsKnight.Square.Ordinal+128]=='N') moves.Add(0, 0, Move.EnmName.Standard, player.KingsKnight, player.KingsKnight.Square, this, this.Piece, 0, 0);
 
 			// Bishops
-			if (player.QueensBishop.IsInPlay && m_aintMinorAttackers[m_intOrdinal-player.QueensBishop.Square.Ordinal+128]=='B' && CanSlideToHereFrom(player.QueensBishop.Square, m_aintVectors[m_intOrdinal-player.QueensBishop.Square.Ordinal+128])) moves.Add(0, 0, Move.enmName.Standard, player.QueensBishop, player.QueensBishop.Square, this, this.Piece, 0, 0);
-			if (player.KingsBishop.IsInPlay && m_aintMinorAttackers[m_intOrdinal-player.KingsBishop.Square.Ordinal+128]=='B' && CanSlideToHereFrom(player.KingsBishop.Square, m_aintVectors[m_intOrdinal-player.KingsBishop.Square.Ordinal+128])) moves.Add(0, 0, Move.enmName.Standard, player.KingsBishop, player.KingsBishop.Square, this, this.Piece, 0, 0);
+			if (player.QueensBishop.IsInPlay && _mAintMinorAttackers[_mIntOrdinal-player.QueensBishop.Square.Ordinal+128]=='B' && CanSlideToHereFrom(player.QueensBishop.Square, _mAintVectors[_mIntOrdinal-player.QueensBishop.Square.Ordinal+128])) moves.Add(0, 0, Move.EnmName.Standard, player.QueensBishop, player.QueensBishop.Square, this, this.Piece, 0, 0);
+			if (player.KingsBishop.IsInPlay && _mAintMinorAttackers[_mIntOrdinal-player.KingsBishop.Square.Ordinal+128]=='B' && CanSlideToHereFrom(player.KingsBishop.Square, _mAintVectors[_mIntOrdinal-player.KingsBishop.Square.Ordinal+128])) moves.Add(0, 0, Move.EnmName.Standard, player.KingsBishop, player.KingsBishop.Square, this, this.Piece, 0, 0);
 				
 			// Rooks
-			if (player.QueensRook.IsInPlay && m_aintMinorAttackers[m_intOrdinal-player.QueensRook.Square.Ordinal+128]=='R' && CanSlideToHereFrom(player.QueensRook.Square, m_aintVectors[m_intOrdinal-player.QueensRook.Square.Ordinal+128])) moves.Add(0, 0, Move.enmName.Standard, player.QueensRook, player.QueensRook.Square, this, this.Piece, 0, 0);
-			if (player.KingsRook.IsInPlay && m_aintMinorAttackers[m_intOrdinal-player.KingsRook.Square.Ordinal+128]=='R' && CanSlideToHereFrom(player.KingsRook.Square, m_aintVectors[m_intOrdinal-player.KingsRook.Square.Ordinal+128])) moves.Add(0, 0, Move.enmName.Standard, player.KingsRook, player.KingsRook.Square, this, this.Piece, 0, 0);
+			if (player.QueensRook.IsInPlay && _mAintMinorAttackers[_mIntOrdinal-player.QueensRook.Square.Ordinal+128]=='R' && CanSlideToHereFrom(player.QueensRook.Square, _mAintVectors[_mIntOrdinal-player.QueensRook.Square.Ordinal+128])) moves.Add(0, 0, Move.EnmName.Standard, player.QueensRook, player.QueensRook.Square, this, this.Piece, 0, 0);
+			if (player.KingsRook.IsInPlay && _mAintMinorAttackers[_mIntOrdinal-player.KingsRook.Square.Ordinal+128]=='R' && CanSlideToHereFrom(player.KingsRook.Square, _mAintVectors[_mIntOrdinal-player.KingsRook.Square.Ordinal+128])) moves.Add(0, 0, Move.EnmName.Standard, player.KingsRook, player.KingsRook.Square, this, this.Piece, 0, 0);
 
 			// Queen
-			if (player.Queen.IsInPlay && m_aintQueenAttackers[m_intOrdinal-player.Queen.Square.Ordinal+128]=='Q' && CanSlideToHereFrom(player.Queen.Square, m_aintVectors[m_intOrdinal-player.Queen.Square.Ordinal+128])) moves.Add(0, 0, Move.enmName.Standard, player.Queen, player.Queen.Square, this, this.Piece, 0, 0);
+			if (player.Queen.IsInPlay && _mAintQueenAttackers[_mIntOrdinal-player.Queen.Square.Ordinal+128]=='Q' && CanSlideToHereFrom(player.Queen.Square, _mAintVectors[_mIntOrdinal-player.Queen.Square.Ordinal+128])) moves.Add(0, 0, Move.EnmName.Standard, player.Queen, player.Queen.Square, this, this.Piece, 0, 0);
 
 			// King
-			if (m_aintKingAttackers[m_intOrdinal-player.King.Square.Ordinal+128]=='K')moves.Add(0, 0, Move.enmName.Standard, player.King, player.King.Square, this, this.Piece, 0, 0);
+			if (_mAintKingAttackers[_mIntOrdinal-player.King.Square.Ordinal+128]=='K')moves.Add(0, 0, Move.EnmName.Standard, player.King, player.King.Square, this, this.Piece, 0, 0);
 		}
 
-		public bool CanSlideToHereFrom(Square squareStart, int Offset)
+		public bool CanSlideToHereFrom(Square squareStart, int offset)
 		{
 			int intOrdinal = squareStart.Ordinal;
 			Square square;
 
-			intOrdinal += Offset;
+			intOrdinal += offset;
 			while ( (square = Board.GetSquare(intOrdinal))!=null )
 			{
 				if ( square==this )
@@ -290,7 +290,7 @@ namespace Chess.Core
 				{
 					return false;
 				}
-				intOrdinal += Offset;
+				intOrdinal += offset;
 			}
 			throw new ApplicationException("CanSlideToHereFrom: Hit edge of board!");
 		}
@@ -298,46 +298,46 @@ namespace Chess.Core
 		public int DefencePointsFor(Player player)
 		{
 			Piece piece;
-			int Value = 0;
-			int BestValue = 0;
+			int value = 0;
+			int bestValue = 0;
 
 			// Pawn
-			piece = Board.GetPiece( m_intOrdinal-player.PawnAttackLeftOffset ); if (piece!=null && piece.Name==Piece.enmName.Pawn && piece.Player.Colour==player.Colour) return piece.Value;
-			piece = Board.GetPiece( m_intOrdinal-player.PawnAttackRightOffset ); if (piece!=null && piece.Name==Piece.enmName.Pawn && piece.Player.Colour==player.Colour) return piece.Value;
+			piece = Board.GetPiece( _mIntOrdinal-player.PawnAttackLeftOffset ); if (piece!=null && piece.Name==Piece.EnmName.Pawn && piece.Player.Colour==player.Colour) return piece.Value;
+			piece = Board.GetPiece( _mIntOrdinal-player.PawnAttackRightOffset ); if (piece!=null && piece.Name==Piece.EnmName.Pawn && piece.Player.Colour==player.Colour) return piece.Value;
 				
 			// Knight
-			piece = Board.GetPiece( m_intOrdinal+33 ); if (piece!=null && piece.Name==Piece.enmName.Knight && piece.Player.Colour==player.Colour) return piece.Value;
-			piece = Board.GetPiece( m_intOrdinal+18 ); if (piece!=null && piece.Name==Piece.enmName.Knight && piece.Player.Colour==player.Colour) return piece.Value;
-			piece = Board.GetPiece( m_intOrdinal-14 ); if (piece!=null && piece.Name==Piece.enmName.Knight && piece.Player.Colour==player.Colour) return piece.Value;
-			piece = Board.GetPiece( m_intOrdinal-31 ); if (piece!=null && piece.Name==Piece.enmName.Knight && piece.Player.Colour==player.Colour) return piece.Value;
-			piece = Board.GetPiece( m_intOrdinal-33 ); if (piece!=null && piece.Name==Piece.enmName.Knight && piece.Player.Colour==player.Colour) return piece.Value;
-			piece = Board.GetPiece( m_intOrdinal-18 ); if (piece!=null && piece.Name==Piece.enmName.Knight && piece.Player.Colour==player.Colour) return piece.Value;
-			piece = Board.GetPiece( m_intOrdinal+14 ); if (piece!=null && piece.Name==Piece.enmName.Knight && piece.Player.Colour==player.Colour) return piece.Value;
-			piece = Board.GetPiece( m_intOrdinal+31 ); if (piece!=null && piece.Name==Piece.enmName.Knight && piece.Player.Colour==player.Colour) return piece.Value;
+			piece = Board.GetPiece( _mIntOrdinal+33 ); if (piece!=null && piece.Name==Piece.EnmName.Knight && piece.Player.Colour==player.Colour) return piece.Value;
+			piece = Board.GetPiece( _mIntOrdinal+18 ); if (piece!=null && piece.Name==Piece.EnmName.Knight && piece.Player.Colour==player.Colour) return piece.Value;
+			piece = Board.GetPiece( _mIntOrdinal-14 ); if (piece!=null && piece.Name==Piece.EnmName.Knight && piece.Player.Colour==player.Colour) return piece.Value;
+			piece = Board.GetPiece( _mIntOrdinal-31 ); if (piece!=null && piece.Name==Piece.EnmName.Knight && piece.Player.Colour==player.Colour) return piece.Value;
+			piece = Board.GetPiece( _mIntOrdinal-33 ); if (piece!=null && piece.Name==Piece.EnmName.Knight && piece.Player.Colour==player.Colour) return piece.Value;
+			piece = Board.GetPiece( _mIntOrdinal-18 ); if (piece!=null && piece.Name==Piece.EnmName.Knight && piece.Player.Colour==player.Colour) return piece.Value;
+			piece = Board.GetPiece( _mIntOrdinal+14 ); if (piece!=null && piece.Name==Piece.EnmName.Knight && piece.Player.Colour==player.Colour) return piece.Value;
+			piece = Board.GetPiece( _mIntOrdinal+31 ); if (piece!=null && piece.Name==Piece.EnmName.Knight && piece.Player.Colour==player.Colour) return piece.Value;
 
 			// Bishop & Queen
-			piece = Board.LinesFirstPiece(player.Colour, Piece.enmName.Bishop, this, 15); Value = piece!=null ? piece.Value : 0; if (Value>0 && Value <9000 ) return Value; if (Value>0) BestValue=Value;
-			piece = Board.LinesFirstPiece(player.Colour, Piece.enmName.Bishop, this, 17); Value = piece!=null ? piece.Value : 0; if (Value>0 && Value <9000 ) return Value; if (Value>0) BestValue=Value;
-			piece = Board.LinesFirstPiece(player.Colour, Piece.enmName.Bishop, this, -15); Value = piece!=null ? piece.Value : 0; if (Value>0 && Value <9000 ) return Value; if (Value>0) BestValue=Value;
-			piece = Board.LinesFirstPiece(player.Colour, Piece.enmName.Bishop, this, -17); Value = piece!=null ? piece.Value : 0; if (Value>0 && Value <9000 ) return Value; if (Value>0) BestValue=Value;
+			piece = Board.LinesFirstPiece(player.Colour, Piece.EnmName.Bishop, this, 15); value = piece!=null ? piece.Value : 0; if (value>0 && value <9000 ) return value; if (value>0) bestValue=value;
+			piece = Board.LinesFirstPiece(player.Colour, Piece.EnmName.Bishop, this, 17); value = piece!=null ? piece.Value : 0; if (value>0 && value <9000 ) return value; if (value>0) bestValue=value;
+			piece = Board.LinesFirstPiece(player.Colour, Piece.EnmName.Bishop, this, -15); value = piece!=null ? piece.Value : 0; if (value>0 && value <9000 ) return value; if (value>0) bestValue=value;
+			piece = Board.LinesFirstPiece(player.Colour, Piece.EnmName.Bishop, this, -17); value = piece!=null ? piece.Value : 0; if (value>0 && value <9000 ) return value; if (value>0) bestValue=value;
 
 			// Rook & Queen
-			piece = Board.LinesFirstPiece(player.Colour, Piece.enmName.Rook, this, 1); Value = piece!=null ? piece.Value : 0; if (Value>0 && Value <9000 ) return Value; if (Value>0) BestValue=Value;
-			piece = Board.LinesFirstPiece(player.Colour, Piece.enmName.Rook, this, -1); Value = piece!=null ? piece.Value : 0; if (Value>0 && Value <9000 ) return Value; if (Value>0) BestValue=Value;
-			piece = Board.LinesFirstPiece(player.Colour, Piece.enmName.Rook, this, 16); Value = piece!=null ? piece.Value : 0; if (Value>0 && Value <9000 ) return Value; if (Value>0) BestValue=Value;
-			piece = Board.LinesFirstPiece(player.Colour, Piece.enmName.Rook, this, -16); Value = piece!=null ? piece.Value : 0; if (Value>0 && Value <9000 ) return Value; if (Value>0) BestValue=Value;
+			piece = Board.LinesFirstPiece(player.Colour, Piece.EnmName.Rook, this, 1); value = piece!=null ? piece.Value : 0; if (value>0 && value <9000 ) return value; if (value>0) bestValue=value;
+			piece = Board.LinesFirstPiece(player.Colour, Piece.EnmName.Rook, this, -1); value = piece!=null ? piece.Value : 0; if (value>0 && value <9000 ) return value; if (value>0) bestValue=value;
+			piece = Board.LinesFirstPiece(player.Colour, Piece.EnmName.Rook, this, 16); value = piece!=null ? piece.Value : 0; if (value>0 && value <9000 ) return value; if (value>0) bestValue=value;
+			piece = Board.LinesFirstPiece(player.Colour, Piece.EnmName.Rook, this, -16); value = piece!=null ? piece.Value : 0; if (value>0 && value <9000 ) return value; if (value>0) bestValue=value;
 
-			if (BestValue > 0) return BestValue; // This means a queen was found, but not a Bishop or Rook
+			if (bestValue > 0) return bestValue; // This means a queen was found, but not a Bishop or Rook
 
 			// King!
-			piece = Board.GetPiece( m_intOrdinal+16 ); if (piece!=null && piece.Name==Piece.enmName.King && piece.Player.Colour==player.Colour) return piece.Value; 
-			piece = Board.GetPiece( m_intOrdinal+17 ); if (piece!=null && piece.Name==Piece.enmName.King && piece.Player.Colour==player.Colour) return piece.Value; 
-			piece = Board.GetPiece( m_intOrdinal+1  ); if (piece!=null && piece.Name==Piece.enmName.King && piece.Player.Colour==player.Colour) return piece.Value; 
-			piece = Board.GetPiece( m_intOrdinal-15 ); if (piece!=null && piece.Name==Piece.enmName.King && piece.Player.Colour==player.Colour) return piece.Value; 
-			piece = Board.GetPiece( m_intOrdinal-16 ); if (piece!=null && piece.Name==Piece.enmName.King && piece.Player.Colour==player.Colour) return piece.Value; 
-			piece = Board.GetPiece( m_intOrdinal-17 ); if (piece!=null && piece.Name==Piece.enmName.King && piece.Player.Colour==player.Colour) return piece.Value; 
-			piece = Board.GetPiece( m_intOrdinal-1  ); if (piece!=null && piece.Name==Piece.enmName.King && piece.Player.Colour==player.Colour) return piece.Value; 
-			piece = Board.GetPiece( m_intOrdinal+15 ); if (piece!=null && piece.Name==Piece.enmName.King && piece.Player.Colour==player.Colour) return piece.Value; 
+			piece = Board.GetPiece( _mIntOrdinal+16 ); if (piece!=null && piece.Name==Piece.EnmName.King && piece.Player.Colour==player.Colour) return piece.Value; 
+			piece = Board.GetPiece( _mIntOrdinal+17 ); if (piece!=null && piece.Name==Piece.EnmName.King && piece.Player.Colour==player.Colour) return piece.Value; 
+			piece = Board.GetPiece( _mIntOrdinal+1  ); if (piece!=null && piece.Name==Piece.EnmName.King && piece.Player.Colour==player.Colour) return piece.Value; 
+			piece = Board.GetPiece( _mIntOrdinal-15 ); if (piece!=null && piece.Name==Piece.EnmName.King && piece.Player.Colour==player.Colour) return piece.Value; 
+			piece = Board.GetPiece( _mIntOrdinal-16 ); if (piece!=null && piece.Name==Piece.EnmName.King && piece.Player.Colour==player.Colour) return piece.Value; 
+			piece = Board.GetPiece( _mIntOrdinal-17 ); if (piece!=null && piece.Name==Piece.EnmName.King && piece.Player.Colour==player.Colour) return piece.Value; 
+			piece = Board.GetPiece( _mIntOrdinal-1  ); if (piece!=null && piece.Name==Piece.EnmName.King && piece.Player.Colour==player.Colour) return piece.Value; 
+			piece = Board.GetPiece( _mIntOrdinal+15 ); if (piece!=null && piece.Name==Piece.EnmName.King && piece.Player.Colour==player.Colour) return piece.Value; 
 
 			return 15000;
 		}
@@ -348,42 +348,42 @@ namespace Chess.Core
 			Piece pieceBest = null;
 
 			// Pawn
-			piece = Board.GetPiece( m_intOrdinal-player.PawnAttackLeftOffset ); if (piece!=null && piece.Name==Piece.enmName.Pawn && piece.Player.Colour==player.Colour) return piece;
-			piece = Board.GetPiece( m_intOrdinal-player.PawnAttackRightOffset ); if (piece!=null && piece.Name==Piece.enmName.Pawn && piece.Player.Colour==player.Colour) return piece;
+			piece = Board.GetPiece( _mIntOrdinal-player.PawnAttackLeftOffset ); if (piece!=null && piece.Name==Piece.EnmName.Pawn && piece.Player.Colour==player.Colour) return piece;
+			piece = Board.GetPiece( _mIntOrdinal-player.PawnAttackRightOffset ); if (piece!=null && piece.Name==Piece.EnmName.Pawn && piece.Player.Colour==player.Colour) return piece;
 				
 			// Knight
-			piece = Board.GetPiece( m_intOrdinal+33 ); if (piece!=null && piece.Name==Piece.enmName.Knight && piece.Player.Colour==player.Colour) return piece;
-			piece = Board.GetPiece( m_intOrdinal+18 ); if (piece!=null && piece.Name==Piece.enmName.Knight && piece.Player.Colour==player.Colour) return piece;
-			piece = Board.GetPiece( m_intOrdinal-14 ); if (piece!=null && piece.Name==Piece.enmName.Knight && piece.Player.Colour==player.Colour) return piece;
-			piece = Board.GetPiece( m_intOrdinal-31 ); if (piece!=null && piece.Name==Piece.enmName.Knight && piece.Player.Colour==player.Colour) return piece;
-			piece = Board.GetPiece( m_intOrdinal-33 ); if (piece!=null && piece.Name==Piece.enmName.Knight && piece.Player.Colour==player.Colour) return piece;
-			piece = Board.GetPiece( m_intOrdinal-18 ); if (piece!=null && piece.Name==Piece.enmName.Knight && piece.Player.Colour==player.Colour) return piece;
-			piece = Board.GetPiece( m_intOrdinal+14 ); if (piece!=null && piece.Name==Piece.enmName.Knight && piece.Player.Colour==player.Colour) return piece;
-			piece = Board.GetPiece( m_intOrdinal+31 ); if (piece!=null && piece.Name==Piece.enmName.Knight && piece.Player.Colour==player.Colour) return piece;
+			piece = Board.GetPiece( _mIntOrdinal+33 ); if (piece!=null && piece.Name==Piece.EnmName.Knight && piece.Player.Colour==player.Colour) return piece;
+			piece = Board.GetPiece( _mIntOrdinal+18 ); if (piece!=null && piece.Name==Piece.EnmName.Knight && piece.Player.Colour==player.Colour) return piece;
+			piece = Board.GetPiece( _mIntOrdinal-14 ); if (piece!=null && piece.Name==Piece.EnmName.Knight && piece.Player.Colour==player.Colour) return piece;
+			piece = Board.GetPiece( _mIntOrdinal-31 ); if (piece!=null && piece.Name==Piece.EnmName.Knight && piece.Player.Colour==player.Colour) return piece;
+			piece = Board.GetPiece( _mIntOrdinal-33 ); if (piece!=null && piece.Name==Piece.EnmName.Knight && piece.Player.Colour==player.Colour) return piece;
+			piece = Board.GetPiece( _mIntOrdinal-18 ); if (piece!=null && piece.Name==Piece.EnmName.Knight && piece.Player.Colour==player.Colour) return piece;
+			piece = Board.GetPiece( _mIntOrdinal+14 ); if (piece!=null && piece.Name==Piece.EnmName.Knight && piece.Player.Colour==player.Colour) return piece;
+			piece = Board.GetPiece( _mIntOrdinal+31 ); if (piece!=null && piece.Name==Piece.EnmName.Knight && piece.Player.Colour==player.Colour) return piece;
 
 			// Bishop & Queen
-			piece = Board.LinesFirstPiece(player.Colour, Piece.enmName.Bishop, this, 15); if (piece!=null) { switch (piece.Name) { case Piece.enmName.Bishop: return piece; case Piece.enmName.Queen: pieceBest=piece; break; } }
-			piece = Board.LinesFirstPiece(player.Colour, Piece.enmName.Bishop, this, 17); if (piece!=null) { switch (piece.Name) { case Piece.enmName.Bishop: return piece; case Piece.enmName.Queen: pieceBest=piece; break; } }
-			piece = Board.LinesFirstPiece(player.Colour, Piece.enmName.Bishop, this, -15); if (piece!=null) { switch (piece.Name) { case Piece.enmName.Bishop: return piece; case Piece.enmName.Queen: pieceBest=piece; break; } }
-			piece = Board.LinesFirstPiece(player.Colour, Piece.enmName.Bishop, this, -17); if (piece!=null) { switch (piece.Name) { case Piece.enmName.Bishop: return piece; case Piece.enmName.Queen: pieceBest=piece; break; } }
+			piece = Board.LinesFirstPiece(player.Colour, Piece.EnmName.Bishop, this, 15); if (piece!=null) { switch (piece.Name) { case Piece.EnmName.Bishop: return piece; case Piece.EnmName.Queen: pieceBest=piece; break; } }
+			piece = Board.LinesFirstPiece(player.Colour, Piece.EnmName.Bishop, this, 17); if (piece!=null) { switch (piece.Name) { case Piece.EnmName.Bishop: return piece; case Piece.EnmName.Queen: pieceBest=piece; break; } }
+			piece = Board.LinesFirstPiece(player.Colour, Piece.EnmName.Bishop, this, -15); if (piece!=null) { switch (piece.Name) { case Piece.EnmName.Bishop: return piece; case Piece.EnmName.Queen: pieceBest=piece; break; } }
+			piece = Board.LinesFirstPiece(player.Colour, Piece.EnmName.Bishop, this, -17); if (piece!=null) { switch (piece.Name) { case Piece.EnmName.Bishop: return piece; case Piece.EnmName.Queen: pieceBest=piece; break; } }
 
 			// Rook & Queen
-			piece = Board.LinesFirstPiece(player.Colour, Piece.enmName.Rook, this, 1); if (piece!=null) { switch (piece.Name) { case Piece.enmName.Rook: return piece; case Piece.enmName.Queen: pieceBest=piece; break; } }
-			piece = Board.LinesFirstPiece(player.Colour, Piece.enmName.Rook, this, -1); if (piece!=null) { switch (piece.Name) { case Piece.enmName.Rook: return piece; case Piece.enmName.Queen: pieceBest=piece; break; } }
-			piece = Board.LinesFirstPiece(player.Colour, Piece.enmName.Rook, this, 16); if (piece!=null) { switch (piece.Name) { case Piece.enmName.Rook: return piece; case Piece.enmName.Queen: pieceBest=piece; break; } }
-			piece = Board.LinesFirstPiece(player.Colour, Piece.enmName.Rook, this, -16); if (piece!=null) { switch (piece.Name) { case Piece.enmName.Rook: return piece; case Piece.enmName.Queen: pieceBest=piece; break; } }
+			piece = Board.LinesFirstPiece(player.Colour, Piece.EnmName.Rook, this, 1); if (piece!=null) { switch (piece.Name) { case Piece.EnmName.Rook: return piece; case Piece.EnmName.Queen: pieceBest=piece; break; } }
+			piece = Board.LinesFirstPiece(player.Colour, Piece.EnmName.Rook, this, -1); if (piece!=null) { switch (piece.Name) { case Piece.EnmName.Rook: return piece; case Piece.EnmName.Queen: pieceBest=piece; break; } }
+			piece = Board.LinesFirstPiece(player.Colour, Piece.EnmName.Rook, this, 16); if (piece!=null) { switch (piece.Name) { case Piece.EnmName.Rook: return piece; case Piece.EnmName.Queen: pieceBest=piece; break; } }
+			piece = Board.LinesFirstPiece(player.Colour, Piece.EnmName.Rook, this, -16); if (piece!=null) { switch (piece.Name) { case Piece.EnmName.Rook: return piece; case Piece.EnmName.Queen: pieceBest=piece; break; } }
 
 			if (pieceBest!=null) return pieceBest; // This means a queen was found, but not a Bishop or Rook
 
 			// King!
-			piece = Board.GetPiece( m_intOrdinal+16 ); if (piece!=null && piece.Name==Piece.enmName.King && piece.Player.Colour==player.Colour) return piece; 
-			piece = Board.GetPiece( m_intOrdinal+17 ); if (piece!=null && piece.Name==Piece.enmName.King && piece.Player.Colour==player.Colour) return piece; 
-			piece = Board.GetPiece( m_intOrdinal+1  ); if (piece!=null && piece.Name==Piece.enmName.King && piece.Player.Colour==player.Colour) return piece; 
-			piece = Board.GetPiece( m_intOrdinal-15 ); if (piece!=null && piece.Name==Piece.enmName.King && piece.Player.Colour==player.Colour) return piece; 
-			piece = Board.GetPiece( m_intOrdinal-16 ); if (piece!=null && piece.Name==Piece.enmName.King && piece.Player.Colour==player.Colour) return piece; 
-			piece = Board.GetPiece( m_intOrdinal-17 ); if (piece!=null && piece.Name==Piece.enmName.King && piece.Player.Colour==player.Colour) return piece; 
-			piece = Board.GetPiece( m_intOrdinal-1  ); if (piece!=null && piece.Name==Piece.enmName.King && piece.Player.Colour==player.Colour) return piece; 
-			piece = Board.GetPiece( m_intOrdinal+15 ); if (piece!=null && piece.Name==Piece.enmName.King && piece.Player.Colour==player.Colour) return piece; 
+			piece = Board.GetPiece( _mIntOrdinal+16 ); if (piece!=null && piece.Name==Piece.EnmName.King && piece.Player.Colour==player.Colour) return piece; 
+			piece = Board.GetPiece( _mIntOrdinal+17 ); if (piece!=null && piece.Name==Piece.EnmName.King && piece.Player.Colour==player.Colour) return piece; 
+			piece = Board.GetPiece( _mIntOrdinal+1  ); if (piece!=null && piece.Name==Piece.EnmName.King && piece.Player.Colour==player.Colour) return piece; 
+			piece = Board.GetPiece( _mIntOrdinal-15 ); if (piece!=null && piece.Name==Piece.EnmName.King && piece.Player.Colour==player.Colour) return piece; 
+			piece = Board.GetPiece( _mIntOrdinal-16 ); if (piece!=null && piece.Name==Piece.EnmName.King && piece.Player.Colour==player.Colour) return piece; 
+			piece = Board.GetPiece( _mIntOrdinal-17 ); if (piece!=null && piece.Name==Piece.EnmName.King && piece.Player.Colour==player.Colour) return piece; 
+			piece = Board.GetPiece( _mIntOrdinal-1  ); if (piece!=null && piece.Name==Piece.EnmName.King && piece.Player.Colour==player.Colour) return piece; 
+			piece = Board.GetPiece( _mIntOrdinal+15 ); if (piece!=null && piece.Name==Piece.EnmName.King && piece.Player.Colour==player.Colour) return piece; 
 
 			return null;
 		}
@@ -394,40 +394,40 @@ namespace Chess.Core
 			Pieces pieces = new Pieces(player);
 
 			// Pawn
-			piece = Board.GetPiece( m_intOrdinal-player.PawnAttackLeftOffset ); if (piece!=null && piece.Name==Piece.enmName.Pawn && piece.Player.Colour==player.Colour) pieces.Add(piece);
-			piece = Board.GetPiece( m_intOrdinal-player.PawnAttackRightOffset ); if (piece!=null && piece.Name==Piece.enmName.Pawn && piece.Player.Colour==player.Colour) pieces.Add(piece);
+			piece = Board.GetPiece( _mIntOrdinal-player.PawnAttackLeftOffset ); if (piece!=null && piece.Name==Piece.EnmName.Pawn && piece.Player.Colour==player.Colour) pieces.Add(piece);
+			piece = Board.GetPiece( _mIntOrdinal-player.PawnAttackRightOffset ); if (piece!=null && piece.Name==Piece.EnmName.Pawn && piece.Player.Colour==player.Colour) pieces.Add(piece);
 				
 			// Knight
-			piece = Board.GetPiece( m_intOrdinal+33 ); if (piece!=null && piece.Name==Piece.enmName.Knight && piece.Player.Colour==player.Colour) pieces.Add(piece);
-			piece = Board.GetPiece( m_intOrdinal+18 ); if (piece!=null && piece.Name==Piece.enmName.Knight && piece.Player.Colour==player.Colour) pieces.Add(piece);
-			piece = Board.GetPiece( m_intOrdinal-14 ); if (piece!=null && piece.Name==Piece.enmName.Knight && piece.Player.Colour==player.Colour) pieces.Add(piece);
-			piece = Board.GetPiece( m_intOrdinal-31 ); if (piece!=null && piece.Name==Piece.enmName.Knight && piece.Player.Colour==player.Colour) pieces.Add(piece);
-			piece = Board.GetPiece( m_intOrdinal-33 ); if (piece!=null && piece.Name==Piece.enmName.Knight && piece.Player.Colour==player.Colour) pieces.Add(piece);
-			piece = Board.GetPiece( m_intOrdinal-18 ); if (piece!=null && piece.Name==Piece.enmName.Knight && piece.Player.Colour==player.Colour) pieces.Add(piece);
-			piece = Board.GetPiece( m_intOrdinal+14 ); if (piece!=null && piece.Name==Piece.enmName.Knight && piece.Player.Colour==player.Colour) pieces.Add(piece);
-			piece = Board.GetPiece( m_intOrdinal+31 ); if (piece!=null && piece.Name==Piece.enmName.Knight && piece.Player.Colour==player.Colour) pieces.Add(piece);
+			piece = Board.GetPiece( _mIntOrdinal+33 ); if (piece!=null && piece.Name==Piece.EnmName.Knight && piece.Player.Colour==player.Colour) pieces.Add(piece);
+			piece = Board.GetPiece( _mIntOrdinal+18 ); if (piece!=null && piece.Name==Piece.EnmName.Knight && piece.Player.Colour==player.Colour) pieces.Add(piece);
+			piece = Board.GetPiece( _mIntOrdinal-14 ); if (piece!=null && piece.Name==Piece.EnmName.Knight && piece.Player.Colour==player.Colour) pieces.Add(piece);
+			piece = Board.GetPiece( _mIntOrdinal-31 ); if (piece!=null && piece.Name==Piece.EnmName.Knight && piece.Player.Colour==player.Colour) pieces.Add(piece);
+			piece = Board.GetPiece( _mIntOrdinal-33 ); if (piece!=null && piece.Name==Piece.EnmName.Knight && piece.Player.Colour==player.Colour) pieces.Add(piece);
+			piece = Board.GetPiece( _mIntOrdinal-18 ); if (piece!=null && piece.Name==Piece.EnmName.Knight && piece.Player.Colour==player.Colour) pieces.Add(piece);
+			piece = Board.GetPiece( _mIntOrdinal+14 ); if (piece!=null && piece.Name==Piece.EnmName.Knight && piece.Player.Colour==player.Colour) pieces.Add(piece);
+			piece = Board.GetPiece( _mIntOrdinal+31 ); if (piece!=null && piece.Name==Piece.EnmName.Knight && piece.Player.Colour==player.Colour) pieces.Add(piece);
 
 			// Bishop & Queen
-			if (Board.LinesFirstPiece(player.Colour, Piece.enmName.Bishop, this, 15)!=null) pieces.Add(piece);
-			if (Board.LinesFirstPiece(player.Colour, Piece.enmName.Bishop, this, 17)!=null) pieces.Add(piece);
-			if (Board.LinesFirstPiece(player.Colour, Piece.enmName.Bishop, this, -15)!=null) pieces.Add(piece);
-			if (Board.LinesFirstPiece(player.Colour, Piece.enmName.Bishop, this, -17)!=null) pieces.Add(piece);
+			if (Board.LinesFirstPiece(player.Colour, Piece.EnmName.Bishop, this, 15)!=null) pieces.Add(piece);
+			if (Board.LinesFirstPiece(player.Colour, Piece.EnmName.Bishop, this, 17)!=null) pieces.Add(piece);
+			if (Board.LinesFirstPiece(player.Colour, Piece.EnmName.Bishop, this, -15)!=null) pieces.Add(piece);
+			if (Board.LinesFirstPiece(player.Colour, Piece.EnmName.Bishop, this, -17)!=null) pieces.Add(piece);
 				
 			// Rook & Queen
-			if (Board.LinesFirstPiece(player.Colour, Piece.enmName.Rook, this, 1)!=null) pieces.Add(piece);
-			if (Board.LinesFirstPiece(player.Colour, Piece.enmName.Rook, this, -1)!=null) pieces.Add(piece);
-			if (Board.LinesFirstPiece(player.Colour, Piece.enmName.Rook, this, 16)!=null) pieces.Add(piece);
-			if (Board.LinesFirstPiece(player.Colour, Piece.enmName.Rook, this, -16)!=null) pieces.Add(piece);
+			if (Board.LinesFirstPiece(player.Colour, Piece.EnmName.Rook, this, 1)!=null) pieces.Add(piece);
+			if (Board.LinesFirstPiece(player.Colour, Piece.EnmName.Rook, this, -1)!=null) pieces.Add(piece);
+			if (Board.LinesFirstPiece(player.Colour, Piece.EnmName.Rook, this, 16)!=null) pieces.Add(piece);
+			if (Board.LinesFirstPiece(player.Colour, Piece.EnmName.Rook, this, -16)!=null) pieces.Add(piece);
 
 			// King!
-			piece = Board.GetPiece( m_intOrdinal+16 ); if (piece!=null && piece.Name==Piece.enmName.King && piece.Player.Colour==player.Colour) pieces.Add(piece); 
-			piece = Board.GetPiece( m_intOrdinal+17 ); if (piece!=null && piece.Name==Piece.enmName.King && piece.Player.Colour==player.Colour) pieces.Add(piece); 
-			piece = Board.GetPiece( m_intOrdinal+1  ); if (piece!=null && piece.Name==Piece.enmName.King && piece.Player.Colour==player.Colour) pieces.Add(piece); 
-			piece = Board.GetPiece( m_intOrdinal-15 ); if (piece!=null && piece.Name==Piece.enmName.King && piece.Player.Colour==player.Colour) pieces.Add(piece); 
-			piece = Board.GetPiece( m_intOrdinal-16 ); if (piece!=null && piece.Name==Piece.enmName.King && piece.Player.Colour==player.Colour) pieces.Add(piece); 
-			piece = Board.GetPiece( m_intOrdinal-17 ); if (piece!=null && piece.Name==Piece.enmName.King && piece.Player.Colour==player.Colour) pieces.Add(piece); 
-			piece = Board.GetPiece( m_intOrdinal-1  ); if (piece!=null && piece.Name==Piece.enmName.King && piece.Player.Colour==player.Colour) pieces.Add(piece); 
-			piece = Board.GetPiece( m_intOrdinal+15 ); if (piece!=null && piece.Name==Piece.enmName.King && piece.Player.Colour==player.Colour) pieces.Add(piece); 
+			piece = Board.GetPiece( _mIntOrdinal+16 ); if (piece!=null && piece.Name==Piece.EnmName.King && piece.Player.Colour==player.Colour) pieces.Add(piece); 
+			piece = Board.GetPiece( _mIntOrdinal+17 ); if (piece!=null && piece.Name==Piece.EnmName.King && piece.Player.Colour==player.Colour) pieces.Add(piece); 
+			piece = Board.GetPiece( _mIntOrdinal+1  ); if (piece!=null && piece.Name==Piece.EnmName.King && piece.Player.Colour==player.Colour) pieces.Add(piece); 
+			piece = Board.GetPiece( _mIntOrdinal-15 ); if (piece!=null && piece.Name==Piece.EnmName.King && piece.Player.Colour==player.Colour) pieces.Add(piece); 
+			piece = Board.GetPiece( _mIntOrdinal-16 ); if (piece!=null && piece.Name==Piece.EnmName.King && piece.Player.Colour==player.Colour) pieces.Add(piece); 
+			piece = Board.GetPiece( _mIntOrdinal-17 ); if (piece!=null && piece.Name==Piece.EnmName.King && piece.Player.Colour==player.Colour) pieces.Add(piece); 
+			piece = Board.GetPiece( _mIntOrdinal-1  ); if (piece!=null && piece.Name==Piece.EnmName.King && piece.Player.Colour==player.Colour) pieces.Add(piece); 
+			piece = Board.GetPiece( _mIntOrdinal+15 ); if (piece!=null && piece.Name==Piece.EnmName.King && piece.Player.Colour==player.Colour) pieces.Add(piece); 
 
 			return pieces;
 		}

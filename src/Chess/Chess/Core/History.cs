@@ -2,36 +2,36 @@ namespace Chess.Core
 {
 	public class History
 	{
-		static int[,] aHistoryEntryWhite = new int[Board.SQUARE_COUNT,Board.SQUARE_COUNT];
-		static int[,] aHistoryEntryBlack = new int[Board.SQUARE_COUNT,Board.SQUARE_COUNT];
+	    private static int[,] _aHistoryEntryWhite = new int[Board.SquareCount,Board.SquareCount];
+	    private static int[,] _aHistoryEntryBlack = new int[Board.SquareCount,Board.SquareCount];
 
 		static public void Clear()
 		{
-			for (int i=0; i<Board.SQUARE_COUNT; i++)
+			for (int i=0; i<Board.SquareCount; i++)
 			{
-				for (int j=0; j<Board.SQUARE_COUNT; j++)
+				for (int j=0; j<Board.SquareCount; j++)
 				{
-					aHistoryEntryWhite[i,j] = 0;
-					aHistoryEntryBlack[i,j] = 0;
+					_aHistoryEntryWhite[i,j] = 0;
+					_aHistoryEntryBlack[i,j] = 0;
 				}
 			}
 		}
 
-		static public void Record(Player.enmColour colour, int OrdinalFrom, int OrdinalTo, int Increase, int Value)
+		static public void Record(Player.EnmColour colour, int ordinalFrom, int ordinalTo, int increase, int value)
 		{
-			if (colour==Player.enmColour.White)
+			if (colour==Player.EnmColour.White)
 			{
-				aHistoryEntryWhite[OrdinalFrom, OrdinalTo] += Value;
+				_aHistoryEntryWhite[ordinalFrom, ordinalTo] += value;
 			}
 			else 
 			{
-				aHistoryEntryBlack[OrdinalFrom, OrdinalTo] += Value;
+				_aHistoryEntryBlack[ordinalFrom, ordinalTo] += value;
 			}
 		}
 
-		static public int Retrieve(Player.enmColour colour, int OrdinalFrom, int OrdinalTo)
+		static public int Retrieve(Player.EnmColour colour, int ordinalFrom, int ordinalTo)
 		{
-			return colour==Player.enmColour.White ? aHistoryEntryWhite[OrdinalFrom, OrdinalTo] : aHistoryEntryBlack[OrdinalFrom, OrdinalTo];
+			return colour==Player.EnmColour.White ? _aHistoryEntryWhite[ordinalFrom, ordinalTo] : _aHistoryEntryBlack[ordinalFrom, ordinalTo];
 		}
 	}
 }

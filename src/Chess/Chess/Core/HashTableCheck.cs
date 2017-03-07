@@ -2,35 +2,35 @@ namespace Chess.Core
 {
 	public class HashTableCheck
 	{
-		private static int m_intProbes = 0;
-		private static int m_intHits = 0;
-		private static int m_intWrites = 0;
-		private static int m_intCollisions = 0;
-		private static int m_intOverwrites = 0;
+		private static int _mIntProbes = 0;
+		private static int _mIntHits = 0;
+		private static int _mIntWrites = 0;
+		private static int _mIntCollisions = 0;
+		private static int _mIntOverwrites = 0;
 
 		public static int Probes
 		{
-			get {return m_intProbes;}
+			get {return _mIntProbes;}
 		}
 
 		public static int Hits
 		{
-			get {return m_intHits;}
+			get {return _mIntHits;}
 		}
 
 		public static int Writes
 		{
-			get {return m_intWrites;}
+			get {return _mIntWrites;}
 		}
 
 		public static int Collisions
 		{
-			get { return m_intCollisions; }
+			get { return _mIntCollisions; }
 		}
 
 		public static int Overwrites
 		{
-			get { return m_intOverwrites; }
+			get { return _mIntOverwrites; }
 		}
 
 		private struct HashEntry
@@ -40,8 +40,8 @@ namespace Chess.Core
 			public bool		IsInCheck;
 		}
 
-		public const int HASH_TABLE_SIZE = 1000777;
-		static HashEntry[] m_arrHashEntry = new HashEntry[HASH_TABLE_SIZE];
+		public const int HashTableSize = 1000777;
+	    private static HashEntry[] _mArrHashEntry = new HashEntry[HashTableSize];
 
 		static HashTableCheck()
 		{
@@ -50,48 +50,48 @@ namespace Chess.Core
 
 		public static void ResetStats()
 		{
-			m_intProbes = 0;
-			m_intHits = 0;
-			m_intWrites = 0;
-			m_intCollisions = 0;
-			m_intOverwrites = 0;
+			_mIntProbes = 0;
+			_mIntHits = 0;
+			_mIntWrites = 0;
+			_mIntCollisions = 0;
+			_mIntOverwrites = 0;
 		}
 		public static void Clear()
 		{
 			ResetStats();
-			for (uint intIndex=0; intIndex<HASH_TABLE_SIZE; intIndex++)
+			for (uint intIndex=0; intIndex<HashTableSize; intIndex++)
 			{
-				m_arrHashEntry[intIndex].HashCodeA = 0;
-				m_arrHashEntry[intIndex].HashCodeB = 0;
-				m_arrHashEntry[intIndex].IsInCheck = false;
+				_mArrHashEntry[intIndex].HashCodeA = 0;
+				_mArrHashEntry[intIndex].HashCodeB = 0;
+				_mArrHashEntry[intIndex].IsInCheck = false;
 			}
 		}
 
 		public unsafe static bool IsPlayerInCheck(Player player)
 		{
-			fixed (HashEntry* phashBase = &m_arrHashEntry[0])
+			fixed (HashEntry* phashBase = &_mArrHashEntry[0])
 			{
-				ulong HashCodeA = Board.HashCodeA;
-				ulong HashCodeB = Board.HashCodeB;
+				ulong hashCodeA = Board.HashCodeA;
+				ulong hashCodeB = Board.HashCodeB;
 
-				if (player.Colour==Player.enmColour.Black)
+				if (player.Colour==Player.EnmColour.Black)
 				{
-					HashCodeA |= 0x1;
-					HashCodeB |= 0x1;
+					hashCodeA |= 0x1;
+					hashCodeB |= 0x1;
 				}
 				else
 				{
-					HashCodeA &= 0xFFFFFFFFFFFFFFFE;
-					HashCodeB &= 0xFFFFFFFFFFFFFFFE;
+					hashCodeA &= 0xFFFFFFFFFFFFFFFE;
+					hashCodeB &= 0xFFFFFFFFFFFFFFFE;
 				}
 
 				HashEntry* phashEntry = phashBase;
-				phashEntry += ((uint)(HashCodeA % HASH_TABLE_SIZE));
+				phashEntry += ((uint)(hashCodeA % HashTableSize));
 				
-				if (phashEntry->HashCodeA!=HashCodeA || phashEntry->HashCodeB!=HashCodeB)
+				if (phashEntry->HashCodeA!=hashCodeA || phashEntry->HashCodeB!=hashCodeB)
 				{
-					phashEntry->HashCodeA = HashCodeA;
-					phashEntry->HashCodeB = HashCodeB;
+					phashEntry->HashCodeA = hashCodeA;
+					phashEntry->HashCodeB = hashCodeB;
 					phashEntry->IsInCheck = player.DetermineCheckStatus();
 				}
 				return phashEntry->IsInCheck;

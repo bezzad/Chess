@@ -14,22 +14,22 @@ namespace Chess.Forms
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
-		
-		const int SQUARE_SIZE = 48;
-		const int INTELLEGENCE_HUMAN = 0;
-		const int INTELLEGENCE_COMPUTER = 1;
+		private const int SquareSize = 48;
 
-		private System.Drawing.Color BOARD_SQUARE_COLOUR_WHITE = System.Drawing.Color.FromArgb(229,197,105);
-		private System.Drawing.Color BOARD_SQUARE_COLOUR_BLACK = System.Drawing.Color.FromArgb(189,117,53);
+	    private const int IntellegenceHuman = 0;
+	    private const int IntellegenceComputer = 1;
 
-		Square m_squareFrom = null;
-		Moves m_movesPossible = new Moves();
-		private Game m_game;
-		PictureBox[,] m_picSquares;
-		PictureBox[] m_picWhitesCaptures;
-		PictureBox[] m_picBlacksCaptures;
-        Square m_squareLastFrom = null;
-        Square m_squareLastTo = null;
+		private readonly System.Drawing.Color _boardSquareColourWhite = System.Drawing.Color.FromArgb(229,197,105);
+		private readonly System.Drawing.Color _boardSquareColourBlack = System.Drawing.Color.FromArgb(189,117,53);
+
+	    private Square _mSquareFrom = null;
+	    private Moves _mMovesPossible = new Moves();
+		private Game _mGame;
+	    private PictureBox[,] _mPicSquares;
+	    private PictureBox[] _mPicWhitesCaptures;
+	    private PictureBox[] _mPicBlacksCaptures;
+	    private Square _mSquareLastFrom = null;
+	    private Square _mSquareLastTo = null;
 
         public FrmMain()
 		{
@@ -48,28 +48,28 @@ namespace Chess.Forms
 		{
 			RenderStatus();
 
-			if (m_squareLastFrom != null)
+			if (_mSquareLastFrom != null)
 			{
-				m_picSquares[m_squareLastFrom.File, m_squareLastFrom.Rank].BackColor = (m_squareLastFrom.Colour==Square.enmColour.White ? BOARD_SQUARE_COLOUR_WHITE : BOARD_SQUARE_COLOUR_BLACK);
-				m_picSquares[m_squareLastFrom.File, m_squareLastFrom.Rank].Refresh();
+				_mPicSquares[_mSquareLastFrom.File, _mSquareLastFrom.Rank].BackColor = (_mSquareLastFrom.Colour==Square.EnmColour.White ? _boardSquareColourWhite : _boardSquareColourBlack);
+				_mPicSquares[_mSquareLastFrom.File, _mSquareLastFrom.Rank].Refresh();
 			}
 			if (Game.ShowThinking)
 			{
-				m_squareLastFrom = Game.PlayerToPlay.CurrentMove.From;
-				m_picSquares[m_squareLastFrom.File, m_squareLastFrom.Rank].BackColor=System.Drawing.Color.Yellow;
-				m_picSquares[m_squareLastFrom.File, m_squareLastFrom.Rank].Refresh();
+				_mSquareLastFrom = Game.PlayerToPlay.CurrentMove.From;
+				_mPicSquares[_mSquareLastFrom.File, _mSquareLastFrom.Rank].BackColor=System.Drawing.Color.Yellow;
+				_mPicSquares[_mSquareLastFrom.File, _mSquareLastFrom.Rank].Refresh();
 			}
 
-			if (m_squareLastTo != null)
+			if (_mSquareLastTo != null)
 			{
-				m_picSquares[m_squareLastTo.File, m_squareLastTo.Rank].BackColor = (m_squareLastTo.Colour==Square.enmColour.White ? BOARD_SQUARE_COLOUR_WHITE : BOARD_SQUARE_COLOUR_BLACK);
-				m_picSquares[m_squareLastTo.File, m_squareLastTo.Rank].Refresh();
+				_mPicSquares[_mSquareLastTo.File, _mSquareLastTo.Rank].BackColor = (_mSquareLastTo.Colour==Square.EnmColour.White ? _boardSquareColourWhite : _boardSquareColourBlack);
+				_mPicSquares[_mSquareLastTo.File, _mSquareLastTo.Rank].Refresh();
 			}
 			if (Game.ShowThinking)
 			{
-				m_squareLastTo = Game.PlayerToPlay.CurrentMove.To;
-				m_picSquares[m_squareLastTo.File, m_squareLastTo.Rank].BackColor=System.Drawing.Color.Yellow;
-				m_picSquares[m_squareLastTo.File, m_squareLastTo.Rank].Refresh();
+				_mSquareLastTo = Game.PlayerToPlay.CurrentMove.To;
+				_mPicSquares[_mSquareLastTo.File, _mSquareLastTo.Rank].BackColor=System.Drawing.Color.Yellow;
+				_mPicSquares[_mSquareLastTo.File, _mSquareLastTo.Rank].Refresh();
 			}
 
 			SetFormState();
@@ -79,13 +79,13 @@ namespace Chess.Forms
 
 		private void frmMain_Load(object sender, System.EventArgs e)
 		{
-			m_game = new Game();
+			_mGame = new Game();
 
-			Game.PlayerWhite.MoveConsidered += new delegateGameEvent(MoveConsidered);
-			Game.PlayerBlack.MoveConsidered += new delegateGameEvent(MoveConsidered);
+			Game.PlayerWhite.MoveConsidered += new DelegateGameEvent(MoveConsidered);
+			Game.PlayerBlack.MoveConsidered += new DelegateGameEvent(MoveConsidered);
 			
-			cboIntellegenceWhite.SelectedIndex = Game.PlayerWhite.Intellegence==Player.enmIntellegence.Human ? INTELLEGENCE_HUMAN : INTELLEGENCE_COMPUTER;
-			cboIntellegenceBlack.SelectedIndex = Game.PlayerBlack.Intellegence==Player.enmIntellegence.Human ? INTELLEGENCE_HUMAN : INTELLEGENCE_COMPUTER;
+			cboIntellegenceWhite.SelectedIndex = Game.PlayerWhite.Intellegence==Player.EnmIntellegence.Human ? IntellegenceHuman : IntellegenceComputer;
+			cboIntellegenceBlack.SelectedIndex = Game.PlayerBlack.Intellegence==Player.EnmIntellegence.Human ? IntellegenceHuman : IntellegenceComputer;
 
 
 			CreateBoard();
@@ -116,70 +116,70 @@ namespace Chess.Forms
 		{
 			Square square;
 
-			for (int intOrdinal=0; intOrdinal<Board.SQUARE_COUNT; intOrdinal++)
+			for (int intOrdinal=0; intOrdinal<Board.SquareCount; intOrdinal++)
 			{
 				square = Board.GetSquare(intOrdinal);
 				
 				if (square!=null)
 				{
-					if (square.Colour == Square.enmColour.White)
+					if (square.Colour == Square.EnmColour.White)
 					{
-						m_picSquares[square.File, square.Rank].BackColor = BOARD_SQUARE_COLOUR_WHITE;
+						_mPicSquares[square.File, square.Rank].BackColor = _boardSquareColourWhite;
 					}
 					else
 					{
-						m_picSquares[square.File, square.Rank].BackColor = BOARD_SQUARE_COLOUR_BLACK;
+						_mPicSquares[square.File, square.Rank].BackColor = _boardSquareColourBlack;
 					}
 
 					if (square.Piece == null)
 					{
-						m_picSquares[square.File, square.Rank].Image = null;
+						_mPicSquares[square.File, square.Rank].Image = null;
 					}
 					else
 					{
-						m_picSquares[square.File, square.Rank].Image = GetPieceImage(square.Piece);
+						_mPicSquares[square.File, square.Rank].Image = GetPieceImage(square.Piece);
 					}
 
-					m_picSquares[square.File, square.Rank].BorderStyle = System.Windows.Forms.BorderStyle.None;
+					_mPicSquares[square.File, square.Rank].BorderStyle = System.Windows.Forms.BorderStyle.None;
 				}
 			}
 
 			// Render selection highlights
-			if (m_squareFrom!=null)
+			if (_mSquareFrom!=null)
 			{
-				m_picSquares[m_squareFrom.File, m_squareFrom.Rank].BackColor = Color.Blue;
-				foreach (Move move in m_movesPossible)
+				_mPicSquares[_mSquareFrom.File, _mSquareFrom.Rank].BackColor = Color.Blue;
+				foreach (Move move in _mMovesPossible)
 				{
-					m_picSquares[move.To.File, move.To.Rank].BackColor = Color.LightBlue;
+					_mPicSquares[move.To.File, move.To.Rank].BackColor = Color.LightBlue;
 				}
 			}
 
 			// Render Last Move highlights
 			if (Game.MoveHistory.Count>0)
 			{
-				m_picSquares[Game.MoveHistory.Item(Game.MoveHistory.Count-1).From.File, Game.MoveHistory.Item(Game.MoveHistory.Count-1).From.Rank].BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-				m_picSquares[Game.MoveHistory.Item(Game.MoveHistory.Count-1).To.File  , Game.MoveHistory.Item(Game.MoveHistory.Count-1).To.Rank  ].BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+				_mPicSquares[Game.MoveHistory.Item(Game.MoveHistory.Count-1).From.File, Game.MoveHistory.Item(Game.MoveHistory.Count-1).From.Rank].BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+				_mPicSquares[Game.MoveHistory.Item(Game.MoveHistory.Count-1).To.File  , Game.MoveHistory.Item(Game.MoveHistory.Count-1).To.Rank  ].BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
 			}
 
 			// Render pieces taken
 			for (int intIndex=0; intIndex<15; intIndex++)
 			{
-				m_picWhitesCaptures[intIndex].Image = null;
-				m_picBlacksCaptures[intIndex].Image = null;
+				_mPicWhitesCaptures[intIndex].Image = null;
+				_mPicBlacksCaptures[intIndex].Image = null;
 			}
 			for (int intIndex=0; intIndex<Game.PlayerWhite.CapturedEnemyPieces.Count; intIndex++)
 			{
-				m_picWhitesCaptures[intIndex].Image = GetPieceImage(Game.PlayerWhite.CapturedEnemyPieces.Item(intIndex));
+				_mPicWhitesCaptures[intIndex].Image = GetPieceImage(Game.PlayerWhite.CapturedEnemyPieces.Item(intIndex));
 			}
 			for (int intIndex=0; intIndex<Game.PlayerBlack.CapturedEnemyPieces.Count; intIndex++)
 			{
-				m_picBlacksCaptures[intIndex].Image = GetPieceImage(Game.PlayerBlack.CapturedEnemyPieces.Item(intIndex));
+				_mPicBlacksCaptures[intIndex].Image = GetPieceImage(Game.PlayerBlack.CapturedEnemyPieces.Item(intIndex));
 			}
 
 			// Render player status
 			if (Game.PlayerToPlay == Game.PlayerWhite)
 			{
-				lblWhiteScore.BackColor = Game.PlayerWhite.Status==Player.enmStatus.InCheckMate ? Color.Red : (Game.PlayerWhite.IsInCheck ? Color.Orange: Color.FromName(System.Drawing.KnownColor.Control.ToString()) );
+				lblWhiteScore.BackColor = Game.PlayerWhite.Status==Player.EnmStatus.InCheckMate ? Color.Red : (Game.PlayerWhite.IsInCheck ? Color.Orange: Color.FromName(System.Drawing.KnownColor.Control.ToString()) );
 				lblBlackScore.BackColor = Color.FromName(System.Drawing.KnownColor.Control.ToString());
 				lblWhiteClock.BackColor = Color.LightGray;
 				lblBlackClock.BackColor = Color.FromName(System.Drawing.KnownColor.Control.ToString());
@@ -187,7 +187,7 @@ namespace Chess.Forms
 			else
 			{
 				lblWhiteScore.BackColor = Color.FromName(System.Drawing.KnownColor.Control.ToString());
-				lblBlackScore.BackColor = Game.PlayerBlack.Status==Player.enmStatus.InCheckMate ? Color.Red : (Game.PlayerBlack.IsInCheck ? Color.Orange : Color.FromName(System.Drawing.KnownColor.Control.ToString()) );
+				lblBlackScore.BackColor = Game.PlayerBlack.Status==Player.EnmStatus.InCheckMate ? Color.Red : (Game.PlayerBlack.IsInCheck ? Color.Orange : Color.FromName(System.Drawing.KnownColor.Control.ToString()) );
 				lblBlackClock.BackColor = Color.LightGray;
 				lblWhiteClock.BackColor = Color.FromName(System.Drawing.KnownColor.Control.ToString());
 			}
@@ -286,7 +286,7 @@ namespace Chess.Forms
 			Label lblRank;
 			Label lblFile;
 
-			for (int intRank=0; intRank<Board.RANK_COUNT; intRank++)
+			for (int intRank=0; intRank<Board.RankCount; intRank++)
 			{
 				lblRank = new System.Windows.Forms.Label();
 				lblRank.BackColor = System.Drawing.Color.Transparent;
@@ -297,13 +297,13 @@ namespace Chess.Forms
 				lblRank.Text = Board.GetSquare(0, intRank).RankName;
 				lblRank.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 				lblRank.Left = 0;
-				lblRank.Top = (Board.RANK_COUNT-1)*SQUARE_SIZE - intRank*SQUARE_SIZE + 16;
+				lblRank.Top = (Board.RankCount-1)*SquareSize - intRank*SquareSize + 16;
 				pnlMain.Controls.Add( lblRank );
 			}
 
-			m_picSquares = new PictureBox[Board.FILE_COUNT, Board.RANK_COUNT];
+			_mPicSquares = new PictureBox[Board.FileCount, Board.RankCount];
 
-			for (int intFile=0; intFile<Board.FILE_COUNT; intFile++)
+			for (int intFile=0; intFile<Board.FileCount; intFile++)
 			{
 
 				lblFile = new System.Windows.Forms.Label();
@@ -314,13 +314,13 @@ namespace Chess.Forms
 				lblFile.TabIndex = 12;
 				lblFile.Text = Board.GetSquare(intFile, 0).FileName;
 				lblFile.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-				lblFile.Left = intFile*SQUARE_SIZE + 30;
-				lblFile.Top = (Board.RANK_COUNT)*SQUARE_SIZE + 24;
+				lblFile.Left = intFile*SquareSize + 30;
+				lblFile.Top = (Board.RankCount)*SquareSize + 24;
 				pnlMain.Controls.Add( lblFile );
 				
 			}
 
-			for (int intOrdinal=0; intOrdinal<Board.SQUARE_COUNT; intOrdinal++)
+			for (int intOrdinal=0; intOrdinal<Board.SquareCount; intOrdinal++)
 			{
 				square = Board.GetSquare(intOrdinal);
 
@@ -328,58 +328,58 @@ namespace Chess.Forms
 				{
 					picSquare = new System.Windows.Forms.PictureBox();
 
-					picSquare.Left = square.File*SQUARE_SIZE + 1;
-					picSquare.Top = (Board.RANK_COUNT-1)*SQUARE_SIZE - square.Rank*SQUARE_SIZE + 1;
-					if (square.Colour == Square.enmColour.White)
+					picSquare.Left = square.File*SquareSize + 1;
+					picSquare.Top = (Board.RankCount-1)*SquareSize - square.Rank*SquareSize + 1;
+					if (square.Colour == Square.EnmColour.White)
 					{
-						picSquare.BackColor = BOARD_SQUARE_COLOUR_WHITE;
+						picSquare.BackColor = _boardSquareColourWhite;
 					}
 					else
 					{
-						picSquare.BackColor = BOARD_SQUARE_COLOUR_BLACK;
+						picSquare.BackColor = _boardSquareColourBlack;
 					}
 					picSquare.Name = "picSquare" + square.File.ToString() + square.Rank.ToString();
-					picSquare.Size = new System.Drawing.Size(SQUARE_SIZE, SQUARE_SIZE);
+					picSquare.Size = new System.Drawing.Size(SquareSize, SquareSize);
 					picSquare.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
 					picSquare.TabIndex = 0;
 					picSquare.TabStop = false;
 					picSquare.Tag = square.Ordinal;
 					picSquare.Click += new System.EventHandler(this.picSquare_Click);
 					pnlEdging.Controls.Add( picSquare );
-					m_picSquares[square.File, square.Rank] = picSquare;
+					_mPicSquares[square.File, square.Rank] = picSquare;
 				}
 			}
 
-			m_picWhitesCaptures = new PictureBox[15];
-			m_picBlacksCaptures = new PictureBox[15];
+			_mPicWhitesCaptures = new PictureBox[15];
+			_mPicBlacksCaptures = new PictureBox[15];
 
 			for (int intIndex=0; intIndex<15; intIndex++)
 			{
 				picSquare = new System.Windows.Forms.PictureBox();
-				picSquare.Left = intIndex*(SQUARE_SIZE+1)+1;
+				picSquare.Left = intIndex*(SquareSize+1)+1;
 				picSquare.Top = 432;
 				picSquare.BackColor = System.Drawing.SystemColors.ControlDark;
 				picSquare.Name = "picSquareWhite" + intIndex.ToString();
-				picSquare.Size = new System.Drawing.Size(SQUARE_SIZE, SQUARE_SIZE);
+				picSquare.Size = new System.Drawing.Size(SquareSize, SquareSize);
 				picSquare.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
 				picSquare.TabIndex = 0;
 				picSquare.TabStop = false;
 				picSquare.Tag = intIndex;
 				pnlMain.Controls.Add( picSquare );
-				m_picWhitesCaptures[intIndex] = picSquare;
+				_mPicWhitesCaptures[intIndex] = picSquare;
 
 				picSquare = new System.Windows.Forms.PictureBox();
-				picSquare.Left = intIndex*(SQUARE_SIZE+1)+1;
-				picSquare.Top = 432 + SQUARE_SIZE+1;
+				picSquare.Left = intIndex*(SquareSize+1)+1;
+				picSquare.Top = 432 + SquareSize+1;
 				picSquare.BackColor = System.Drawing.SystemColors.ControlDark;
 				picSquare.Name = "picSquareBlack" + intIndex.ToString();
-				picSquare.Size = new System.Drawing.Size(SQUARE_SIZE, SQUARE_SIZE);
+				picSquare.Size = new System.Drawing.Size(SquareSize, SquareSize);
 				picSquare.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
 				picSquare.TabIndex = 0;
 				picSquare.TabStop = false;
 				picSquare.Tag = intIndex;
 				pnlMain.Controls.Add( picSquare );
-				m_picBlacksCaptures[intIndex] = picSquare;
+				_mPicBlacksCaptures[intIndex] = picSquare;
 			}
 		}
 
@@ -387,7 +387,7 @@ namespace Chess.Forms
 		{
 			int intOrdinal = Convert.ToInt32( ((PictureBox)sender).Tag );
 
-			if (m_squareFrom==null)
+			if (_mSquareFrom==null)
 			{
 				// No current selection
 
@@ -397,15 +397,15 @@ namespace Chess.Forms
 				if (piece!=null && piece.Player.Colour==Game.PlayerToPlay.Colour)
 				{
 					// Mark possible moves
-					m_squareFrom = squareClicked;
-					m_movesPossible = new Moves();
-					piece.GenerateLegalMoves(m_movesPossible);
+					_mSquareFrom = squareClicked;
+					_mMovesPossible = new Moves();
+					piece.GenerateLegalMoves(_mMovesPossible);
 				}
 				else
 				{
 					// No piece on square
-					m_squareFrom = null;
-					m_movesPossible = new Moves();
+					_mSquareFrom = null;
+					_mMovesPossible = new Moves();
 				}
 			}
 			else
@@ -416,12 +416,12 @@ namespace Chess.Forms
 				if (piece==null || piece!=null && piece.Player.Colour!=Game.PlayerToPlay.Colour)
 				{
 					// Is square one of the possible moves? If it is, then move the piece
-					foreach (Move move in m_movesPossible)
+					foreach (Move move in _mMovesPossible)
 					{
 						if (move.To == squareClicked)
 						{
-							m_squareFrom = null;
-							m_movesPossible = new Moves();
+							_mSquareFrom = null;
+							_mMovesPossible = new Moves();
 
 							MakeAHumanMove(move.Name, move.Piece, move.To);
 
@@ -429,27 +429,27 @@ namespace Chess.Forms
 							break; 
 						}
 					}
-					m_squareFrom = null;
-					m_movesPossible = new Moves();
+					_mSquareFrom = null;
+					_mMovesPossible = new Moves();
 				}
-				else if (piece!=null && piece==m_squareFrom.Piece)
+				else if (piece!=null && piece==_mSquareFrom.Piece)
 				{
 					// Same piece clicked again, so unselect
-					m_squareFrom = null;
-					m_movesPossible = new Moves();
+					_mSquareFrom = null;
+					_mMovesPossible = new Moves();
 				}
 				else if (piece!=null) // Must be own piece
 				{
 					// Mark possible moves
-					m_movesPossible = new Moves();
-					m_squareFrom = squareClicked;
-					m_squareFrom.Piece.GenerateLegalMoves(m_movesPossible);
+					_mMovesPossible = new Moves();
+					_mSquareFrom = squareClicked;
+					_mSquareFrom.Piece.GenerateLegalMoves(_mMovesPossible);
 				}
 				else
 				{
 					// No piece on square
-					m_squareFrom = null;
-					m_movesPossible = new Moves();
+					_mSquareFrom = null;
+					_mMovesPossible = new Moves();
 				}
 			}
 
@@ -458,12 +458,12 @@ namespace Chess.Forms
 
 		private void CheckIfAutoNextMove()
 		{
-			if (Game.PlayerWhite.Intellegence==Player.enmIntellegence.Computer && Game.PlayerBlack.Intellegence==Player.enmIntellegence.Computer)
+			if (Game.PlayerWhite.Intellegence==Player.EnmIntellegence.Computer && Game.PlayerBlack.Intellegence==Player.EnmIntellegence.Computer)
 			{
 				// Dont want an infinate loop of Computer moves
 				return;
 			}
-			while (Game.PlayerToPlay.Intellegence==Player.enmIntellegence.Computer)
+			while (Game.PlayerToPlay.Intellegence==Player.EnmIntellegence.Computer)
 			{
 				if (!Game.PlayerToPlay.CanMove)
 				{
@@ -476,9 +476,9 @@ namespace Chess.Forms
 			}
 		}
 
-		private void MakeAHumanMove(Move.enmName MoveName, Piece piece, Square square)
+		private void MakeAHumanMove(Move.EnmName moveName, Piece piece, Square square)
 		{
-			Game.MakeAMove(MoveName, piece, square);
+			Game.MakeAMove(moveName, piece, square);
 			RenderBoard();
 		}
 
@@ -518,12 +518,12 @@ namespace Chess.Forms
 			lvwMoveHistory.Items.Add( new ListViewItem( lvi ) );
 			switch (move.Piece.Player.Colour)
 			{
-				case Player.enmColour.White:
+				case Player.EnmColour.White:
 					lvwMoveHistory.Items[lvwMoveHistory.Items.Count-1].BackColor = Color.White;
 					lvwMoveHistory.Items[lvwMoveHistory.Items.Count-1].ForeColor = Color.Blue;
 					break;
 
-				case Player.enmColour.Black:
+				case Player.EnmColour.Black:
 					lvwMoveHistory.Items[lvwMoveHistory.Items.Count-1].BackColor = Color.White;
 					lvwMoveHistory.Items[lvwMoveHistory.Items.Count-1].ForeColor = Color.Black;
 					break;
@@ -534,8 +534,8 @@ namespace Chess.Forms
 		private void RemoveLastHistoryItem()
 		{
 			lvwMoveHistory.Items.RemoveAt(lvwMoveHistory.Items.Count-1);
-			m_squareFrom = null;
-			m_movesPossible = new Moves();
+			_mSquareFrom = null;
+			_mMovesPossible = new Moves();
 		}
 
 		private void RenderMoveAnalysis()
@@ -661,12 +661,12 @@ namespace Chess.Forms
 
 		private void cboIntellegenceWhite_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
-			Game.PlayerWhite.Intellegence = cboIntellegenceWhite.SelectedIndex==INTELLEGENCE_HUMAN ? Player.enmIntellegence.Human : Player.enmIntellegence.Computer;
+			Game.PlayerWhite.Intellegence = cboIntellegenceWhite.SelectedIndex==IntellegenceHuman ? Player.EnmIntellegence.Human : Player.EnmIntellegence.Computer;
 		}
 
 		private void cboIntellegenceBlack_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
-			Game.PlayerBlack.Intellegence = cboIntellegenceBlack.SelectedIndex==INTELLEGENCE_HUMAN ? Player.enmIntellegence.Human : Player.enmIntellegence.Computer;
+			Game.PlayerBlack.Intellegence = cboIntellegenceBlack.SelectedIndex==IntellegenceHuman ? Player.EnmIntellegence.Human : Player.EnmIntellegence.Computer;
 		}
 
 		private void mnuAbout_Click(object sender, System.EventArgs e)

@@ -6,33 +6,33 @@ namespace Chess.Core
 		{
 			Piece piece;
 
-			m_PlayerClock = new PlayerClock(this);
+			MPlayerClock = new PlayerClock(this);
 
-			this.Colour = Player.enmColour.White;
-			this.Intellegence = Player.enmIntellegence.Human;
+			this.Colour = Player.EnmColour.White;
+			this.Intellegence = Player.EnmIntellegence.Human;
 
-			this.m_colPieces.Add( this.King = (new Piece(Piece.enmName.King, this, 4,0, Piece.enmID.WhiteKing)) );
+			this.MColPieces.Add( this.King = (new Piece(Piece.EnmName.King, this, 4,0, Piece.EnmId.WhiteKing)) );
 
-			this.Queen = (new Piece(Piece.enmName.Queen, this, 3,0, Piece.enmID.WhiteQueen )); this.m_colPieces.Add(this.Queen); this.m_colMaterial.Add(this.Queen);
+			this.Queen = (new Piece(Piece.EnmName.Queen, this, 3,0, Piece.EnmId.WhiteQueen )); this.MColPieces.Add(this.Queen); this.MColMaterial.Add(this.Queen);
 
-			this.QueensRook = (new Piece(Piece.enmName.Rook, this, 0,0, Piece.enmID.WhiteQueensRook )); this.m_colPieces.Add(this.QueensRook); this.m_colMaterial.Add(this.QueensRook);
-			this.KingsRook  = (new Piece(Piece.enmName.Rook, this, 7,0, Piece.enmID.WhiteKingsRook )); this.m_colPieces.Add(this.KingsRook ); this.m_colMaterial.Add(this.KingsRook );
+			this.QueensRook = (new Piece(Piece.EnmName.Rook, this, 0,0, Piece.EnmId.WhiteQueensRook )); this.MColPieces.Add(this.QueensRook); this.MColMaterial.Add(this.QueensRook);
+			this.KingsRook  = (new Piece(Piece.EnmName.Rook, this, 7,0, Piece.EnmId.WhiteKingsRook )); this.MColPieces.Add(this.KingsRook ); this.MColMaterial.Add(this.KingsRook );
 			
-			this.QueensBishop = (new Piece(Piece.enmName.Bishop, this, 2,0, Piece.enmID.WhiteQueensBishop )); this.m_colPieces.Add(this.QueensBishop); this.m_colMaterial.Add(this.QueensBishop);
-			this.KingsBishop  = (new Piece(Piece.enmName.Bishop, this, 5,0, Piece.enmID.WhiteKingsBishop )); this.m_colPieces.Add(this.KingsBishop ); this.m_colMaterial.Add(this.KingsBishop );
+			this.QueensBishop = (new Piece(Piece.EnmName.Bishop, this, 2,0, Piece.EnmId.WhiteQueensBishop )); this.MColPieces.Add(this.QueensBishop); this.MColMaterial.Add(this.QueensBishop);
+			this.KingsBishop  = (new Piece(Piece.EnmName.Bishop, this, 5,0, Piece.EnmId.WhiteKingsBishop )); this.MColPieces.Add(this.KingsBishop ); this.MColMaterial.Add(this.KingsBishop );
 			
-			this.QueensKnight = (new Piece(Piece.enmName.Knight, this, 1,0, Piece.enmID.WhiteQueensKnight )); this.m_colPieces.Add(this.QueensKnight); this.m_colMaterial.Add(this.QueensKnight);
-			this.KingsKnight  = (new Piece(Piece.enmName.Knight, this, 6,0, Piece.enmID.WhiteKingsKnight )); this.m_colPieces.Add(this.KingsKnight ); this.m_colMaterial.Add(this.KingsKnight );
+			this.QueensKnight = (new Piece(Piece.EnmName.Knight, this, 1,0, Piece.EnmId.WhiteQueensKnight )); this.MColPieces.Add(this.QueensKnight); this.MColMaterial.Add(this.QueensKnight);
+			this.KingsKnight  = (new Piece(Piece.EnmName.Knight, this, 6,0, Piece.EnmId.WhiteKingsKnight )); this.MColPieces.Add(this.KingsKnight ); this.MColMaterial.Add(this.KingsKnight );
 			
-			piece = new Piece(Piece.enmName.Pawn, this, 0,1, Piece.enmID.WhitePawn1); this.m_colPieces.Add(piece); this.m_colPawns.Add(piece); 
-			piece = new Piece(Piece.enmName.Pawn, this, 1,1, Piece.enmID.WhitePawn2); this.m_colPieces.Add(piece); this.m_colPawns.Add(piece); 
-			piece = new Piece(Piece.enmName.Pawn, this, 2,1, Piece.enmID.WhitePawn3); this.m_colPieces.Add(piece); this.m_colPawns.Add(piece); 
-			piece = new Piece(Piece.enmName.Pawn, this, 5,1, Piece.enmID.WhitePawn6); this.m_colPieces.Add(piece); this.m_colPawns.Add(piece); 
-			piece = new Piece(Piece.enmName.Pawn, this, 6,1, Piece.enmID.WhitePawn7); this.m_colPieces.Add(piece); this.m_colPawns.Add(piece); 
-			piece = new Piece(Piece.enmName.Pawn, this, 7,1, Piece.enmID.WhitePawn8); this.m_colPieces.Add(piece); this.m_colPawns.Add(piece); 
+			piece = new Piece(Piece.EnmName.Pawn, this, 0,1, Piece.EnmId.WhitePawn1); this.MColPieces.Add(piece); this.MColPawns.Add(piece); 
+			piece = new Piece(Piece.EnmName.Pawn, this, 1,1, Piece.EnmId.WhitePawn2); this.MColPieces.Add(piece); this.MColPawns.Add(piece); 
+			piece = new Piece(Piece.EnmName.Pawn, this, 2,1, Piece.EnmId.WhitePawn3); this.MColPieces.Add(piece); this.MColPawns.Add(piece); 
+			piece = new Piece(Piece.EnmName.Pawn, this, 5,1, Piece.EnmId.WhitePawn6); this.MColPieces.Add(piece); this.MColPawns.Add(piece); 
+			piece = new Piece(Piece.EnmName.Pawn, this, 6,1, Piece.EnmId.WhitePawn7); this.MColPieces.Add(piece); this.MColPawns.Add(piece); 
+			piece = new Piece(Piece.EnmName.Pawn, this, 7,1, Piece.EnmId.WhitePawn8); this.MColPieces.Add(piece); this.MColPawns.Add(piece); 
 
-			this.QueensPawn = new Piece(Piece.enmName.Pawn, this, 3,1, Piece.enmID.WhitePawn4); this.m_colPieces.Add(this.QueensPawn); this.m_colPawns.Add(this.QueensPawn); 
-			this.KingsPawn  = new Piece(Piece.enmName.Pawn, this, 4,1, Piece.enmID.WhitePawn5); this.m_colPieces.Add(this.KingsPawn ); this.m_colPawns.Add(this.KingsPawn ); 
+			this.QueensPawn = new Piece(Piece.EnmName.Pawn, this, 3,1, Piece.EnmId.WhitePawn4); this.MColPieces.Add(this.QueensPawn); this.MColPawns.Add(this.QueensPawn); 
+			this.KingsPawn  = new Piece(Piece.EnmName.Pawn, this, 4,1, Piece.EnmId.WhitePawn5); this.MColPieces.Add(this.KingsPawn ); this.MColPawns.Add(this.KingsPawn ); 
 		}
 
 		public override int PawnForwardOffset
@@ -54,7 +54,7 @@ namespace Chess.Core
 		{
 			get
 			{
-				return m_PlayerClock;
+				return MPlayerClock;
 			}
 		}
 

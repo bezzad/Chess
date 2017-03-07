@@ -4,7 +4,7 @@ namespace Chess.Core
 {
 	public class Piece: IPieceTop, IComparable
 	{
-		public enum enmName
+		public enum EnmName
 		{
 					Pawn
 				,	Bishop
@@ -14,7 +14,7 @@ namespace Chess.Core
 				,	King
 		}
 
-		public enum enmID
+		public enum EnmId
 		{
 				WhiteQueensRook
 			,	WhiteQueensKnight
@@ -50,15 +50,15 @@ namespace Chess.Core
 			,	BlackPawn8
 		}
 
-		private IPieceTop m_Top;
-		private Square m_square;
-		private Player m_player;
-		private int m_LastMoveTurnNo = 0;
-		private int m_NoOfMoves = 0;
-		private bool m_HasBeenPromoted = false;
-		private bool m_IsInPlay = true;
-		private int m_Points = 0;
-		private enmID m_ID;
+		private IPieceTop _mTop;
+		private Square _mSquare;
+		private Player _mPlayer;
+		private int _mLastMoveTurnNo = 0;
+		private int _mNoOfMoves = 0;
+		private bool _mHasBeenPromoted = false;
+		private bool _mIsInPlay = true;
+		private int _mPoints = 0;
+		private EnmId _mId;
 
 		public Piece Base
 		{
@@ -67,161 +67,161 @@ namespace Chess.Core
 
 		public IPieceTop Top
 		{
-			get { return m_Top; }
+			get { return _mTop; }
 		}
 
-		public Piece(Piece.enmName name, Player player, int Col, int Row, enmID ID)
+		public Piece(Piece.EnmName name, Player player, int col, int row, EnmId id)
 		{
-			Square square = Board.GetSquare(Col, Row);
+			Square square = Board.GetSquare(col, row);
 
-			this.m_player = player;
-			this.m_square = square;
+			this._mPlayer = player;
+			this._mSquare = square;
 			square.Piece = this;
-			this.m_ID = ID;
+			this._mId = id;
 
 			switch (name)
 			{
-				case Piece.enmName.Pawn:
-					m_Top = new PiecePawn(this);
+				case Piece.EnmName.Pawn:
+					_mTop = new PiecePawn(this);
 					break;
 				
-				case Piece.enmName.Bishop:
-					m_Top = new PieceBishop(this);
+				case Piece.EnmName.Bishop:
+					_mTop = new PieceBishop(this);
 					break;
 				
-				case Piece.enmName.Knight:
-					m_Top = new PieceKnight(this);
+				case Piece.EnmName.Knight:
+					_mTop = new PieceKnight(this);
 					break;
 				
-				case Piece.enmName.Rook:
-					m_Top = new PieceRook(this);
+				case Piece.EnmName.Rook:
+					_mTop = new PieceRook(this);
 					break;
 				
-				case Piece.enmName.Queen:
-					m_Top = new PieceQueen(this);
+				case Piece.EnmName.Queen:
+					_mTop = new PieceQueen(this);
 					break;
 
-				case Piece.enmName.King:
-					m_Top = new PieceKing(this);
+				case Piece.EnmName.King:
+					_mTop = new PieceKing(this);
 					break;
 			}
 		}
 
-		public ulong HashCodeAForSquareOrdinal(int Ordinal)
+		public ulong HashCodeAForSquareOrdinal(int ordinal)
 		{
-			uint a = (uint)(m_ID);
-			uint x = (((uint)(m_ID))<<7);
-			return m_aulongHashCodesA[(((uint)(m_ID))<<7) + Ordinal] + (m_HasBeenPromoted ? 13UL: 0UL);
+			uint a = (uint)(_mId);
+			uint x = (((uint)(_mId))<<7);
+			return _mAulongHashCodesA[(((uint)(_mId))<<7) + ordinal] + (_mHasBeenPromoted ? 13UL: 0UL);
 		}
 
-		public ulong HashCodeBForSquareOrdinal(int Ordinal)
+		public ulong HashCodeBForSquareOrdinal(int ordinal)
 		{
-			uint a = (uint)(m_ID);
-			uint x = (((uint)(m_ID))<<7);
-			return m_aulongHashCodesB[(((uint)(m_ID))<<7) + Ordinal] + (m_HasBeenPromoted ? 111UL: 0UL);
+			uint a = (uint)(_mId);
+			uint x = (((uint)(_mId))<<7);
+			return _mAulongHashCodesB[(((uint)(_mId))<<7) + ordinal] + (_mHasBeenPromoted ? 111UL: 0UL);
 		}
 
 		public ulong HashCodeA
 		{
-			get { return HashCodeAForSquareOrdinal(this.m_square.Ordinal); }
+			get { return HashCodeAForSquareOrdinal(this._mSquare.Ordinal); }
 		}
 
 		public ulong HashCodeB
 		{
-			get { return HashCodeBForSquareOrdinal(this.m_square.Ordinal); }
+			get { return HashCodeBForSquareOrdinal(this._mSquare.Ordinal); }
 		}
 
 		public int CompareTo(object piece)
 		{
-			if ( this.m_Points==((Piece)piece).Points) return 0;
-			if ( this.m_Points> ((Piece)piece).Points) return 1;
+			if ( this._mPoints==((Piece)piece).Points) return 0;
+			if ( this._mPoints> ((Piece)piece).Points) return 1;
 			return -1;
 		}
 
 		public string Abbreviation
 		{
-			get { return m_Top.Abbreviation; }
+			get { return _mTop.Abbreviation; }
 		}
 	
-		public enmName Name
+		public EnmName Name
 		{
-			get { return m_Top.Name; }
+			get { return _mTop.Name; }
 		}
 	
 		public int LastMoveTurnNo
 		{
-			get { return m_LastMoveTurnNo; }
-			set { m_LastMoveTurnNo = value; }
+			get { return _mLastMoveTurnNo; }
+			set { _mLastMoveTurnNo = value; }
 		}
 
 		public int ImageIndex
 		{
-			get { return m_Top.ImageIndex; }
+			get { return _mTop.ImageIndex; }
 		}
 	
 		public bool HasMoved
 		{
-			get { return m_LastMoveTurnNo!=0; }
+			get { return _mLastMoveTurnNo!=0; }
 		}
 
 		public bool HasBeenPromoted
 		{
-			get { return m_HasBeenPromoted; }
-			set { m_HasBeenPromoted = value; }
+			get { return _mHasBeenPromoted; }
+			set { _mHasBeenPromoted = value; }
 		}
 
 		public bool IsInPlay
 		{
-			get { return m_IsInPlay; }
-			set { m_IsInPlay = value; }
+			get { return _mIsInPlay; }
+			set { _mIsInPlay = value; }
 		}
 
 		public int NoOfMoves
 		{
-			get { return m_NoOfMoves; }
-			set { m_NoOfMoves = value; }
+			get { return _mNoOfMoves; }
+			set { _mNoOfMoves = value; }
 		}
 
 		public bool MovedLastMove
 		{
-			get {return m_LastMoveTurnNo == Game.TurnNo-2;}
+			get {return _mLastMoveTurnNo == Game.TurnNo-2;}
 		}
 
 		public Square Square
 		{
-			get { return m_square; }
-			set { m_square = value; }
+			get { return _mSquare; }
+			set { _mSquare = value; }
 		}
 	
 		public Player Player
 		{
-			get { return m_player; }
+			get { return _mPlayer; }
 		}
 	
 		public int BasicValue
 		{
-			get { return m_Top.BasicValue;	}
+			get { return _mTop.BasicValue;	}
 		}
 
 		public int Value
 		{
-			get { return m_Top.Value; }
+			get { return _mTop.Value; }
 		}
 
 		public int Points
 		{
-			get {return m_Points;}
-			set {m_Points = value;}
+			get {return _mPoints;}
+			set {_mPoints = value;}
 		}
 
 		public bool CanBeTaken
 		{
-			get { return m_Top.CanBeTaken; }
+			get { return _mTop.CanBeTaken; }
 		}
 
 		public void GenerateLegalMoves(Moves moves)
 		{
-			GenerateLazyMoves(moves, Moves.enmMovesType.All);
+			GenerateLazyMoves(moves, Moves.EnmMovesType.All);
 			Move move;
 			for(int intIndex=moves.Count-1; intIndex>=0; intIndex--)
 			{
@@ -235,85 +235,85 @@ namespace Chess.Core
 			}
 		}
 			
-		public void GenerateLazyMoves(Moves moves, Moves.enmMovesType movesType)
+		public void GenerateLazyMoves(Moves moves, Moves.EnmMovesType movesType)
 		{
-			m_Top.GenerateLazyMoves(moves, movesType);
+			_mTop.GenerateLazyMoves(moves, movesType);
 		}
 			
-		public void Promote(Piece.enmName name)
+		public void Promote(Piece.EnmName name)
 		{
-			if (m_HasBeenPromoted)
+			if (_mHasBeenPromoted)
 			{
 				throw new ApplicationException("Piece has already been promoted!");
 			}
 
-			if (this.Name != Piece.enmName.Pawn) 
+			if (this.Name != Piece.EnmName.Pawn) 
 			{
 				throw new ApplicationException("Attempt to promote piece that is not a pawn");
 			}
 
 			switch (name)
 			{
-				case Piece.enmName.Bishop:
-					m_Top = new PieceBishop(this);
+				case Piece.EnmName.Bishop:
+					_mTop = new PieceBishop(this);
 					break;
 				
-				case Piece.enmName.Knight:
-					m_Top = new PieceKnight(this);
+				case Piece.EnmName.Knight:
+					_mTop = new PieceKnight(this);
 					break;
 				
-				case Piece.enmName.Rook:
-					m_Top = new PieceRook(this);
+				case Piece.EnmName.Rook:
+					_mTop = new PieceRook(this);
 					break;
 				
-				case Piece.enmName.Queen:
-					m_Top = new PieceQueen(this);
+				case Piece.EnmName.Queen:
+					_mTop = new PieceQueen(this);
 					break;
 
 				default:
 					throw new ApplicationException("Can only promote pawn to either Bishop, Knight, Rook or Queen");
 			}
-			this.m_player.DecreasePawnCount();
-			this.m_player.IncreaseMaterialCount();
-			m_HasBeenPromoted = true;
+			this._mPlayer.DecreasePawnCount();
+			this._mPlayer.IncreaseMaterialCount();
+			_mHasBeenPromoted = true;
 		}
 
 		public void Demote()
 		{
-			if (!m_HasBeenPromoted)
+			if (!_mHasBeenPromoted)
 			{
 				throw new ApplicationException("Cannot demote piece that hasnt been promoted");
 			}
-			m_Top = new PiecePawn(this);
-			this.m_player.IncreasePawnCount();
-			this.m_player.DecreaseMaterialCount();
-			m_HasBeenPromoted = false;
+			_mTop = new PiecePawn(this);
+			this._mPlayer.IncreasePawnCount();
+			this._mPlayer.DecreaseMaterialCount();
+			_mHasBeenPromoted = false;
 		}
 
-		public Move Move(Move.enmName MoveName, Square square)
+		public Move Move(Move.EnmName moveName, Square square)
 		{
 			Square squarePieceTaken = square;
 
-			if (MoveName==Core.Move.enmName.EnPassent) // Override when en passent
+			if (moveName==Core.Move.EnmName.EnPassent) // Override when en passent
 			{
-				squarePieceTaken = Board.GetSquare( square.Ordinal - this.m_player.PawnForwardOffset );
+				squarePieceTaken = Board.GetSquare( square.Ordinal - this._mPlayer.PawnForwardOffset );
 			}
 
 			Board.HashCodeA ^= this.HashCodeA; // Un-XOR current piece position
 			Board.HashCodeB ^= this.HashCodeB; // Un-XOR current piece position
-			if (this.Name==Piece.enmName.Pawn)
+			if (this.Name==Piece.EnmName.Pawn)
 			{
 				Board.PawnHashCodeA ^= this.HashCodeA;
 				Board.PawnHashCodeB ^= this.HashCodeB;
 			}
 
-			Move move = new Move(Game.TurnNo, this.m_LastMoveTurnNo, MoveName, this, this.m_square, square, squarePieceTaken.Piece, squarePieceTaken.Piece==null ? -1 : squarePieceTaken.Piece.Player.Pieces.IndexOf(squarePieceTaken.Piece), 0);
+			Move move = new Move(Game.TurnNo, this._mLastMoveTurnNo, moveName, this, this._mSquare, square, squarePieceTaken.Piece, squarePieceTaken.Piece==null ? -1 : squarePieceTaken.Piece.Player.Pieces.IndexOf(squarePieceTaken.Piece), 0);
 
 			if (square.Piece != null)
 			{
 				Board.HashCodeA ^= squarePieceTaken.Piece.HashCodeA; // un-XOR the piece taken
 				Board.HashCodeB ^= squarePieceTaken.Piece.HashCodeB; // un-XOR the piece taken
-				if (squarePieceTaken.Piece.Name==Piece.enmName.Pawn)
+				if (squarePieceTaken.Piece.Name==Piece.EnmName.Pawn)
 				{
 					Board.PawnHashCodeA ^= squarePieceTaken.Piece.HashCodeA;
 					Board.PawnHashCodeB ^= squarePieceTaken.Piece.HashCodeB;
@@ -323,57 +323,57 @@ namespace Chess.Core
 
 			Game.TurnNo++;
 
-			this.m_square.Piece = null;
+			this._mSquare.Piece = null;
 			square.Piece = this;
-			this.m_square = square;
+			this._mSquare = square;
 			
-			this.m_LastMoveTurnNo = Game.TurnNo;
-			this.m_NoOfMoves++;
+			this._mLastMoveTurnNo = Game.TurnNo;
+			this._mNoOfMoves++;
 
-			switch (MoveName)
+			switch (moveName)
 			{
-				case Core.Move.enmName.CastleKingSide:
-					Board.HashCodeA ^= this.m_player.KingsRook.HashCodeA;
-					Board.HashCodeB ^= this.m_player.KingsRook.HashCodeB;
-					this.m_player.KingsRook.Square.Piece = null;
-					this.m_player.KingsRook.m_LastMoveTurnNo = Game.TurnNo;
-					this.m_player.KingsRook.m_NoOfMoves++;
-					Board.GetSquare(5,square.Rank).Piece = this.m_player.KingsRook;
-					this.m_player.KingsRook.Square = Board.GetSquare(5,square.Rank);
-					Board.HashCodeA ^= this.m_player.KingsRook.HashCodeA;
-					Board.HashCodeB ^= this.m_player.KingsRook.HashCodeB;
-					m_player.HasCastled = true;
+				case Core.Move.EnmName.CastleKingSide:
+					Board.HashCodeA ^= this._mPlayer.KingsRook.HashCodeA;
+					Board.HashCodeB ^= this._mPlayer.KingsRook.HashCodeB;
+					this._mPlayer.KingsRook.Square.Piece = null;
+					this._mPlayer.KingsRook._mLastMoveTurnNo = Game.TurnNo;
+					this._mPlayer.KingsRook._mNoOfMoves++;
+					Board.GetSquare(5,square.Rank).Piece = this._mPlayer.KingsRook;
+					this._mPlayer.KingsRook.Square = Board.GetSquare(5,square.Rank);
+					Board.HashCodeA ^= this._mPlayer.KingsRook.HashCodeA;
+					Board.HashCodeB ^= this._mPlayer.KingsRook.HashCodeB;
+					_mPlayer.HasCastled = true;
 					break;
 
-				case Core.Move.enmName.CastleQueenSide:
-					Board.HashCodeA ^= this.m_player.QueensRook.HashCodeA;
-					Board.HashCodeB ^= this.m_player.QueensRook.HashCodeB;
-					this.m_player.QueensRook.Square.Piece = null;
-					this.m_player.QueensRook.m_LastMoveTurnNo = Game.TurnNo;
-					this.m_player.QueensRook.m_NoOfMoves++;
-					Board.GetSquare(3,square.Rank).Piece = this.m_player.QueensRook;
-					this.m_player.QueensRook.Square = Board.GetSquare(3,square.Rank);
-					Board.HashCodeA ^= this.m_player.QueensRook.HashCodeA;
-					Board.HashCodeB ^= this.m_player.QueensRook.HashCodeB;
-					m_player.HasCastled = true;
+				case Core.Move.EnmName.CastleQueenSide:
+					Board.HashCodeA ^= this._mPlayer.QueensRook.HashCodeA;
+					Board.HashCodeB ^= this._mPlayer.QueensRook.HashCodeB;
+					this._mPlayer.QueensRook.Square.Piece = null;
+					this._mPlayer.QueensRook._mLastMoveTurnNo = Game.TurnNo;
+					this._mPlayer.QueensRook._mNoOfMoves++;
+					Board.GetSquare(3,square.Rank).Piece = this._mPlayer.QueensRook;
+					this._mPlayer.QueensRook.Square = Board.GetSquare(3,square.Rank);
+					Board.HashCodeA ^= this._mPlayer.QueensRook.HashCodeA;
+					Board.HashCodeB ^= this._mPlayer.QueensRook.HashCodeB;
+					_mPlayer.HasCastled = true;
 					break;
 
-				case Core.Move.enmName.PawnPromotion:
-					this.Promote(Piece.enmName.Queen);
+				case Core.Move.EnmName.PawnPromotion:
+					this.Promote(Piece.EnmName.Queen);
 					break;
 
-				case Core.Move.enmName.EnPassent:
-					Board.HashCodeA ^= Board.GetPiece(this.m_square.Ordinal - this.m_player.PawnForwardOffset ).HashCodeA;
-					Board.HashCodeB ^= Board.GetPiece(this.m_square.Ordinal - this.m_player.PawnForwardOffset ).HashCodeB;
-					Board.PawnHashCodeA ^= Board.GetPiece(this.m_square.Ordinal - this.m_player.PawnForwardOffset ).HashCodeA;
-					Board.PawnHashCodeB ^= Board.GetPiece(this.m_square.Ordinal - this.m_player.PawnForwardOffset ).HashCodeB;
-					Board.GetPiece(this.m_square.Ordinal - this.m_player.PawnForwardOffset ).Take(); // Take enemy pawn that is now behind us
+				case Core.Move.EnmName.EnPassent:
+					Board.HashCodeA ^= Board.GetPiece(this._mSquare.Ordinal - this._mPlayer.PawnForwardOffset ).HashCodeA;
+					Board.HashCodeB ^= Board.GetPiece(this._mSquare.Ordinal - this._mPlayer.PawnForwardOffset ).HashCodeB;
+					Board.PawnHashCodeA ^= Board.GetPiece(this._mSquare.Ordinal - this._mPlayer.PawnForwardOffset ).HashCodeA;
+					Board.PawnHashCodeB ^= Board.GetPiece(this._mSquare.Ordinal - this._mPlayer.PawnForwardOffset ).HashCodeB;
+					Board.GetPiece(this._mSquare.Ordinal - this._mPlayer.PawnForwardOffset ).Take(); // Take enemy pawn that is now behind us
 					break;
 			}
 
 			Board.HashCodeA ^= this.HashCodeA; // XOR piece into new piece position
 			Board.HashCodeB ^= this.HashCodeB; // XOR piece into new piece position
-			if (this.Name==Piece.enmName.Pawn) 
+			if (this.Name==Piece.EnmName.Pawn) 
 			{
 				Board.PawnHashCodeA ^= this.HashCodeA;
 				Board.PawnHashCodeB ^= this.HashCodeB;
@@ -390,16 +390,16 @@ namespace Chess.Core
 			return move;
 		}
 
-		public Move SEEMove(Move.enmName MoveName, Square square)
+		public Move SeeMove(Move.EnmName moveName, Square square)
 		{
 			Square squarePieceTaken = square;
 
-			if (MoveName==Core.Move.enmName.EnPassent) // Override when en passent
+			if (moveName==Core.Move.EnmName.EnPassent) // Override when en passent
 			{
-				squarePieceTaken = Board.GetSquare( square.Ordinal - this.m_player.PawnForwardOffset );
+				squarePieceTaken = Board.GetSquare( square.Ordinal - this._mPlayer.PawnForwardOffset );
 			}
 
-			Move move = new Move(Game.TurnNo, this.m_LastMoveTurnNo, MoveName, this, this.m_square, square, squarePieceTaken.Piece, squarePieceTaken.Piece==null ? -1 : squarePieceTaken.Piece.Player.Pieces.IndexOf(squarePieceTaken.Piece), 0);
+			Move move = new Move(Game.TurnNo, this._mLastMoveTurnNo, moveName, this, this._mSquare, square, squarePieceTaken.Piece, squarePieceTaken.Piece==null ? -1 : squarePieceTaken.Piece.Player.Pieces.IndexOf(squarePieceTaken.Piece), 0);
 
 			if (square.Piece != null)
 			{
@@ -408,25 +408,25 @@ namespace Chess.Core
 
 			Game.TurnNo++;
 
-			this.m_square.Piece = null;
+			this._mSquare.Piece = null;
 			square.Piece = this;
-			this.m_square = square;
+			this._mSquare = square;
 			
-			this.m_LastMoveTurnNo = Game.TurnNo;
-			this.m_NoOfMoves++;
+			this._mLastMoveTurnNo = Game.TurnNo;
+			this._mNoOfMoves++;
 
-			switch (MoveName)
+			switch (moveName)
 			{
-				case Core.Move.enmName.PawnPromotion:
-					this.Promote(Piece.enmName.Queen);
+				case Core.Move.EnmName.PawnPromotion:
+					this.Promote(Piece.EnmName.Queen);
 					break;
 
-				case Core.Move.enmName.EnPassent:
-					Board.HashCodeA ^= Board.GetPiece(this.m_square.Ordinal - this.m_player.PawnForwardOffset ).HashCodeA;
-					Board.HashCodeB ^= Board.GetPiece(this.m_square.Ordinal - this.m_player.PawnForwardOffset ).HashCodeB;
-					Board.PawnHashCodeA ^= Board.GetPiece(this.m_square.Ordinal - this.m_player.PawnForwardOffset ).HashCodeA;
-					Board.PawnHashCodeB ^= Board.GetPiece(this.m_square.Ordinal - this.m_player.PawnForwardOffset ).HashCodeB;
-					Board.GetPiece(this.m_square.Ordinal - this.m_player.PawnForwardOffset ).Take(); // Take enemy pawn that is now behind us
+				case Core.Move.EnmName.EnPassent:
+					Board.HashCodeA ^= Board.GetPiece(this._mSquare.Ordinal - this._mPlayer.PawnForwardOffset ).HashCodeA;
+					Board.HashCodeB ^= Board.GetPiece(this._mSquare.Ordinal - this._mPlayer.PawnForwardOffset ).HashCodeB;
+					Board.PawnHashCodeA ^= Board.GetPiece(this._mSquare.Ordinal - this._mPlayer.PawnForwardOffset ).HashCodeA;
+					Board.PawnHashCodeB ^= Board.GetPiece(this._mSquare.Ordinal - this._mPlayer.PawnForwardOffset ).HashCodeB;
+					Board.GetPiece(this._mSquare.Ordinal - this._mPlayer.PawnForwardOffset ).Take(); // Take enemy pawn that is now behind us
 					break;
 			}
 
@@ -438,17 +438,17 @@ namespace Chess.Core
 
 		public Piece Take()
 		{
-			this.m_player.OtherPlayer.CapturedEnemyPieces.Add(this);
-			this.m_player.Pieces.Remove(this);
+			this._mPlayer.OtherPlayer.CapturedEnemyPieces.Add(this);
+			this._mPlayer.Pieces.Remove(this);
 			this.Square.Piece = null;
 			this.IsInPlay = false;
-			if (this.Name == Piece.enmName.Pawn)
+			if (this.Name == Piece.EnmName.Pawn)
 			{
-				this.m_player.DecreasePawnCount();
+				this._mPlayer.DecreasePawnCount();
 			}
 			else
 			{
-				this.m_player.DecreaseMaterialCount();
+				this._mPlayer.DecreaseMaterialCount();
 			}
 			return this;
 		}
@@ -466,7 +466,7 @@ namespace Chess.Core
 		{
 			get 
 			{
-					return m_Top.PositionalValue;
+					return _mTop.PositionalValue;
 			}
 		}
 
@@ -474,25 +474,25 @@ namespace Chess.Core
 		{
 			get
 			{	
-				Piece piece = m_square.DefencedBy(this.m_player);
+				Piece piece = _mSquare.DefencedBy(this._mPlayer);
 				if (piece!=null)
 				{
 					switch (piece.Name)
 					{
-						case Piece.enmName.Pawn:
+						case Piece.EnmName.Pawn:
 							return 60;
 
-						case Piece.enmName.Knight:
-						case Piece.enmName.Bishop:
+						case Piece.EnmName.Knight:
+						case Piece.EnmName.Bishop:
 							return 45;
 
-						case Piece.enmName.Rook:
+						case Piece.EnmName.Rook:
 							return 30;
 
-						case Piece.enmName.Queen:
+						case Piece.EnmName.Queen:
 							return 20;
 					
-						case Piece.enmName.King:
+						case Piece.EnmName.King:
 							return 20;
 					
 					}
@@ -506,31 +506,31 @@ namespace Chess.Core
 		{
 			Piece piece;
 
-			piece = Board.GetPiece(m_square.Ordinal+m_player.PawnAttackLeftOffset+m_player.PawnForwardOffset);
-			if (piece!=null && piece.Player.Colour!=m_player.Colour && piece.Name==Piece.enmName.Pawn) return true;
+			piece = Board.GetPiece(_mSquare.Ordinal+_mPlayer.PawnAttackLeftOffset+_mPlayer.PawnForwardOffset);
+			if (piece!=null && piece.Player.Colour!=_mPlayer.Colour && piece.Name==Piece.EnmName.Pawn) return true;
 
-			piece = Board.GetPiece(m_square.Ordinal+m_player.PawnAttackRightOffset+m_player.PawnForwardOffset);
-			if (piece!=null && piece.Player.Colour!=m_player.Colour && piece.Name==Piece.enmName.Pawn) return true;
+			piece = Board.GetPiece(_mSquare.Ordinal+_mPlayer.PawnAttackRightOffset+_mPlayer.PawnForwardOffset);
+			if (piece!=null && piece.Player.Colour!=_mPlayer.Colour && piece.Name==Piece.EnmName.Pawn) return true;
 
-			piece = Board.GetPiece(m_square.Ordinal+m_player.PawnAttackLeftOffset+m_player.PawnForwardOffset+m_player.PawnForwardOffset);
-			if (piece!=null && piece.Player.Colour!=m_player.Colour && piece.Name==Piece.enmName.Pawn && !piece.HasMoved) return true;
+			piece = Board.GetPiece(_mSquare.Ordinal+_mPlayer.PawnAttackLeftOffset+_mPlayer.PawnForwardOffset+_mPlayer.PawnForwardOffset);
+			if (piece!=null && piece.Player.Colour!=_mPlayer.Colour && piece.Name==Piece.EnmName.Pawn && !piece.HasMoved) return true;
 
-			piece = Board.GetPiece(m_square.Ordinal+m_player.PawnAttackRightOffset+m_player.PawnForwardOffset+m_player.PawnForwardOffset);
-			if (piece!=null && piece.Player.Colour!=m_player.Colour && piece.Name==Piece.enmName.Pawn && !piece.HasMoved) return true;
+			piece = Board.GetPiece(_mSquare.Ordinal+_mPlayer.PawnAttackRightOffset+_mPlayer.PawnForwardOffset+_mPlayer.PawnForwardOffset);
+			if (piece!=null && piece.Player.Colour!=_mPlayer.Colour && piece.Name==Piece.EnmName.Pawn && !piece.HasMoved) return true;
 
 			return false;
 		}
 
 		public int TaxiCabDistanceToEnemyKingPenalty()
 		{
-			return (Math.Abs(this.m_square.Rank-this.m_player.OtherPlayer.King.Square.Rank) + Math.Abs(this.m_square.File-this.m_player.OtherPlayer.King.Square.File));
+			return (Math.Abs(this._mSquare.Rank-this._mPlayer.OtherPlayer.King.Square.Rank) + Math.Abs(this._mSquare.File-this._mPlayer.OtherPlayer.King.Square.File));
 		}
 
 
 
 
 	
-		private static ulong[] m_aulongHashCodesA =
+		private static ulong[] _mAulongHashCodesA =
 		{
 			6557995217205458958, 3216546429887213718, 10981975557637945592, 13117948053612451546, 16462319544570117268, 14109089931958414830, 7784257433824872028, 12575758863506724218, 0, 0, 0, 0, 0, 0, 0, 0, 
 			5452803369408346770, 17504272207519905704, 10076908662681196056, 12181556996310766954, 6618282532582206852, 886584768689976646, 5337735909196723884, 1518236921046637970, 0, 0, 0, 0, 0, 0, 0, 0, 
@@ -824,7 +824,7 @@ namespace Chess.Core
 
 
 	
-		private static ulong[] m_aulongHashCodesB =
+		private static ulong[] _mAulongHashCodesB =
 		{
 
 			16164111449390318276, 11419626980698143882, 3217985813656852606, 11925939290598446094, 16807230890854361004, 8132383134553493882, 16234001359038311548, 2222980806129073348, 0, 0, 0, 0, 0, 0, 0, 0, 

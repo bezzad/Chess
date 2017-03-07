@@ -4,41 +4,41 @@ namespace Chess.Core
 {
 	public class Squares: IEnumerable
 	{
-		private ArrayList m_colSquares = new ArrayList(24);
+		private ArrayList _mColSquares = new ArrayList(24);
 
 		public IEnumerator GetEnumerator()
 		{
-			return m_colSquares.GetEnumerator();
+			return _mColSquares.GetEnumerator();
 		}
 
 		public Square Item(int intIndex)
 		{
-			return (Square)m_colSquares[intIndex];
+			return (Square)_mColSquares[intIndex];
 		}
 
 		public int Count
 		{
-			get { return m_colSquares.Count; }
+			get { return _mColSquares.Count; }
 		}
 
 		public void Add(Square square)
 		{
-			m_colSquares.Add(square);
+			_mColSquares.Add(square);
 		}
 
-		public void Insert(int Ordinal, Square square)
+		public void Insert(int ordinal, Square square)
 		{
-			m_colSquares.Insert(Ordinal, square);
+			_mColSquares.Insert(ordinal, square);
 		}
 
 		public int IndexOf(Square square)
 		{
-			return m_colSquares.IndexOf(square);
+			return _mColSquares.IndexOf(square);
 		}
 
 		public void Remove(Square square)
 		{
-			m_colSquares.Remove(square);
+			_mColSquares.Remove(square);
 		}
 	}
 }

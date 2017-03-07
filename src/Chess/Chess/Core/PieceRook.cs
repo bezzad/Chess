@@ -2,16 +2,16 @@ namespace Chess.Core
 {
 	public class PieceRook: IPieceTop
 	{
-		Piece m_Base = null;
+	    private Piece _mBase = null;
 
 		public PieceRook(Piece pieceBase)
 		{
-			m_Base = pieceBase;
+			_mBase = pieceBase;
 		}
 
 		public Piece Base
 		{
-			get { return m_Base; }
+			get { return _mBase; }
 		}
 
 		public string Abbreviation
@@ -19,9 +19,9 @@ namespace Chess.Core
 			get {return "R";}
 		}
 
-		public Piece.enmName Name
+		public Piece.EnmName Name
 		{
-			get {return Piece.enmName.Rook;}
+			get {return Piece.EnmName.Rook;}
 		}
 
 		public int BasicValue
@@ -37,7 +37,7 @@ namespace Chess.Core
 			}
 		}
 
-		private static int[] m_aintSquareValues =
+		private static int[] _mAintSquareValues =
 		{
 			10,10,10,10,10,10,10,10,    0,0,0,0,0,0,0,0,
 			10,20,20,20,20,20,20,10,    0,0,0,0,0,0,0,0,
@@ -56,25 +56,25 @@ namespace Chess.Core
 				int intPoints = 0;
 
 				// After the opening, Rooks are penalized slightly depending on "taxicab" distance to the enemy king.
-				if (Game.Stage != Game.enmStage.Opening)
+				if (Game.Stage != Game.EnmStage.Opening)
 				{
-					intPoints -= this.m_Base.TaxiCabDistanceToEnemyKingPenalty();
+					intPoints -= this._mBase.TaxiCabDistanceToEnemyKingPenalty();
 				}
 
-				if (Game.Stage != Game.enmStage.End)
+				if (Game.Stage != Game.EnmStage.End)
 				{
 					// Rooks are given a bonus of 10(0) points for occupying a file with no friendly pawns and a bonus of 
 					// 4(0) points if no enemy pawns lie on that file. 
 					bool blnHasFiendlyPawn = false;
 					bool blnHasEnemyPawn = false;
-					Square squareThis = Board.GetSquare(this.m_Base.Square.File, 0);
+					Square squareThis = Board.GetSquare(this._mBase.Square.File, 0);
 					Piece piece;
 					while (squareThis!=null)
 					{
 						piece = squareThis.Piece;
-						if (piece!=null && piece.Name==Piece.enmName.Pawn)
+						if (piece!=null && piece.Name==Piece.EnmName.Pawn)
 						{
-							if (piece.Player.Colour==this.m_Base.Player.Colour)
+							if (piece.Player.Colour==this._mBase.Player.Colour)
 							{
 								blnHasFiendlyPawn = true;
 							}
@@ -97,15 +97,15 @@ namespace Chess.Core
 
 
 					// 7th rank
-					if ( m_Base.Player.Colour==Player.enmColour.White && m_Base.Square.Rank==6
+					if ( _mBase.Player.Colour==Player.EnmColour.White && _mBase.Square.Rank==6
 						||
-						m_Base.Player.Colour==Player.enmColour.Black && m_Base.Square.Rank==1
+						_mBase.Player.Colour==Player.EnmColour.Black && _mBase.Square.Rank==1
 						)
 					{
 						intPoints += 30;
 					}
 
-					intPoints += m_Base.DefensePoints;
+					intPoints += _mBase.DefensePoints;
 				}
 
 				return intPoints;
@@ -114,7 +114,7 @@ namespace Chess.Core
 
 		public int ImageIndex
 		{
-			get { return (this.m_Base.Player.Colour==Player.enmColour.White ? 3 : 2); }
+			get { return (this._mBase.Player.Colour==Player.EnmColour.White ? 3 : 2); }
 		}
 	
 		public bool CanBeTaken
@@ -125,12 +125,12 @@ namespace Chess.Core
 			}
 		}
 
-		public void GenerateLazyMoves(Moves moves, Moves.enmMovesType movesType)
+		public void GenerateLazyMoves(Moves moves, Moves.EnmMovesType movesType)
 		{
-			Board.AppendPiecePath(moves, m_Base, m_Base.Player,  1, movesType);
-			Board.AppendPiecePath(moves, m_Base, m_Base.Player, -1, movesType);
-			Board.AppendPiecePath(moves, m_Base, m_Base.Player, -16, movesType);
-			Board.AppendPiecePath(moves, m_Base, m_Base.Player, 16, movesType);
+			Board.AppendPiecePath(moves, _mBase, _mBase.Player,  1, movesType);
+			Board.AppendPiecePath(moves, _mBase, _mBase.Player, -1, movesType);
+			Board.AppendPiecePath(moves, _mBase, _mBase.Player, -16, movesType);
+			Board.AppendPiecePath(moves, _mBase, _mBase.Player, 16, movesType);
 		}
 
 	}

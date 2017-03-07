@@ -4,13 +4,13 @@ namespace Chess.Core
 {
 	public class Moves: IEnumerable
 	{
-		private Piece m_pieceParent = null;
-		private ArrayList m_colMoves = new ArrayList(48);
+		private Piece _mPieceParent = null;
+		private ArrayList _mColMoves = new ArrayList(48);
 
-		public enum enmMovesType
+		public enum EnmMovesType
 		{
 					All
-				,	Recaptures_Promotions
+				,	RecapturesPromotions
 				,	CapturesChecksPromotions
 		}
 
@@ -20,77 +20,77 @@ namespace Chess.Core
 
 		public Moves(Piece pieceParent)
 		{
-			m_pieceParent = pieceParent;
+			_mPieceParent = pieceParent;
 		}
 
 		public IEnumerator GetEnumerator()
 		{
-			return m_colMoves.GetEnumerator();
+			return _mColMoves.GetEnumerator();
 		}
 
 		public Piece Parent
 		{
-			get { return m_pieceParent; }
+			get { return _mPieceParent; }
 		}
 
 		public int Count
 		{
-			get { return m_colMoves.Count; }
+			get { return _mColMoves.Count; }
 		}
 
 		public Move Item(int intIndex)
 		{
-			return (Move)m_colMoves[intIndex];
+			return (Move)_mColMoves[intIndex];
 		}
 
 		public Move Last
 		{
-			get { return m_colMoves.Count>0 ? (Move)m_colMoves[m_colMoves.Count-1] : null; }
+			get { return _mColMoves.Count>0 ? (Move)_mColMoves[_mColMoves.Count-1] : null; }
 		}
 
 		public Move PenultimateForSameSide
 		{
-			get { return m_colMoves.Count>2 ? (Move)m_colMoves[m_colMoves.Count-3] : null;  }
+			get { return _mColMoves.Count>2 ? (Move)_mColMoves[_mColMoves.Count-3] : null;  }
 		}
 
 		public Move Penultimate
 		{
-			get { return m_colMoves.Count>1 ? (Move)m_colMoves[m_colMoves.Count-2] : null;  }
+			get { return _mColMoves.Count>1 ? (Move)_mColMoves[_mColMoves.Count-2] : null;  }
 		}
 
-		public void Add(int TurnNo, int LastMoveTurnNo, Move.enmName Name, Piece Piece, Square From, Square To, Piece PieceTaken, int PieceTakenOrdinal, int Score)
+		public void Add(int turnNo, int lastMoveTurnNo, Move.EnmName name, Piece piece, Square @from, Square to, Piece pieceTaken, int pieceTakenOrdinal, int score)
 		{
-			m_colMoves.Add(new Move(TurnNo, LastMoveTurnNo, Name, Piece, From, To, PieceTaken, PieceTakenOrdinal, Score));
+			_mColMoves.Add(new Move(turnNo, lastMoveTurnNo, name, piece, @from, to, pieceTaken, pieceTakenOrdinal, score));
 		}
 
 		public void Add(Move move)
 		{
-			m_colMoves.Add(move);
+			_mColMoves.Add(move);
 		}
 
-		public void Remove(Move Move)
+		public void Remove(Move move)
 		{
-			m_colMoves.Remove(Move);
+			_mColMoves.Remove(move);
 		}
 
 		public void RemoveLast()
 		{
-			m_colMoves.RemoveAt(m_colMoves.Count-1);
+			_mColMoves.RemoveAt(_mColMoves.Count-1);
 		}
 
 		public void Clear()
 		{
-			m_colMoves.Clear();
+			_mColMoves.Clear();
 		}
 
 		public void Replace(int intIndex, Move moveNew )
 		{
-			m_colMoves[intIndex] = moveNew;
+			_mColMoves[intIndex] = moveNew;
 		}
 
 		public void SortByScore()
 		{
-			m_colMoves.Sort();
+			_mColMoves.Sort();
 		}
 
 	}

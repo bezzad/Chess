@@ -2,42 +2,42 @@ namespace Chess.Core
 {
 	public class HashTable
 	{
-		public const int HASH_TABLE_SLOT_DEPTH = 3;
-		public const int HASH_TABLE_SIZE = 1000777;
+		public const int HashTableSlotDepth = 3;
+		public const int HashTableSize = 1000777;
 
 
-		private static int m_intProbes = 0;
-		private static int m_intHits = 0;
-		private static int m_intWrites = 0;
-		private static int m_intCollisions = 0;
-		private static int m_intOverwrites = 0;
+		private static int _mIntProbes = 0;
+		private static int _mIntHits = 0;
+		private static int _mIntWrites = 0;
+		private static int _mIntCollisions = 0;
+		private static int _mIntOverwrites = 0;
 
 		public static int Probes
 		{
-			get {return m_intProbes;}
+			get {return _mIntProbes;}
 		}
 
 		public static int Hits
 		{
-			get {return m_intHits;}
+			get {return _mIntHits;}
 		}
 
 		public static int Writes
 		{
-			get {return m_intWrites;}
+			get {return _mIntWrites;}
 		}
 
 		public static int Collisions
 		{
-			get { return m_intCollisions; }
+			get { return _mIntCollisions; }
 		}
 
 		public static int Overwrites
 		{
-			get { return m_intOverwrites; }
+			get { return _mIntOverwrites; }
 		}
 
-		public enum enmHashType
+		public enum EnmHashType
 		{
 				Exact
 			,	Alpha
@@ -49,19 +49,19 @@ namespace Chess.Core
 			public ulong	HashCodeA;
 			public ulong	HashCodeB;
 			public sbyte	Depth;
-			public enmHashType Type;
-			public Player.enmColour Colour;
+			public EnmHashType Type;
+			public Player.EnmColour Colour;
 			public int		Result;
-			public Move.enmName WhiteMoveName;
-			public Move.enmName BlackMoveName;
+			public Move.EnmName WhiteMoveName;
+			public Move.EnmName BlackMoveName;
 			public sbyte	WhiteFrom;
 			public sbyte	WhiteTo;
 			public sbyte	BlackFrom;
 			public sbyte	BlackTo;
 		}
 
-		public const int UNKNOWN = int.MinValue;
-		static HashEntry[] m_arrHashEntry = new HashEntry[HASH_TABLE_SIZE];
+		public const int Unknown = int.MinValue;
+	    private static HashEntry[] _mArrHashEntry = new HashEntry[HashTableSize];
 
 		static HashTable()
 		{
@@ -74,9 +74,9 @@ namespace Chess.Core
 			{
 				int intCounter = 0;
 
-				for (uint intIndex=0; intIndex<HASH_TABLE_SIZE; intIndex++)
+				for (uint intIndex=0; intIndex<HashTableSize; intIndex++)
 				{
-					if (m_arrHashEntry[intIndex].HashCodeA != 0)
+					if (_mArrHashEntry[intIndex].HashCodeA != 0)
 					{
 						intCounter++;
 					}
@@ -87,41 +87,41 @@ namespace Chess.Core
 
 		public static void ResetStats()
 		{
-			m_intProbes = 0;
-			m_intHits = 0;
-			m_intWrites = 0;
-			m_intCollisions = 0;
-			m_intOverwrites = 0;
+			_mIntProbes = 0;
+			_mIntHits = 0;
+			_mIntWrites = 0;
+			_mIntCollisions = 0;
+			_mIntOverwrites = 0;
 		}
 
 		public static void Clear()
 		{
 			ResetStats();
-			for (uint intIndex=0; intIndex<HASH_TABLE_SIZE; intIndex++)
+			for (uint intIndex=0; intIndex<HashTableSize; intIndex++)
 			{
-				m_arrHashEntry[intIndex].HashCodeA = 0;
-				m_arrHashEntry[intIndex].HashCodeB = 0;
-				m_arrHashEntry[intIndex].Depth = sbyte.MinValue;
-				m_arrHashEntry[intIndex].WhiteFrom = -1;
-				m_arrHashEntry[intIndex].BlackFrom = -1;
+				_mArrHashEntry[intIndex].HashCodeA = 0;
+				_mArrHashEntry[intIndex].HashCodeB = 0;
+				_mArrHashEntry[intIndex].Depth = sbyte.MinValue;
+				_mArrHashEntry[intIndex].WhiteFrom = -1;
+				_mArrHashEntry[intIndex].BlackFrom = -1;
 			}
 		}
 
-		public unsafe static int ProbeHash(ulong HashCodeA, ulong HashCodeB, int depth, int alpha, int beta, Player.enmColour colour)
+		public unsafe static int ProbeHash(ulong hashCodeA, ulong hashCodeB, int depth, int alpha, int beta, Player.EnmColour colour)
 		{
-			m_intProbes++;
+			_mIntProbes++;
 
-			fixed (HashEntry* phashBase = &m_arrHashEntry[0])
+			fixed (HashEntry* phashBase = &_mArrHashEntry[0])
 			{
 				HashEntry* phashEntry = phashBase;
-				phashEntry += ((uint)(HashCodeA % HASH_TABLE_SIZE));
+				phashEntry += ((uint)(hashCodeA % HashTableSize));
 
 				int intAttempt = 0;
-				while (phashEntry>=phashBase && (phashEntry->HashCodeA!=HashCodeA || phashEntry->HashCodeB!=HashCodeB || phashEntry->Depth < depth) )
+				while (phashEntry>=phashBase && (phashEntry->HashCodeA!=hashCodeA || phashEntry->HashCodeB!=hashCodeB || phashEntry->Depth < depth) )
 				{
 					phashEntry--;
 					intAttempt++;
-					if (intAttempt==HASH_TABLE_SLOT_DEPTH)
+					if (intAttempt==HashTableSlotDepth)
 					{
 						break;
 					}
@@ -132,39 +132,39 @@ namespace Chess.Core
 					phashEntry = phashBase;
 				}
 
-				if (phashEntry->HashCodeA==HashCodeA && phashEntry->HashCodeB==HashCodeB && phashEntry->Depth >= depth )
+				if (phashEntry->HashCodeA==hashCodeA && phashEntry->HashCodeB==hashCodeB && phashEntry->Depth >= depth )
 				{
 					if (phashEntry->Colour==colour)
 					{
-						if ( phashEntry->Type==enmHashType.Exact )
+						if ( phashEntry->Type==EnmHashType.Exact )
 						{
-							m_intHits++;
+							_mIntHits++;
 							return phashEntry->Result;
 						}
-						if ( (phashEntry->Type==enmHashType.Alpha) && (phashEntry->Result<=alpha))
+						if ( (phashEntry->Type==EnmHashType.Alpha) && (phashEntry->Result<=alpha))
 						{
-							m_intHits++;
+							_mIntHits++;
 							return alpha;
 						}
-						if ( (phashEntry->Type==enmHashType.Beta) && (phashEntry->Result>=beta))
+						if ( (phashEntry->Type==EnmHashType.Beta) && (phashEntry->Result>=beta))
 						{
-							m_intHits++;
+							_mIntHits++;
 							return beta;
 						}
 					}
 				}
 			}
-			return UNKNOWN;
+			return Unknown;
 		}
 		
-		public unsafe static void RecordHash(ulong HashCodeA, ulong HashCodeB, int depth, int val, enmHashType type, int From, int To, Move.enmName MoveName, Player.enmColour colour)
+		public unsafe static void RecordHash(ulong hashCodeA, ulong hashCodeB, int depth, int val, EnmHashType type, int @from, int to, Move.EnmName moveName, Player.EnmColour colour)
 		{
-			m_intWrites++;
-			fixed (HashEntry* phashBase = &m_arrHashEntry[0])
+			_mIntWrites++;
+			fixed (HashEntry* phashBase = &_mArrHashEntry[0])
 			{
 				int intAttempt;
 				HashEntry* phashEntry = phashBase;
-				phashEntry += ((uint)(HashCodeA % HASH_TABLE_SIZE));
+				phashEntry += ((uint)(hashCodeA % HashTableSize));
 				HashEntry* phashFirst = phashEntry;
 
 				intAttempt = 0;
@@ -172,7 +172,7 @@ namespace Chess.Core
 				{
 					phashEntry--;
 					intAttempt++;
-					if (intAttempt==HASH_TABLE_SLOT_DEPTH)
+					if (intAttempt==HashTableSlotDepth)
 					{
 						break;
 					}
@@ -185,56 +185,56 @@ namespace Chess.Core
 
 				if (phashEntry->HashCodeA!=0)
 				{
-					m_intCollisions++;
-					if (phashEntry->HashCodeA!=HashCodeA || phashEntry->HashCodeB!=HashCodeB)
+					_mIntCollisions++;
+					if (phashEntry->HashCodeA!=hashCodeA || phashEntry->HashCodeB!=hashCodeB)
 					{
-						m_intOverwrites++;
+						_mIntOverwrites++;
 						phashEntry->WhiteFrom = -1;
 						phashEntry->BlackFrom = -1;
 					}
 				}
 
-				phashEntry->HashCodeA = HashCodeA;
-				phashEntry->HashCodeB = HashCodeB;
+				phashEntry->HashCodeA = hashCodeA;
+				phashEntry->HashCodeB = hashCodeB;
 				phashEntry->Result = val;
 				phashEntry->Type = type;
 				phashEntry->Depth = (sbyte)depth;
 				phashEntry->Colour = colour;
-				if (From>-1)
+				if (@from>-1)
 				{
-					if (colour==Player.enmColour.White)
+					if (colour==Player.EnmColour.White)
 					{
-						phashEntry->WhiteMoveName = MoveName;
-						phashEntry->WhiteFrom = (sbyte)From;
-						phashEntry->WhiteTo = (sbyte)To;
+						phashEntry->WhiteMoveName = moveName;
+						phashEntry->WhiteFrom = (sbyte)@from;
+						phashEntry->WhiteTo = (sbyte)to;
 					}
 					else
 					{
-						phashEntry->BlackMoveName = MoveName;
-						phashEntry->BlackFrom = (sbyte)From;
-						phashEntry->BlackTo = (sbyte)To;
+						phashEntry->BlackMoveName = moveName;
+						phashEntry->BlackFrom = (sbyte)@from;
+						phashEntry->BlackTo = (sbyte)to;
 					}
 				}
 
 			}
 		}
 
-		public unsafe static Move ProbeForBestMove(Player.enmColour colour)
+		public unsafe static Move ProbeForBestMove(Player.EnmColour colour)
 		{
-			fixed (HashEntry* phashBase = &m_arrHashEntry[0])
+			fixed (HashEntry* phashBase = &_mArrHashEntry[0])
 			{
-				ulong HashCodeA = Board.HashCodeA;
-				ulong HashCodeB = Board.HashCodeB;
+				ulong hashCodeA = Board.HashCodeA;
+				ulong hashCodeB = Board.HashCodeB;
 
 				HashEntry* phashEntry = phashBase;
-				phashEntry += ((uint)(HashCodeA % HASH_TABLE_SIZE));
+				phashEntry += ((uint)(hashCodeA % HashTableSize));
 				
 				int intAttempt = 0;
-				while (phashEntry>=phashBase && (phashEntry->HashCodeA!=HashCodeA || phashEntry->HashCodeB!=HashCodeB) )
+				while (phashEntry>=phashBase && (phashEntry->HashCodeA!=hashCodeA || phashEntry->HashCodeB!=hashCodeB) )
 				{
 					phashEntry--;
 					intAttempt++;
-					if (intAttempt==HASH_TABLE_SLOT_DEPTH)
+					if (intAttempt==HashTableSlotDepth)
 					{
 						break;
 					}
@@ -245,9 +245,9 @@ namespace Chess.Core
 					phashEntry = phashBase;
 				}
 
-				if (phashEntry->HashCodeA==HashCodeA && phashEntry->HashCodeB==HashCodeB)
+				if (phashEntry->HashCodeA==hashCodeA && phashEntry->HashCodeB==hashCodeB)
 				{
-					if (colour==Player.enmColour.White)
+					if (colour==Player.EnmColour.White)
 					{
 						if (phashEntry->WhiteFrom >= 0)
 						{

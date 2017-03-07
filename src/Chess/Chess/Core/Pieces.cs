@@ -4,62 +4,62 @@ namespace Chess.Core
 {
 	public class Pieces: IEnumerable
 	{
-		private Player m_player;
-		private ArrayList m_colPieces = new ArrayList();
+		private Player _mPlayer;
+		private ArrayList _mColPieces = new ArrayList();
 
 		public Pieces(Player player)
 		{
-			m_player = player;
+			_mPlayer = player;
 		}
 
 		public Player Player
 		{
-			get { return m_player; }
+			get { return _mPlayer; }
 		}
 
 		public IEnumerator GetEnumerator()
 		{
-			return m_colPieces.GetEnumerator();
+			return _mColPieces.GetEnumerator();
 		}
 
 		public Piece Item(int intIndex)
 		{
-			return (Piece)m_colPieces[intIndex];
+			return (Piece)_mColPieces[intIndex];
 		}
 
 		public int Count
 		{
-			get { return m_colPieces.Count; }
+			get { return _mColPieces.Count; }
 		}
 
 		public void Add(Piece piece)
 		{
-			m_colPieces.Add(piece);
+			_mColPieces.Add(piece);
 		}
 
-		public void Insert(int Ordinal, Piece piece)
+		public void Insert(int ordinal, Piece piece)
 		{
-			m_colPieces.Insert(Ordinal, piece);
+			_mColPieces.Insert(ordinal, piece);
 		}
 
 		public int IndexOf(Piece piece)
 		{
-			return m_colPieces.IndexOf(piece);
+			return _mColPieces.IndexOf(piece);
 		}
 
 		public void Remove(Piece piece)
 		{
-			m_colPieces.Remove(piece);
+			_mColPieces.Remove(piece);
 		}
 
 		public void SortByScore()
 		{
-			m_colPieces.Sort();
+			_mColPieces.Sort();
 		}
 
 		public object Clone()
 		{
-			return m_colPieces.Clone();
+			return _mColPieces.Clone();
 		}
 
 	}
