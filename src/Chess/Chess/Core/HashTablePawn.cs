@@ -86,7 +86,7 @@ namespace Chess.Core
 			}
 		}
 
-		public unsafe static int ProbeHash(Player.EnmColour colour)
+		public static unsafe int ProbeHash(Player.EnmColour colour)
 		{
 			var hashCodeA = Board.HashCodeA;
 			var hashCodeB = Board.HashCodeB;
@@ -118,7 +118,7 @@ namespace Chess.Core
 			return Unknown;
 		}
 		
-		public unsafe static void RecordHash(int val, Player.EnmColour colour)
+		public static unsafe void RecordHash(int val, Player.EnmColour colour)
 		{
 			var hashCodeA = Board.HashCodeA;
 			var hashCodeB = Board.HashCodeB;

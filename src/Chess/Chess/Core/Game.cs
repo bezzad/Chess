@@ -35,10 +35,10 @@ namespace Chess.Core
 			Board.EstablishHashKey();
 
 			var registryKeySoftware =Registry.CurrentUser.OpenSubKey("Software",true);
-			var registryKeySharpChess = registryKeySoftware.CreateSubKey(@"PeterHughes.org\SharpChess");
+			var registryKeyChess = registryKeySoftware.CreateSubKey(@"PeterHughes.org\Chess");
 
-			_mBlnShowThinking = ((string)registryKeySharpChess.GetValue("ShowThinking")=="1");
-			_mBlnDisplayMoveAnalysisTree = ((string)registryKeySharpChess.GetValue("DisplayMoveAnalysisTree")=="1");
+			_mBlnShowThinking = ((string)registryKeyChess.GetValue("ShowThinking")=="1");
+			_mBlnDisplayMoveAnalysisTree = ((string)registryKeyChess.GetValue("DisplayMoveAnalysisTree")=="1");
 
 			PlayerToPlay.Clock.Start();
 		}
@@ -46,10 +46,10 @@ namespace Chess.Core
 		~Game()
 		{
 			var registryKeySoftware =Registry.CurrentUser.OpenSubKey("Software",true);
-			var registryKeySharpChess = registryKeySoftware.CreateSubKey(@"PeterHughes.org\SharpChess");
+			var registryKeyChess = registryKeySoftware.CreateSubKey(@"PeterHughes.org\Chess");
 
-			registryKeySharpChess.SetValue("ShowThinking", _mBlnShowThinking ? "1" : "0");
-			registryKeySharpChess.SetValue("DisplayMoveAnalysisTree", _mBlnDisplayMoveAnalysisTree ? "1" : "0");
+			registryKeyChess.SetValue("ShowThinking", _mBlnShowThinking ? "1" : "0");
+			registryKeyChess.SetValue("DisplayMoveAnalysisTree", _mBlnDisplayMoveAnalysisTree ? "1" : "0");
 		}
 
 		public static void New()

@@ -67,7 +67,7 @@ namespace Chess.Core
 			}
 		}
 
-		public unsafe static bool IsPlayerInCheck(Player player)
+		public static unsafe bool IsPlayerInCheck(Player player)
 		{
 			fixed (HashEntry* phashBase = &MArrHashEntry[0])
 			{

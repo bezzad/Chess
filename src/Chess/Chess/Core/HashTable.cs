@@ -107,7 +107,7 @@ namespace Chess.Core
 			}
 		}
 
-		public unsafe static int ProbeHash(ulong hashCodeA, ulong hashCodeB, int depth, int alpha, int beta, Player.EnmColour colour)
+		public static unsafe int ProbeHash(ulong hashCodeA, ulong hashCodeB, int depth, int alpha, int beta, Player.EnmColour colour)
 		{
 			_mIntProbes++;
 
@@ -157,7 +157,7 @@ namespace Chess.Core
 			return Unknown;
 		}
 		
-		public unsafe static void RecordHash(ulong hashCodeA, ulong hashCodeB, int depth, int val, EnmHashType type, int @from, int to, Move.EnmName moveName, Player.EnmColour colour)
+		public static unsafe void RecordHash(ulong hashCodeA, ulong hashCodeB, int depth, int val, EnmHashType type, int @from, int to, Move.EnmName moveName, Player.EnmColour colour)
 		{
 			_mIntWrites++;
 			fixed (HashEntry* phashBase = &MArrHashEntry[0])
@@ -219,7 +219,7 @@ namespace Chess.Core
 			}
 		}
 
-		public unsafe static Move ProbeForBestMove(Player.EnmColour colour)
+		public static unsafe Move ProbeForBestMove(Player.EnmColour colour)
 		{
 			fixed (HashEntry* phashBase = &MArrHashEntry[0])
 			{
