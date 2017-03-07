@@ -15,14 +15,14 @@ namespace Chess.Core
 		}
 
 		private Piece _mPiece;
-		private Square _mFrom;
-		private Square _mTo;
-		private Piece _mPieceTaken;
+		private readonly Square _mFrom;
+		private readonly Square _mTo;
+		private readonly Piece _mPieceTaken;
 		private Moves _mMoves;
-		private EnmName _mName;
-		private int _mTurnNo;
-		private int _mLastMoveTurnNo;
-		private int _mPieceTakenOrdinal;
+		private readonly EnmName _mName;
+		private readonly int _mTurnNo;
+		private readonly int _mLastMoveTurnNo;
+		private readonly int _mPieceTakenOrdinal;
 		private int _mScore;
 		private int _mPoints;
 		private int _mAlpha;
@@ -67,7 +67,7 @@ namespace Chess.Core
 		{
 			get
 			{
-				string strDescription = "";
+				var strDescription = "";
 				
 				if (_mPieceTaken!=null)
 				{

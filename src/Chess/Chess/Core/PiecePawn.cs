@@ -2,7 +2,7 @@ namespace Chess.Core
 {
 	public class PiecePawn: IPieceTop
 	{
-	    private Piece _mBase = null;
+	    private readonly Piece _mBase = null;
 
 		public PiecePawn(Piece pieceBase)
 		{
@@ -37,23 +37,23 @@ namespace Chess.Core
 			}
 		}
 
-	    private static int[] _aintAdvancementBonus = {0,0,0,45,75,120,240,999};
-	    private static int[] _aintFileBonus = {0,4,8,16,16,8,4,0};
+	    private static readonly int[] AintAdvancementBonus = {0,0,0,45,75,120,240,999};
+	    private static readonly int[] AintFileBonus = {0,4,8,16,16,8,4,0};
 
 		public int PositionalValue
 		{
 			get
 			{
-				int intPoints = 0;
+				var intPoints = 0;
 				int intIndex;
 				Piece piece;
 
 				// PENALITIES
 
 				// Isolated or Doubled pawn
-				bool blnIsIsolatedLeft = true;
-				bool blnIsIsolatedRight = true;
-				bool blnIsDouble = false;
+				var blnIsIsolatedLeft = true;
+				var blnIsIsolatedRight = true;
+				var blnIsDouble = false;
 				for (intIndex=_mBase.Player.Pawns.Count-1; intIndex>=0; intIndex--)
 				{
 					piece = _mBase.Player.Pawns.Item(intIndex);
@@ -111,7 +111,7 @@ namespace Chess.Core
 				}
 
 				// Backward pawn
-				bool blnIsBackward = true;
+				var blnIsBackward = true;
 				if ( blnIsBackward && (piece = Board.GetPiece(_mBase.Square.Ordinal-1                                       ))!=null && piece.Name==Piece.EnmName.Pawn && piece.Player.Colour==_mBase.Player.Colour) blnIsBackward = false;
 				if ( blnIsBackward && (piece = Board.GetPiece(_mBase.Square.Ordinal+1                                       ))!=null && piece.Name==Piece.EnmName.Pawn && piece.Player.Colour==_mBase.Player.Colour) blnIsBackward = false;
 				if ( blnIsBackward && (piece = Board.GetPiece(_mBase.Square.Ordinal-_mBase.Player.PawnAttackLeftOffset ))!=null && piece.Name==Piece.EnmName.Pawn && piece.Player.Colour==_mBase.Player.Colour) blnIsBackward = false;
@@ -155,10 +155,10 @@ namespace Chess.Core
 				// BONUSES
 
 				// Encourage capturing towards the centre
-				intPoints += _aintFileBonus[_mBase.Square.File];
+				intPoints += AintFileBonus[_mBase.Square.File];
 
 				// Advancement
-				int intAdvancementBonus = _aintAdvancementBonus[_mBase.Player.Colour==Player.EnmColour.White ? _mBase.Square.Rank : 7-_mBase.Square.Rank];
+				var intAdvancementBonus = AintAdvancementBonus[_mBase.Player.Colour==Player.EnmColour.White ? _mBase.Square.Rank : 7-_mBase.Square.Rank];
 
 				if (Game.Stage==Game.EnmStage.End)
 				{
@@ -166,7 +166,7 @@ namespace Chess.Core
 				}
 
 				// Passed Pawns
-				bool blnIsPassed = true;
+				var blnIsPassed = true;
 				for (intIndex=_mBase.Player.OtherPlayer.Pawns.Count-1; intIndex>=0; intIndex--)
 				{
 					piece = _mBase.Player.OtherPlayer.Pawns.Item(intIndex);
@@ -227,7 +227,7 @@ namespace Chess.Core
 		public void GenerateLazyMoves(Moves moves, Moves.EnmMovesType movesType)
 		{
 			Square square;
-			bool blnIsPromotion = _mBase.Player.Colour==Player.EnmColour.White && _mBase.Square.Rank==6
+			var blnIsPromotion = _mBase.Player.Colour==Player.EnmColour.White && _mBase.Square.Rank==6
 									||
 									_mBase.Player.Colour==Player.EnmColour.Black && _mBase.Square.Rank==1;
 

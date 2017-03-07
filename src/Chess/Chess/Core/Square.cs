@@ -4,7 +4,7 @@ namespace Chess.Core
 {
 	public class Square
 	{
-	    private static int[] _mAintVectors =
+	    private static readonly int[] MAintVectors =
 		{
 			0,  0,  0,  0,  0,  0,  0,  0,   -15,-17,  0,  0,  0,  0,  0,  0,
 			-16,  0,  0,  0,  0,  0,  0,-15,     0,  0,-17,  0,  0,  0,  0,  0,
@@ -25,7 +25,7 @@ namespace Chess.Core
 			0,  0,  0,  0,  0,  0, 17, 15 ,    0,  0,  0,  0,  0,  0,  0,  0
 		};
 
-	    private static char[] _mAintMinorAttackers =
+	    private static readonly char[] MAintMinorAttackers =
 		{
 			'.','.','.','.','.','.','.','.',   'B','B','.','.','.','.','.','.',
 			'R','.','.','.','.','.','.','B',   '.','.','B','.','.','.','.','.',
@@ -46,7 +46,7 @@ namespace Chess.Core
 			'.','.','.','.','.','.','B','B' ,  '.','.','.','.','.','.','.','.'
 		};
 
-	    private static char[] _mAintQueenAttackers =
+	    private static readonly char[] MAintQueenAttackers =
 		{
 			'.','.','.','.','.','.','.','.',   'Q','Q','.','.','.','.','.','.',
 			'Q','.','.','.','.','.','.','Q',   '.','.','Q','.','.','.','.','.',
@@ -67,7 +67,7 @@ namespace Chess.Core
 			'.','.','.','.','.','.','Q','Q' ,  '.','.','.','.','.','.','.','.'
 		};
 
-	    private static char[] _mAintKingAttackers =
+	    private static readonly char[] MAintKingAttackers =
 		{
 			'.','.','.','.','.','.','.','.',   '.','.','.','.','.','.','.','.',
 			'.','.','.','.','.','.','.','.',   '.','.','.','.','.','.','.','.',
@@ -88,7 +88,7 @@ namespace Chess.Core
 			'.','.','.','.','.','.','.','.' ,  '.','.','.','.','.','.','.','.'
 		};
 
-		private static int[] _mAintSquareValues =
+		private static readonly int[] MAintSquareValues =
 		{
 			1, 1, 1, 1, 1, 1, 1, 1,    0,0,0,0,0,0,0,0,
 			1,10,10,10,10,10,10, 1,    0,0,0,0,0,0,0,0,
@@ -106,11 +106,11 @@ namespace Chess.Core
 			,	Black
 		}
 
-		private EnmColour _mColour;
+		private readonly EnmColour _mColour;
 		private Piece _mPiece;
-		private int _mIntFile;
-		private int _mIntRank;
-		private int _mIntOrdinal;
+		private readonly int _mIntFile;
+		private readonly int _mIntRank;
+		private readonly int _mIntOrdinal;
 
 		public Square(int ordinal)
 		{
@@ -147,7 +147,7 @@ namespace Chess.Core
 		{
 			get
 			{
-				return _mAintSquareValues[Ordinal];
+				return MAintSquareValues[Ordinal];
 			}
 		}
 
@@ -227,22 +227,22 @@ namespace Chess.Core
 			piece = Board.GetPiece( _mIntOrdinal-player.PawnAttackRightOffset ); if (piece!=null && piece.Name==Piece.EnmName.Pawn && piece.Player.Colour==player.Colour) return true;
 
 			// Knights
-			if (player.QueensKnight.IsInPlay && _mAintMinorAttackers[_mIntOrdinal-player.QueensKnight.Square.Ordinal+128]=='N') return true;
-			if (player.KingsKnight.IsInPlay && _mAintMinorAttackers[_mIntOrdinal-player.KingsKnight.Square.Ordinal+128]=='N') return true;
+			if (player.QueensKnight.IsInPlay && MAintMinorAttackers[_mIntOrdinal-player.QueensKnight.Square.Ordinal+128]=='N') return true;
+			if (player.KingsKnight.IsInPlay && MAintMinorAttackers[_mIntOrdinal-player.KingsKnight.Square.Ordinal+128]=='N') return true;
 
 			// Bishops
-			if (player.QueensBishop.IsInPlay && _mAintMinorAttackers[_mIntOrdinal-player.QueensBishop.Square.Ordinal+128]=='B' && CanSlideToHereFrom(player.QueensBishop.Square, _mAintVectors[_mIntOrdinal-player.QueensBishop.Square.Ordinal+128]))  return true;
-			if (player.KingsBishop.IsInPlay && _mAintMinorAttackers[_mIntOrdinal-player.KingsBishop.Square.Ordinal+128]=='B' && CanSlideToHereFrom(player.KingsBishop.Square, _mAintVectors[_mIntOrdinal-player.KingsBishop.Square.Ordinal+128]))  return true;
+			if (player.QueensBishop.IsInPlay && MAintMinorAttackers[_mIntOrdinal-player.QueensBishop.Square.Ordinal+128]=='B' && CanSlideToHereFrom(player.QueensBishop.Square, MAintVectors[_mIntOrdinal-player.QueensBishop.Square.Ordinal+128]))  return true;
+			if (player.KingsBishop.IsInPlay && MAintMinorAttackers[_mIntOrdinal-player.KingsBishop.Square.Ordinal+128]=='B' && CanSlideToHereFrom(player.KingsBishop.Square, MAintVectors[_mIntOrdinal-player.KingsBishop.Square.Ordinal+128]))  return true;
 				
 			// Rooks
-			if (player.QueensRook.IsInPlay && _mAintMinorAttackers[_mIntOrdinal-player.QueensRook.Square.Ordinal+128]=='R' && CanSlideToHereFrom(player.QueensRook.Square, _mAintVectors[_mIntOrdinal-player.QueensRook.Square.Ordinal+128]))  return true;
-			if (player.KingsRook.IsInPlay && _mAintMinorAttackers[_mIntOrdinal-player.KingsRook.Square.Ordinal+128]=='R' && CanSlideToHereFrom(player.KingsRook.Square, _mAintVectors[_mIntOrdinal-player.KingsRook.Square.Ordinal+128]))  return true;
+			if (player.QueensRook.IsInPlay && MAintMinorAttackers[_mIntOrdinal-player.QueensRook.Square.Ordinal+128]=='R' && CanSlideToHereFrom(player.QueensRook.Square, MAintVectors[_mIntOrdinal-player.QueensRook.Square.Ordinal+128]))  return true;
+			if (player.KingsRook.IsInPlay && MAintMinorAttackers[_mIntOrdinal-player.KingsRook.Square.Ordinal+128]=='R' && CanSlideToHereFrom(player.KingsRook.Square, MAintVectors[_mIntOrdinal-player.KingsRook.Square.Ordinal+128]))  return true;
 
 			// Queen
-			if (player.Queen.IsInPlay && _mAintQueenAttackers[_mIntOrdinal-player.Queen.Square.Ordinal+128]=='Q' && CanSlideToHereFrom(player.Queen.Square, _mAintVectors[_mIntOrdinal-player.Queen.Square.Ordinal+128]))  return true;
+			if (player.Queen.IsInPlay && MAintQueenAttackers[_mIntOrdinal-player.Queen.Square.Ordinal+128]=='Q' && CanSlideToHereFrom(player.Queen.Square, MAintVectors[_mIntOrdinal-player.Queen.Square.Ordinal+128]))  return true;
 
 			// King
-			if (_mAintKingAttackers[_mIntOrdinal-player.King.Square.Ordinal+128]=='K')  return true;
+			if (MAintKingAttackers[_mIntOrdinal-player.King.Square.Ordinal+128]=='K')  return true;
 
 			return false;
 		}
@@ -256,27 +256,27 @@ namespace Chess.Core
 			piece = Board.GetPiece( _mIntOrdinal-player.PawnAttackRightOffset ); if (piece!=null && piece.Name==Piece.EnmName.Pawn && piece.Player.Colour==player.Colour) moves.Add(0, 0, Move.EnmName.Standard, Board.GetPiece(_mIntOrdinal-player.PawnAttackRightOffset), Board.GetSquare(_mIntOrdinal-player.PawnAttackRightOffset), this, Piece, 0, 0);
 
 			// Knights
-			if (player.QueensKnight.IsInPlay && _mAintMinorAttackers[_mIntOrdinal-player.QueensKnight.Square.Ordinal+128]=='N') moves.Add(0, 0, Move.EnmName.Standard, player.QueensKnight, player.QueensKnight.Square, this, Piece, 0, 0);
-			if (player.KingsKnight.IsInPlay && _mAintMinorAttackers[_mIntOrdinal-player.KingsKnight.Square.Ordinal+128]=='N') moves.Add(0, 0, Move.EnmName.Standard, player.KingsKnight, player.KingsKnight.Square, this, Piece, 0, 0);
+			if (player.QueensKnight.IsInPlay && MAintMinorAttackers[_mIntOrdinal-player.QueensKnight.Square.Ordinal+128]=='N') moves.Add(0, 0, Move.EnmName.Standard, player.QueensKnight, player.QueensKnight.Square, this, Piece, 0, 0);
+			if (player.KingsKnight.IsInPlay && MAintMinorAttackers[_mIntOrdinal-player.KingsKnight.Square.Ordinal+128]=='N') moves.Add(0, 0, Move.EnmName.Standard, player.KingsKnight, player.KingsKnight.Square, this, Piece, 0, 0);
 
 			// Bishops
-			if (player.QueensBishop.IsInPlay && _mAintMinorAttackers[_mIntOrdinal-player.QueensBishop.Square.Ordinal+128]=='B' && CanSlideToHereFrom(player.QueensBishop.Square, _mAintVectors[_mIntOrdinal-player.QueensBishop.Square.Ordinal+128])) moves.Add(0, 0, Move.EnmName.Standard, player.QueensBishop, player.QueensBishop.Square, this, Piece, 0, 0);
-			if (player.KingsBishop.IsInPlay && _mAintMinorAttackers[_mIntOrdinal-player.KingsBishop.Square.Ordinal+128]=='B' && CanSlideToHereFrom(player.KingsBishop.Square, _mAintVectors[_mIntOrdinal-player.KingsBishop.Square.Ordinal+128])) moves.Add(0, 0, Move.EnmName.Standard, player.KingsBishop, player.KingsBishop.Square, this, Piece, 0, 0);
+			if (player.QueensBishop.IsInPlay && MAintMinorAttackers[_mIntOrdinal-player.QueensBishop.Square.Ordinal+128]=='B' && CanSlideToHereFrom(player.QueensBishop.Square, MAintVectors[_mIntOrdinal-player.QueensBishop.Square.Ordinal+128])) moves.Add(0, 0, Move.EnmName.Standard, player.QueensBishop, player.QueensBishop.Square, this, Piece, 0, 0);
+			if (player.KingsBishop.IsInPlay && MAintMinorAttackers[_mIntOrdinal-player.KingsBishop.Square.Ordinal+128]=='B' && CanSlideToHereFrom(player.KingsBishop.Square, MAintVectors[_mIntOrdinal-player.KingsBishop.Square.Ordinal+128])) moves.Add(0, 0, Move.EnmName.Standard, player.KingsBishop, player.KingsBishop.Square, this, Piece, 0, 0);
 				
 			// Rooks
-			if (player.QueensRook.IsInPlay && _mAintMinorAttackers[_mIntOrdinal-player.QueensRook.Square.Ordinal+128]=='R' && CanSlideToHereFrom(player.QueensRook.Square, _mAintVectors[_mIntOrdinal-player.QueensRook.Square.Ordinal+128])) moves.Add(0, 0, Move.EnmName.Standard, player.QueensRook, player.QueensRook.Square, this, Piece, 0, 0);
-			if (player.KingsRook.IsInPlay && _mAintMinorAttackers[_mIntOrdinal-player.KingsRook.Square.Ordinal+128]=='R' && CanSlideToHereFrom(player.KingsRook.Square, _mAintVectors[_mIntOrdinal-player.KingsRook.Square.Ordinal+128])) moves.Add(0, 0, Move.EnmName.Standard, player.KingsRook, player.KingsRook.Square, this, Piece, 0, 0);
+			if (player.QueensRook.IsInPlay && MAintMinorAttackers[_mIntOrdinal-player.QueensRook.Square.Ordinal+128]=='R' && CanSlideToHereFrom(player.QueensRook.Square, MAintVectors[_mIntOrdinal-player.QueensRook.Square.Ordinal+128])) moves.Add(0, 0, Move.EnmName.Standard, player.QueensRook, player.QueensRook.Square, this, Piece, 0, 0);
+			if (player.KingsRook.IsInPlay && MAintMinorAttackers[_mIntOrdinal-player.KingsRook.Square.Ordinal+128]=='R' && CanSlideToHereFrom(player.KingsRook.Square, MAintVectors[_mIntOrdinal-player.KingsRook.Square.Ordinal+128])) moves.Add(0, 0, Move.EnmName.Standard, player.KingsRook, player.KingsRook.Square, this, Piece, 0, 0);
 
 			// Queen
-			if (player.Queen.IsInPlay && _mAintQueenAttackers[_mIntOrdinal-player.Queen.Square.Ordinal+128]=='Q' && CanSlideToHereFrom(player.Queen.Square, _mAintVectors[_mIntOrdinal-player.Queen.Square.Ordinal+128])) moves.Add(0, 0, Move.EnmName.Standard, player.Queen, player.Queen.Square, this, Piece, 0, 0);
+			if (player.Queen.IsInPlay && MAintQueenAttackers[_mIntOrdinal-player.Queen.Square.Ordinal+128]=='Q' && CanSlideToHereFrom(player.Queen.Square, MAintVectors[_mIntOrdinal-player.Queen.Square.Ordinal+128])) moves.Add(0, 0, Move.EnmName.Standard, player.Queen, player.Queen.Square, this, Piece, 0, 0);
 
 			// King
-			if (_mAintKingAttackers[_mIntOrdinal-player.King.Square.Ordinal+128]=='K')moves.Add(0, 0, Move.EnmName.Standard, player.King, player.King.Square, this, Piece, 0, 0);
+			if (MAintKingAttackers[_mIntOrdinal-player.King.Square.Ordinal+128]=='K')moves.Add(0, 0, Move.EnmName.Standard, player.King, player.King.Square, this, Piece, 0, 0);
 		}
 
 		public bool CanSlideToHereFrom(Square squareStart, int offset)
 		{
-			int intOrdinal = squareStart.Ordinal;
+			var intOrdinal = squareStart.Ordinal;
 			Square square;
 
 			intOrdinal += offset;
@@ -298,8 +298,8 @@ namespace Chess.Core
 		public int DefencePointsFor(Player player)
 		{
 			Piece piece;
-			int value = 0;
-			int bestValue = 0;
+			var value = 0;
+			var bestValue = 0;
 
 			// Pawn
 			piece = Board.GetPiece( _mIntOrdinal-player.PawnAttackLeftOffset ); if (piece!=null && piece.Name==Piece.EnmName.Pawn && piece.Player.Colour==player.Colour) return piece.Value;
@@ -391,7 +391,7 @@ namespace Chess.Core
 		public Pieces AttackerPieceList(Player player)
 		{
 			Piece piece;
-			Pieces pieces = new Pieces(player);
+			var pieces = new Pieces(player);
 
 			// Pawn
 			piece = Board.GetPiece( _mIntOrdinal-player.PawnAttackLeftOffset ); if (piece!=null && piece.Name==Piece.EnmName.Pawn && piece.Player.Colour==player.Colour) pieces.Add(piece);

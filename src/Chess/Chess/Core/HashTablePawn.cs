@@ -42,17 +42,17 @@ namespace Chess.Core
 
 		public const int Unknown = int.MinValue;
 		public const int HashTableSize = 1000013;
-	    private static HashEntry[] _mArrHashEntry = new HashEntry[HashTableSize];
+	    private static readonly HashEntry[] MArrHashEntry = new HashEntry[HashTableSize];
 
 		public static int SlotsUsed
 		{
 			get
 			{
-				int intCounter = 0;
+				var intCounter = 0;
 
 				for (uint intIndex=0; intIndex<HashTableSize; intIndex++)
 				{
-					if (_mArrHashEntry[intIndex].HashCodeA != 0)
+					if (MArrHashEntry[intIndex].HashCodeA != 0)
 					{
 						intCounter++;
 					}
@@ -80,16 +80,16 @@ namespace Chess.Core
 			ResetStats();
 			for (uint intIndex=0; intIndex<HashTableSize; intIndex++)
 			{
-				_mArrHashEntry[intIndex].HashCodeA = 0;
-				_mArrHashEntry[intIndex].HashCodeB = 0;
-				_mArrHashEntry[intIndex].Points = Unknown;
+				MArrHashEntry[intIndex].HashCodeA = 0;
+				MArrHashEntry[intIndex].HashCodeB = 0;
+				MArrHashEntry[intIndex].Points = Unknown;
 			}
 		}
 
 		public unsafe static int ProbeHash(Player.EnmColour colour)
 		{
-			ulong hashCodeA = Board.HashCodeA;
-			ulong hashCodeB = Board.HashCodeB;
+			var hashCodeA = Board.HashCodeA;
+			var hashCodeB = Board.HashCodeB;
 
 			if (colour==Player.EnmColour.Black)
 			{
@@ -104,9 +104,9 @@ namespace Chess.Core
 
 			_mIntProbes++;
 
-			fixed (HashEntry* phashBase = &_mArrHashEntry[0])
+			fixed (HashEntry* phashBase = &MArrHashEntry[0])
 			{
-				HashEntry* phashEntry = phashBase;
+				var phashEntry = phashBase;
 				phashEntry += ((uint)(hashCodeA % HashTableSize));
 				
 				if (phashEntry->HashCodeA == hashCodeA && phashEntry->HashCodeB == hashCodeB)
@@ -120,8 +120,8 @@ namespace Chess.Core
 		
 		public unsafe static void RecordHash(int val, Player.EnmColour colour)
 		{
-			ulong hashCodeA = Board.HashCodeA;
-			ulong hashCodeB = Board.HashCodeB;
+			var hashCodeA = Board.HashCodeA;
+			var hashCodeB = Board.HashCodeB;
 
 			if (colour==Player.EnmColour.Black)
 			{
@@ -135,9 +135,9 @@ namespace Chess.Core
 			}
 
 
-			fixed (HashEntry* phashBase = &_mArrHashEntry[0])
+			fixed (HashEntry* phashBase = &MArrHashEntry[0])
 			{
-				HashEntry* phashEntry = phashBase;
+				var phashEntry = phashBase;
 				phashEntry += ((uint)(hashCodeA % HashTableSize));
 				phashEntry->HashCodeA = hashCodeA;
 				phashEntry->HashCodeB = hashCodeB;

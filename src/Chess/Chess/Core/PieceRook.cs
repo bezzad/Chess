@@ -2,7 +2,7 @@ namespace Chess.Core
 {
 	public class PieceRook: IPieceTop
 	{
-	    private Piece _mBase = null;
+	    private readonly Piece _mBase = null;
 
 		public PieceRook(Piece pieceBase)
 		{
@@ -53,7 +53,7 @@ namespace Chess.Core
 		{
 			get
 			{
-				int intPoints = 0;
+				var intPoints = 0;
 
 				// After the opening, Rooks are penalized slightly depending on "taxicab" distance to the enemy king.
 				if (Game.Stage != Game.EnmStage.Opening)
@@ -65,9 +65,9 @@ namespace Chess.Core
 				{
 					// Rooks are given a bonus of 10(0) points for occupying a file with no friendly pawns and a bonus of 
 					// 4(0) points if no enemy pawns lie on that file. 
-					bool blnHasFiendlyPawn = false;
-					bool blnHasEnemyPawn = false;
-					Square squareThis = Board.GetSquare(_mBase.Square.File, 0);
+					var blnHasFiendlyPawn = false;
+					var blnHasEnemyPawn = false;
+					var squareThis = Board.GetSquare(_mBase.Square.File, 0);
 					Piece piece;
 					while (squareThis!=null)
 					{

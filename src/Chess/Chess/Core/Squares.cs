@@ -4,7 +4,7 @@ namespace Chess.Core
 {
 	public class Squares: IEnumerable
 	{
-		private ArrayList _mColSquares = new ArrayList(24);
+		private readonly ArrayList _mColSquares = new ArrayList(24);
 
 		public IEnumerator GetEnumerator()
 		{

@@ -34,7 +34,7 @@ namespace Chess.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof(FrmOptions));
+            var resources = new System.Resources.ResourceManager(typeof(FrmOptions));
             this.btnOK = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.tabCtl = new System.Windows.Forms.TabControl();

@@ -41,7 +41,7 @@ namespace Chess.Core
 		}
 
 		public const int HashTableSize = 1000777;
-	    private static HashEntry[] _mArrHashEntry = new HashEntry[HashTableSize];
+	    private static readonly HashEntry[] MArrHashEntry = new HashEntry[HashTableSize];
 
 		static HashTableCheck()
 		{
@@ -61,18 +61,18 @@ namespace Chess.Core
 			ResetStats();
 			for (uint intIndex=0; intIndex<HashTableSize; intIndex++)
 			{
-				_mArrHashEntry[intIndex].HashCodeA = 0;
-				_mArrHashEntry[intIndex].HashCodeB = 0;
-				_mArrHashEntry[intIndex].IsInCheck = false;
+				MArrHashEntry[intIndex].HashCodeA = 0;
+				MArrHashEntry[intIndex].HashCodeB = 0;
+				MArrHashEntry[intIndex].IsInCheck = false;
 			}
 		}
 
 		public unsafe static bool IsPlayerInCheck(Player player)
 		{
-			fixed (HashEntry* phashBase = &_mArrHashEntry[0])
+			fixed (HashEntry* phashBase = &MArrHashEntry[0])
 			{
-				ulong hashCodeA = Board.HashCodeA;
-				ulong hashCodeB = Board.HashCodeB;
+				var hashCodeA = Board.HashCodeA;
+				var hashCodeB = Board.HashCodeB;
 
 				if (player.Colour==Player.EnmColour.Black)
 				{
@@ -85,7 +85,7 @@ namespace Chess.Core
 					hashCodeB &= 0xFFFFFFFFFFFFFFFE;
 				}
 
-				HashEntry* phashEntry = phashBase;
+				var phashEntry = phashBase;
 				phashEntry += ((uint)(hashCodeA % HashTableSize));
 				
 				if (phashEntry->HashCodeA!=hashCodeA || phashEntry->HashCodeB!=hashCodeB)

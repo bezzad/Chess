@@ -52,13 +52,13 @@ namespace Chess.Core
 
 		private IPieceTop _mTop;
 		private Square _mSquare;
-		private Player _mPlayer;
+		private readonly Player _mPlayer;
 		private int _mLastMoveTurnNo = 0;
 		private int _mNoOfMoves = 0;
 		private bool _mHasBeenPromoted = false;
 		private bool _mIsInPlay = true;
 		private int _mPoints = 0;
-		private EnmId _mId;
+		private readonly EnmId _mId;
 
 		public Piece Base
 		{
@@ -72,7 +72,7 @@ namespace Chess.Core
 
 		public Piece(EnmName name, Player player, int col, int row, EnmId id)
 		{
-			Square square = Board.GetSquare(col, row);
+			var square = Board.GetSquare(col, row);
 
 			_mPlayer = player;
 			_mSquare = square;
@@ -109,16 +109,16 @@ namespace Chess.Core
 
 		public ulong HashCodeAForSquareOrdinal(int ordinal)
 		{
-			uint a = (uint)(_mId);
-			uint x = (((uint)(_mId))<<7);
-			return _mAulongHashCodesA[(((uint)(_mId))<<7) + ordinal] + (_mHasBeenPromoted ? 13UL: 0UL);
+			var a = (uint)(_mId);
+			var x = (((uint)(_mId))<<7);
+			return MAulongHashCodesA[(((uint)(_mId))<<7) + ordinal] + (_mHasBeenPromoted ? 13UL: 0UL);
 		}
 
 		public ulong HashCodeBForSquareOrdinal(int ordinal)
 		{
-			uint a = (uint)(_mId);
-			uint x = (((uint)(_mId))<<7);
-			return _mAulongHashCodesB[(((uint)(_mId))<<7) + ordinal] + (_mHasBeenPromoted ? 111UL: 0UL);
+			var a = (uint)(_mId);
+			var x = (((uint)(_mId))<<7);
+			return MAulongHashCodesB[(((uint)(_mId))<<7) + ordinal] + (_mHasBeenPromoted ? 111UL: 0UL);
 		}
 
 		public ulong HashCodeA
@@ -223,10 +223,10 @@ namespace Chess.Core
 		{
 			GenerateLazyMoves(moves, Moves.EnmMovesType.All);
 			Move move;
-			for(int intIndex=moves.Count-1; intIndex>=0; intIndex--)
+			for(var intIndex=moves.Count-1; intIndex>=0; intIndex--)
 			{
 				move = moves.Item(intIndex);
-				Move moveUndo = move.Piece.Move(move.Name, move.To);
+				var moveUndo = move.Piece.Move(move.Name, move.To);
 				if (move.Piece.Player.IsInCheck)
 				{
 					moves.Remove(move);
@@ -292,7 +292,7 @@ namespace Chess.Core
 
 		public Move Move(Move.EnmName moveName, Square square)
 		{
-			Square squarePieceTaken = square;
+			var squarePieceTaken = square;
 
 			if (moveName==Core.Move.EnmName.EnPassent) // Override when en passent
 			{
@@ -307,7 +307,7 @@ namespace Chess.Core
 				Board.PawnHashCodeB ^= HashCodeB;
 			}
 
-			Move move = new Move(Game.TurnNo, _mLastMoveTurnNo, moveName, this, _mSquare, square, squarePieceTaken.Piece, squarePieceTaken.Piece==null ? -1 : squarePieceTaken.Piece.Player.Pieces.IndexOf(squarePieceTaken.Piece), 0);
+			var move = new Move(Game.TurnNo, _mLastMoveTurnNo, moveName, this, _mSquare, square, squarePieceTaken.Piece, squarePieceTaken.Piece==null ? -1 : squarePieceTaken.Piece.Player.Pieces.IndexOf(squarePieceTaken.Piece), 0);
 
 			if (square.Piece != null)
 			{
@@ -392,14 +392,14 @@ namespace Chess.Core
 
 		public Move SeeMove(Move.EnmName moveName, Square square)
 		{
-			Square squarePieceTaken = square;
+			var squarePieceTaken = square;
 
 			if (moveName==Core.Move.EnmName.EnPassent) // Override when en passent
 			{
 				squarePieceTaken = Board.GetSquare( square.Ordinal - _mPlayer.PawnForwardOffset );
 			}
 
-			Move move = new Move(Game.TurnNo, _mLastMoveTurnNo, moveName, this, _mSquare, square, squarePieceTaken.Piece, squarePieceTaken.Piece==null ? -1 : squarePieceTaken.Piece.Player.Pieces.IndexOf(squarePieceTaken.Piece), 0);
+			var move = new Move(Game.TurnNo, _mLastMoveTurnNo, moveName, this, _mSquare, square, squarePieceTaken.Piece, squarePieceTaken.Piece==null ? -1 : squarePieceTaken.Piece.Player.Pieces.IndexOf(squarePieceTaken.Piece), 0);
 
 			if (square.Piece != null)
 			{
@@ -474,7 +474,7 @@ namespace Chess.Core
 		{
 			get
 			{	
-				Piece piece = _mSquare.DefencedBy(_mPlayer);
+				var piece = _mSquare.DefencedBy(_mPlayer);
 				if (piece!=null)
 				{
 					switch (piece.Name)
@@ -530,7 +530,7 @@ namespace Chess.Core
 
 
 	
-		private static ulong[] _mAulongHashCodesA =
+		private static readonly ulong[] MAulongHashCodesA =
 		{
 			6557995217205458958, 3216546429887213718, 10981975557637945592, 13117948053612451546, 16462319544570117268, 14109089931958414830, 7784257433824872028, 12575758863506724218, 0, 0, 0, 0, 0, 0, 0, 0, 
 			5452803369408346770, 17504272207519905704, 10076908662681196056, 12181556996310766954, 6618282532582206852, 886584768689976646, 5337735909196723884, 1518236921046637970, 0, 0, 0, 0, 0, 0, 0, 0, 
@@ -824,7 +824,7 @@ namespace Chess.Core
 
 
 	
-		private static ulong[] _mAulongHashCodesB =
+		private static readonly ulong[] MAulongHashCodesB =
 		{
 
 			16164111449390318276, 11419626980698143882, 3217985813656852606, 11925939290598446094, 16807230890854361004, 8132383134553493882, 16234001359038311548, 2222980806129073348, 0, 0, 0, 0, 0, 0, 0, 0, 

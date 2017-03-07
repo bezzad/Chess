@@ -111,7 +111,7 @@ namespace Chess.Forms
 		{
 			Square square;
 
-			for (int intOrdinal=0; intOrdinal<Board.SquareCount; intOrdinal++)
+			for (var intOrdinal=0; intOrdinal<Board.SquareCount; intOrdinal++)
 			{
 				square = Board.GetSquare(intOrdinal);
 				
@@ -157,16 +157,16 @@ namespace Chess.Forms
 			}
 
 			// Render pieces taken
-			for (int intIndex=0; intIndex<15; intIndex++)
+			for (var intIndex=0; intIndex<15; intIndex++)
 			{
 				_mPicWhitesCaptures[intIndex].Image = null;
 				_mPicBlacksCaptures[intIndex].Image = null;
 			}
-			for (int intIndex=0; intIndex<Game.PlayerWhite.CapturedEnemyPieces.Count; intIndex++)
+			for (var intIndex=0; intIndex<Game.PlayerWhite.CapturedEnemyPieces.Count; intIndex++)
 			{
 				_mPicWhitesCaptures[intIndex].Image = GetPieceImage(Game.PlayerWhite.CapturedEnemyPieces.Item(intIndex));
 			}
-			for (int intIndex=0; intIndex<Game.PlayerBlack.CapturedEnemyPieces.Count; intIndex++)
+			for (var intIndex=0; intIndex<Game.PlayerBlack.CapturedEnemyPieces.Count; intIndex++)
 			{
 				_mPicBlacksCaptures[intIndex].Image = GetPieceImage(Game.PlayerBlack.CapturedEnemyPieces.Item(intIndex));
 			}
@@ -224,7 +224,7 @@ namespace Chess.Forms
 
 		private void RenderStatus()
 		{
-			Player playerToPlay = Game.PlayerToPlay;
+			var playerToPlay = Game.PlayerToPlay;
 
 			sbr.Text = (playerToPlay.SearchDepth==0) ? "" : 
 				(
@@ -281,7 +281,7 @@ namespace Chess.Forms
 			Label lblRank;
 			Label lblFile;
 
-			for (int intRank=0; intRank<Board.RankCount; intRank++)
+			for (var intRank=0; intRank<Board.RankCount; intRank++)
 			{
 				lblRank = new Label();
 				lblRank.BackColor = Color.Transparent;
@@ -298,7 +298,7 @@ namespace Chess.Forms
 
 			_mPicSquares = new PictureBox[Board.FileCount, Board.RankCount];
 
-			for (int intFile=0; intFile<Board.FileCount; intFile++)
+			for (var intFile=0; intFile<Board.FileCount; intFile++)
 			{
 
 				lblFile = new Label();
@@ -315,7 +315,7 @@ namespace Chess.Forms
 				
 			}
 
-			for (int intOrdinal=0; intOrdinal<Board.SquareCount; intOrdinal++)
+			for (var intOrdinal=0; intOrdinal<Board.SquareCount; intOrdinal++)
 			{
 				square = Board.GetSquare(intOrdinal);
 
@@ -348,7 +348,7 @@ namespace Chess.Forms
 			_mPicWhitesCaptures = new PictureBox[15];
 			_mPicBlacksCaptures = new PictureBox[15];
 
-			for (int intIndex=0; intIndex<15; intIndex++)
+			for (var intIndex=0; intIndex<15; intIndex++)
 			{
 				picSquare = new PictureBox();
 				picSquare.Left = intIndex*(SquareSize+1)+1;
@@ -380,15 +380,15 @@ namespace Chess.Forms
 
 		private void picSquare_Click(object sender, EventArgs e)
 		{
-			int intOrdinal = Convert.ToInt32( ((PictureBox)sender).Tag );
+			var intOrdinal = Convert.ToInt32( ((PictureBox)sender).Tag );
 
 			if (_mSquareFrom==null)
 			{
 				// No current selection
 
-				Square squareClicked = Board.GetSquare(intOrdinal);
+				var squareClicked = Board.GetSquare(intOrdinal);
 
-				Piece piece = squareClicked.Piece;
+				var piece = squareClicked.Piece;
 				if (piece!=null && piece.Player.Colour==Game.PlayerToPlay.Colour)
 				{
 					// Mark possible moves
@@ -405,9 +405,9 @@ namespace Chess.Forms
 			}
 			else
 			{
-				Square squareClicked = Board.GetSquare(intOrdinal);
+				var squareClicked = Board.GetSquare(intOrdinal);
 
-				Piece piece = squareClicked.Piece;
+				var piece = squareClicked.Piece;
 				if (piece==null || piece!=null && piece.Player.Colour!=Game.PlayerToPlay.Colour)
 				{
 					// Is square one of the possible moves? If it is, then move the piece
@@ -581,7 +581,7 @@ namespace Chess.Forms
 
 		private void OpenGame()
 		{
-			OpenFileDialog openFileDialog = new OpenFileDialog();
+			var openFileDialog = new OpenFileDialog();
 
 			openFileDialog.Title = "Load a saved chess game" ;
 //			openFileDialog.InitialDirectory = @"c:\" ;
@@ -602,7 +602,7 @@ namespace Chess.Forms
 
 		private void SaveGame()
 		{
-			SaveFileDialog saveFileDialog = new SaveFileDialog();
+			var saveFileDialog = new SaveFileDialog();
  
 			saveFileDialog.Filter = "SharpChess files (*.SharpChess)|*.SharpChess";
 			saveFileDialog.FilterIndex = 2;

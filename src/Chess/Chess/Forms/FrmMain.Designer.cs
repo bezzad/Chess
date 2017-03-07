@@ -30,7 +30,7 @@ namespace Chess.Forms
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof(FrmMain));
+            var resources = new System.Resources.ResourceManager(typeof(FrmMain));
             this.sbr = new System.Windows.Forms.StatusBar();
             this.imgPieces = new System.Windows.Forms.ImageList(this.components);
             this.mnu = new System.Windows.Forms.MainMenu();

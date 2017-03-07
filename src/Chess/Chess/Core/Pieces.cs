@@ -4,8 +4,8 @@ namespace Chess.Core
 {
 	public class Pieces: IEnumerable
 	{
-		private Player _mPlayer;
-		private ArrayList _mColPieces = new ArrayList();
+		private readonly Player _mPlayer;
+		private readonly ArrayList _mColPieces = new ArrayList();
 
 		public Pieces(Player player)
 		{

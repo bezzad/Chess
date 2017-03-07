@@ -15,12 +15,12 @@ namespace Chess.Core
 			,	End
 		}
 
-		private static Player _mPlayerWhite;
-		private static Player _mPlayerBlack;
+		private static readonly Player MPlayerWhite;
+		private static readonly Player MPlayerBlack;
 		private static Player _mPlayerToPlay;
 		private static int _mIntTurnNo = 0;
-		private static Moves _mMovesHistory = new Moves();
-		private static Moves _mMovesRedoList = new Moves();
+		private static readonly Moves MMovesHistory = new Moves();
+		private static readonly Moves MMovesRedoList = new Moves();
 		private static Moves _mMovesAnalysis = new Moves();
 		private static string _mStrFileName = "";
 
@@ -29,13 +29,13 @@ namespace Chess.Core
 
 		static Game()
 		{
-			_mPlayerWhite = new PlayerWhite();
-			_mPlayerBlack = new PlayerBlack();
-			_mPlayerToPlay = _mPlayerWhite;
+			MPlayerWhite = new PlayerWhite();
+			MPlayerBlack = new PlayerBlack();
+			_mPlayerToPlay = MPlayerWhite;
 			Board.EstablishHashKey();
 
-			RegistryKey registryKeySoftware =Registry.CurrentUser.OpenSubKey("Software",true);
-			RegistryKey registryKeySharpChess = registryKeySoftware.CreateSubKey(@"PeterHughes.org\SharpChess");
+			var registryKeySoftware =Registry.CurrentUser.OpenSubKey("Software",true);
+			var registryKeySharpChess = registryKeySoftware.CreateSubKey(@"PeterHughes.org\SharpChess");
 
 			_mBlnShowThinking = ((string)registryKeySharpChess.GetValue("ShowThinking")=="1");
 			_mBlnDisplayMoveAnalysisTree = ((string)registryKeySharpChess.GetValue("DisplayMoveAnalysisTree")=="1");
@@ -45,8 +45,8 @@ namespace Chess.Core
 
 		~Game()
 		{
-			RegistryKey registryKeySoftware =Registry.CurrentUser.OpenSubKey("Software",true);
-			RegistryKey registryKeySharpChess = registryKeySoftware.CreateSubKey(@"PeterHughes.org\SharpChess");
+			var registryKeySoftware =Registry.CurrentUser.OpenSubKey("Software",true);
+			var registryKeySharpChess = registryKeySoftware.CreateSubKey(@"PeterHughes.org\SharpChess");
 
 			registryKeySharpChess.SetValue("ShowThinking", _mBlnShowThinking ? "1" : "0");
 			registryKeySharpChess.SetValue("DisplayMoveAnalysisTree", _mBlnDisplayMoveAnalysisTree ? "1" : "0");
@@ -58,15 +58,15 @@ namespace Chess.Core
 			HashTablePawn.Clear();
 			HashTableCheck.Clear();
 			UndoAllMoves();
-			_mMovesRedoList.Clear();
+			MMovesRedoList.Clear();
 			_mStrFileName = "";
-			_mPlayerWhite.Clock.Reset();
-			_mPlayerBlack.Clock.Reset();
+			MPlayerWhite.Clock.Reset();
+			MPlayerBlack.Clock.Reset();
 		}
 
 		public static void Load(string fileName)
 		{
-			_mMovesRedoList.Clear();
+			MMovesRedoList.Clear();
 			LoadToTurnNo(fileName, -1);
 			_mStrFileName = fileName;
 		}
@@ -74,11 +74,11 @@ namespace Chess.Core
 		private static void LoadToTurnNo(string strFileName, int noOfTurns)
 		{
 			New();
-			XmlDocument xmldoc = new XmlDocument();
+			var xmldoc = new XmlDocument();
 			xmldoc.Load(strFileName);
 			XmlNodeList xmlnodelist;
 			xmlnodelist = xmldoc.SelectNodes("/Game/Move");
-			int intTurnNo = 0;
+			var intTurnNo = 0;
 			TimeSpan tsnTimeStamp;
 			foreach (XmlElement xmlnode in xmlnodelist)
 			{
@@ -86,33 +86,33 @@ namespace Chess.Core
 				MakeAMove( Move.MoveNameFromString(xmlnode.GetAttribute("Name")), Board.GetPiece(Convert.ToInt32(xmlnode.GetAttribute("FromFile")), Convert.ToInt32(xmlnode.GetAttribute("FromRank"))), Board.GetSquare(Convert.ToInt32(xmlnode.GetAttribute("ToFile")), Convert.ToInt32(xmlnode.GetAttribute("ToRank"))) );
 				if (xmlnode.GetAttribute("SecondsElapsed")=="")
 				{
-					if (_mMovesHistory.Count<=2)
+					if (MMovesHistory.Count<=2)
 					{
 						tsnTimeStamp = (new TimeSpan(0));
 					}
 					else
 					{
-						tsnTimeStamp = ( _mMovesHistory.PenultimateForSameSide.TimeStamp + (new TimeSpan(0,0,30)) );
+						tsnTimeStamp = ( MMovesHistory.PenultimateForSameSide.TimeStamp + (new TimeSpan(0,0,30)) );
 					}
 				}
 				else
 				{
 					tsnTimeStamp = new TimeSpan(0,0, int.Parse(xmlnode.GetAttribute("SecondsElapsed")));
 				}
-				_mMovesHistory.Last.TimeStamp = tsnTimeStamp;
-				_mMovesHistory.Last.Piece.Player.Clock.TimeElapsed = tsnTimeStamp;
+				MMovesHistory.Last.TimeStamp = tsnTimeStamp;
+				MMovesHistory.Last.Piece.Player.Clock.TimeElapsed = tsnTimeStamp;
 				intTurnNo++;
 			}
 		}
 
 		public static void Save(string fileName)
 		{
-			XmlDocument xmldoc = new XmlDocument();
-			XmlElement xmlnodeGame = xmldoc.CreateElement("Game");
+			var xmldoc = new XmlDocument();
+			var xmlnodeGame = xmldoc.CreateElement("Game");
 			xmldoc.AppendChild(xmlnodeGame);
 			XmlElement xmlnodeMove;
 
-			foreach(Move move in _mMovesHistory)
+			foreach(Move move in MMovesHistory)
 			{
 				xmlnodeMove = xmldoc.CreateElement("Move");
 				xmlnodeGame.AppendChild( xmlnodeMove );
@@ -131,7 +131,7 @@ namespace Chess.Core
 
 		public static void UndoAllMoves()
 		{
-			while (_mMovesHistory.Count>0)
+			while (MMovesHistory.Count>0)
 			{
 				UndoMove();
 			}
@@ -139,7 +139,7 @@ namespace Chess.Core
 
 		public static void RedoAllMoves()
 		{
-			while (_mMovesRedoList.Count>0)
+			while (MMovesRedoList.Count>0)
 			{
 				RedoMove();
 			}
@@ -152,12 +152,12 @@ namespace Chess.Core
 
 		public static Moves MoveHistory
 		{
-			get { return _mMovesHistory; }
+			get { return MMovesHistory; }
 		} 
 
 		public static Moves MoveRedoList
 		{
-			get { return _mMovesRedoList; }
+			get { return MMovesRedoList; }
 		} 
 
 		public static Moves MoveAnalysis
@@ -181,8 +181,8 @@ namespace Chess.Core
 		{
 			get
 			{
-				int intWhiteMaterialValue = PlayerWhite.MaterialCount;
-				int intBlackMaterialValue = PlayerBlack.MaterialCount;
+				var intWhiteMaterialValue = PlayerWhite.MaterialCount;
+				var intBlackMaterialValue = PlayerBlack.MaterialCount;
 				return intWhiteMaterialValue<intBlackMaterialValue ? intWhiteMaterialValue : intBlackMaterialValue;
 			}
 		}
@@ -205,12 +205,12 @@ namespace Chess.Core
 
 		public static Player PlayerWhite
 		{
-			get	{ return _mPlayerWhite;	}
+			get	{ return MPlayerWhite;	}
 		}
 
 		public static Player PlayerBlack
 		{
-			get	{ return _mPlayerBlack;	}
+			get	{ return MPlayerBlack;	}
 		}
 
 		public static Player PlayerToPlay
@@ -221,12 +221,12 @@ namespace Chess.Core
 
 		public static Move MakeAMove(Move.EnmName moveName, Piece piece, Square square)
 		{
-			_mMovesRedoList.Clear();
+			MMovesRedoList.Clear();
 
-			Move move = piece.Move(moveName, square);
+			var move = piece.Move(moveName, square);
 			move.EnemyStatus = move.Piece.Player.OtherPlayer.Status;
 			_mPlayerToPlay.Clock.Stop();
-			_mMovesHistory.Last.TimeStamp = _mPlayerToPlay.Clock.TimeElapsed;
+			MMovesHistory.Last.TimeStamp = _mPlayerToPlay.Clock.TimeElapsed;
 			_mPlayerToPlay = _mPlayerToPlay.OtherPlayer;
 			_mPlayerToPlay.Clock.Start();
 			return move;
@@ -234,16 +234,16 @@ namespace Chess.Core
 
 		public static void UndoMove()
 		{
-			if (_mMovesHistory.Count>0)
+			if (MMovesHistory.Count>0)
 			{
-				Move moveUndo = _mMovesHistory.Item(_mMovesHistory.Count-1);
+				var moveUndo = MMovesHistory.Item(MMovesHistory.Count-1);
 				_mPlayerToPlay.Clock.Revert();
-				_mMovesRedoList.Add(moveUndo);
+				MMovesRedoList.Add(moveUndo);
 				Move.Undo( moveUndo );
 				_mPlayerToPlay = _mPlayerToPlay.OtherPlayer;
-				if (_mMovesHistory.Count>1)
+				if (MMovesHistory.Count>1)
 				{
-					Move movePenultimate = _mMovesHistory.Item(_mMovesHistory.Count-2);
+					var movePenultimate = MMovesHistory.Item(MMovesHistory.Count-2);
 					_mPlayerToPlay.Clock.TimeElapsed = movePenultimate.TimeStamp;
 				}
 				else
@@ -256,15 +256,15 @@ namespace Chess.Core
 
 		public static void RedoMove()
 		{
-			if (_mMovesRedoList.Count>0)
+			if (MMovesRedoList.Count>0)
 			{
-				Move moveRedo = _mMovesRedoList.Item(_mMovesRedoList.Count-1);
+				var moveRedo = MMovesRedoList.Item(MMovesRedoList.Count-1);
 				_mPlayerToPlay.Clock.Revert();
 				moveRedo.Piece.Move(moveRedo.Name, moveRedo.To);
 				_mPlayerToPlay.Clock.TimeElapsed = moveRedo.TimeStamp;
-				_mMovesHistory.Last.TimeStamp = moveRedo.TimeStamp;
+				MMovesHistory.Last.TimeStamp = moveRedo.TimeStamp;
 				_mPlayerToPlay = _mPlayerToPlay.OtherPlayer;
-				_mMovesRedoList.RemoveLast();
+				MMovesRedoList.RemoveLast();
 				_mPlayerToPlay.Clock.Start();
 			}
 		}

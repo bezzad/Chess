@@ -2,7 +2,7 @@ namespace Chess.Core
 {
 	public class PieceQueen: IPieceTop
 	{
-	    private Piece _mBase = null;
+	    private readonly Piece _mBase = null;
 
 		public PieceQueen(Piece pieceBase)
 		{
@@ -41,7 +41,7 @@ namespace Chess.Core
 		{
 			get
 			{
-				int intPoints = 0;
+				var intPoints = 0;
 
 				// The queen is that after the opening it is penalized slightly for 
 				// "taxicab" distance to the enemy king.

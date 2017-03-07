@@ -2,7 +2,7 @@ namespace Chess.Core
 {
 	public class PieceBishop: IPieceTop
 	{
-	    private Piece _mBase = null;
+	    private readonly Piece _mBase = null;
 
 		public PieceBishop(Piece pieceBase)
 		{
@@ -37,7 +37,7 @@ namespace Chess.Core
 			}
 		}
 
-		private static int[] _mAintSquareValues =
+		private static readonly int[] MAintSquareValues =
 		{
 			10,10,10,10,10,10,10,10,    0,0,0,0,0,0,0,0,
 			10,20,20,20,20,20,20,10,    0,0,0,0,0,0,0,0,
@@ -53,9 +53,9 @@ namespace Chess.Core
 		{
 			get
 			{
-				int intPoints = 0;
+				var intPoints = 0;
 
-				intPoints += (_mAintSquareValues[_mBase.Square.Ordinal]<<1);
+				intPoints += (MAintSquareValues[_mBase.Square.Ordinal]<<1);
 
 				if (Game.Stage!=Game.EnmStage.End)
 				{

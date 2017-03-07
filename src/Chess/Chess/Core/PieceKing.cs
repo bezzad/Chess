@@ -4,7 +4,7 @@ namespace Chess.Core
 	{
 	    private static int[] _checkValues = { 0, 60, 180, 360, 500};
 
-	    private Piece _mBase = null;
+	    private readonly Piece _mBase = null;
 
 		public PieceKing(Piece pieceBase)
 		{
@@ -32,7 +32,7 @@ namespace Chess.Core
 			}
 		}
 
-		private static int[] _mAintSquareValues =
+		private static readonly int[] MAintSquareValues =
 		{
 			1, 1, 1, 1, 1, 1, 1, 1,    0,0,0,0,0,0,0,0,
 			1, 7, 7, 7, 7, 7, 7, 1,    0,0,0,0,0,0,0,0,
@@ -48,7 +48,7 @@ namespace Chess.Core
 		{
 			get
 			{
-				int intPoints = 0;
+				var intPoints = 0;
 
 				if (Game.Stage==Game.EnmStage.Middle)
 				{
@@ -99,17 +99,17 @@ namespace Chess.Core
 				{
 					case Game.EnmStage.End:
 						// Bonus for number of moves available
-						Moves moves = new Moves();
+						var moves = new Moves();
 						GenerateLazyMoves(moves, Moves.EnmMovesType.All);
 						intPoints += moves.Count*10;
 
 						// Bonus for being in centre of board
-						intPoints += _mAintSquareValues[_mBase.Square.Ordinal];
+						intPoints += MAintSquareValues[_mBase.Square.Ordinal];
 						break;
 
 					default: // Opening & Middle
 						// Penalty for being in centre of board
-						intPoints -= _mAintSquareValues[_mBase.Square.Ordinal];
+						intPoints -= MAintSquareValues[_mBase.Square.Ordinal];
 
 						break;
 				}
@@ -119,9 +119,9 @@ namespace Chess.Core
 
 		private int Openness(Square squareKing)
 		{
-			Square square = squareKing;
+			var square = squareKing;
 
-			int intOpenness = 0;
+			var intOpenness = 0;
 			intOpenness += Board.LineIsOpen(_mBase.Player.Colour, square, 16); if (intOpenness>900) goto exitpoint;
 			intOpenness += Board.LineIsOpen(_mBase.Player.Colour, square, 17); if (intOpenness>900) goto exitpoint;
 //			intOpenness += Board.LineIsOpen(this.m_Base.Player.Colour, square,  1); if (intOpenness>900) goto exitpoint;

@@ -61,7 +61,7 @@ namespace Chess.Core
 		}
 
 		public const int Unknown = int.MinValue;
-	    private static HashEntry[] _mArrHashEntry = new HashEntry[HashTableSize];
+	    private static readonly HashEntry[] MArrHashEntry = new HashEntry[HashTableSize];
 
 		static HashTable()
 		{
@@ -72,11 +72,11 @@ namespace Chess.Core
 		{
 			get
 			{
-				int intCounter = 0;
+				var intCounter = 0;
 
 				for (uint intIndex=0; intIndex<HashTableSize; intIndex++)
 				{
-					if (_mArrHashEntry[intIndex].HashCodeA != 0)
+					if (MArrHashEntry[intIndex].HashCodeA != 0)
 					{
 						intCounter++;
 					}
@@ -99,11 +99,11 @@ namespace Chess.Core
 			ResetStats();
 			for (uint intIndex=0; intIndex<HashTableSize; intIndex++)
 			{
-				_mArrHashEntry[intIndex].HashCodeA = 0;
-				_mArrHashEntry[intIndex].HashCodeB = 0;
-				_mArrHashEntry[intIndex].Depth = sbyte.MinValue;
-				_mArrHashEntry[intIndex].WhiteFrom = -1;
-				_mArrHashEntry[intIndex].BlackFrom = -1;
+				MArrHashEntry[intIndex].HashCodeA = 0;
+				MArrHashEntry[intIndex].HashCodeB = 0;
+				MArrHashEntry[intIndex].Depth = sbyte.MinValue;
+				MArrHashEntry[intIndex].WhiteFrom = -1;
+				MArrHashEntry[intIndex].BlackFrom = -1;
 			}
 		}
 
@@ -111,12 +111,12 @@ namespace Chess.Core
 		{
 			_mIntProbes++;
 
-			fixed (HashEntry* phashBase = &_mArrHashEntry[0])
+			fixed (HashEntry* phashBase = &MArrHashEntry[0])
 			{
-				HashEntry* phashEntry = phashBase;
+				var phashEntry = phashBase;
 				phashEntry += ((uint)(hashCodeA % HashTableSize));
 
-				int intAttempt = 0;
+				var intAttempt = 0;
 				while (phashEntry>=phashBase && (phashEntry->HashCodeA!=hashCodeA || phashEntry->HashCodeB!=hashCodeB || phashEntry->Depth < depth) )
 				{
 					phashEntry--;
@@ -160,12 +160,12 @@ namespace Chess.Core
 		public unsafe static void RecordHash(ulong hashCodeA, ulong hashCodeB, int depth, int val, EnmHashType type, int @from, int to, Move.EnmName moveName, Player.EnmColour colour)
 		{
 			_mIntWrites++;
-			fixed (HashEntry* phashBase = &_mArrHashEntry[0])
+			fixed (HashEntry* phashBase = &MArrHashEntry[0])
 			{
 				int intAttempt;
-				HashEntry* phashEntry = phashBase;
+				var phashEntry = phashBase;
 				phashEntry += ((uint)(hashCodeA % HashTableSize));
-				HashEntry* phashFirst = phashEntry;
+				var phashFirst = phashEntry;
 
 				intAttempt = 0;
 				while (phashEntry>=phashBase && phashEntry->HashCodeA!=0 && phashEntry->Depth > depth)
@@ -221,15 +221,15 @@ namespace Chess.Core
 
 		public unsafe static Move ProbeForBestMove(Player.EnmColour colour)
 		{
-			fixed (HashEntry* phashBase = &_mArrHashEntry[0])
+			fixed (HashEntry* phashBase = &MArrHashEntry[0])
 			{
-				ulong hashCodeA = Board.HashCodeA;
-				ulong hashCodeB = Board.HashCodeB;
+				var hashCodeA = Board.HashCodeA;
+				var hashCodeB = Board.HashCodeB;
 
-				HashEntry* phashEntry = phashBase;
+				var phashEntry = phashBase;
 				phashEntry += ((uint)(hashCodeA % HashTableSize));
 				
-				int intAttempt = 0;
+				var intAttempt = 0;
 				while (phashEntry>=phashBase && (phashEntry->HashCodeA!=hashCodeA || phashEntry->HashCodeB!=hashCodeB) )
 				{
 					phashEntry--;

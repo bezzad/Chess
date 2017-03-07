@@ -13,29 +13,29 @@ namespace Chess.Core
 		public static ulong PawnHashCodeA = 0;
 		public static ulong PawnHashCodeB = 0;
 
-	    private static Square[] _mArrSquare = new Square[RankCount * MatrixWidth];
+	    private static readonly Square[] MArrSquare = new Square[RankCount * MatrixWidth];
 
 		static Board()
 		{
-			for (int intOrdinal=0; intOrdinal<SquareCount; intOrdinal++)
+			for (var intOrdinal=0; intOrdinal<SquareCount; intOrdinal++)
 			{
-				_mArrSquare[intOrdinal] = new Square(intOrdinal);
+				MArrSquare[intOrdinal] = new Square(intOrdinal);
 			}
 		}
 
 		public static Square GetSquare(int ordinal)
 		{
-			return (ordinal & 0x88) == 0 ? _mArrSquare[ordinal] : null;
+			return (ordinal & 0x88) == 0 ? MArrSquare[ordinal] : null;
 		}
 
 		public static Square GetSquare(int file, int rank)
 		{
-			return (OrdinalFromFileRank(file, rank) & 0x88) == 0 ? _mArrSquare[OrdinalFromFileRank(file, rank)] : null;
+			return (OrdinalFromFileRank(file, rank) & 0x88) == 0 ? MArrSquare[OrdinalFromFileRank(file, rank)] : null;
 		}
 
 		public static Square GetSquare(string label)
 		{
-			return _mArrSquare[ OrdinalFromFileRank( FileFromName(label.Substring(0,1)), int.Parse(label.Substring(1,1))-1 ) ] ;
+			return MArrSquare[ OrdinalFromFileRank( FileFromName(label.Substring(0,1)), int.Parse(label.Substring(1,1))-1 ) ] ;
 		}
 
 		private static int FileFromName(string fileName)
@@ -64,12 +64,12 @@ namespace Chess.Core
 
 		public static Piece GetPiece(int ordinal)
 		{
-			return (ordinal & 0x88) == 0 ? _mArrSquare[ordinal].Piece : null;
+			return (ordinal & 0x88) == 0 ? MArrSquare[ordinal].Piece : null;
 		}
 
 		public static Piece GetPiece(int file, int rank)
 		{
-			return (OrdinalFromFileRank(file, rank) & 0x88) == 0 ? _mArrSquare[OrdinalFromFileRank(file, rank)].Piece : null;
+			return (OrdinalFromFileRank(file, rank) & 0x88) == 0 ? MArrSquare[OrdinalFromFileRank(file, rank)].Piece : null;
 		}
 
 		private static int OrdinalFromFileRank(int file, int rank)
@@ -79,7 +79,7 @@ namespace Chess.Core
 
 		public static void LineThreatenedBy(Player player, Squares squares, Square squareStart, int offset)
 		{
-			int intOrdinal = squareStart.Ordinal;
+			var intOrdinal = squareStart.Ordinal;
 			Square square;
 
 			intOrdinal += offset;
@@ -105,7 +105,7 @@ namespace Chess.Core
 
 		public static void AppendPiecePath(Moves moves, Piece piece, Player player, int offset, Moves.EnmMovesType movesType)
 		{
-			int intOrdinal = piece.Square.Ordinal;
+			var intOrdinal = piece.Square.Ordinal;
 			Square square;
 
 			intOrdinal += offset;
@@ -134,7 +134,7 @@ namespace Chess.Core
 
 		public static Piece LinesFirstPiece(Player.EnmColour colour, Piece.EnmName pieceName, Square squareStart, int offset)
 		{
-			int intOrdinal = squareStart.Ordinal;
+			var intOrdinal = squareStart.Ordinal;
 			Square square;
 
 			intOrdinal += offset;
@@ -163,9 +163,9 @@ namespace Chess.Core
 
 		public static int LineIsOpen(Player.EnmColour colour, Square squareStart, int offset)
 		{
-			int intOrdinal = squareStart.Ordinal;
-			int intSquareCount = 0;
-			int intPenalty = 0;
+			var intOrdinal = squareStart.Ordinal;
+			var intSquareCount = 0;
+			var intPenalty = 0;
 			Square square;
 
 			intOrdinal += offset;
@@ -186,7 +186,7 @@ namespace Chess.Core
 			HashCodeB = 0UL;
 			PawnHashCodeA = 0UL;
 			PawnHashCodeB = 0UL;
-			for (int intOrdinal=0; intOrdinal<SquareCount; intOrdinal++)
+			for (var intOrdinal=0; intOrdinal<SquareCount; intOrdinal++)
 			{
 				piece = GetPiece(intOrdinal);
 				if (piece!=null)
@@ -209,12 +209,12 @@ namespace Chess.Core
 			{
 				Square square;
 				Piece piece;
-				string strOutput = "";
-				int intOrdinal = SquareCount-1;
+				var strOutput = "";
+				var intOrdinal = SquareCount-1;
 
-				for (int intRank=0; intRank<RankCount; intRank++)
+				for (var intRank=0; intRank<RankCount; intRank++)
 				{
-					for (int intFile=0; intFile<FileCount; intFile++)
+					for (var intFile=0; intFile<FileCount; intFile++)
 					{
 						square = GetSquare(intOrdinal);
 						if (square!=null)

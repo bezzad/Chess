@@ -76,7 +76,7 @@ namespace Chess.Core
 
 		public class PlayerClock
 		{
-			private TimeSpan _mTsnTimeLimit = new TimeSpan(0,60,0);
+			private readonly TimeSpan _mTsnTimeLimit = new TimeSpan(0,60,0);
 			private TimeSpan _mTsnTimeElapsed;
 			private DateTime _mDtmTurnStart;
 			private bool _mBlnIsTicking = false;
@@ -229,7 +229,7 @@ namespace Chess.Core
 		{
 			get
 			{
-				int intMaterialBasicValue = 0;
+				var intMaterialBasicValue = 0;
 				foreach (Piece piece in MColMaterial)
 				{
 					if (piece.IsInPlay)
@@ -245,7 +245,7 @@ namespace Chess.Core
 		{
 			get
 			{
-				int intTotalValue = 0;
+				var intTotalValue = 0;
 				int intIndex;
 				Piece piece;
 				for (intIndex=MColPieces.Count-1; intIndex>=0; intIndex--)
@@ -446,7 +446,7 @@ namespace Chess.Core
 			{ 
 				if (!IsInCheck) return false;
 
-				Moves moves = new Moves();
+				var moves = new Moves();
 				GenerateLegalMoves(moves);
 				return (moves.Count==0);
 			}
@@ -509,10 +509,10 @@ namespace Chess.Core
 		{
 			MBlnIsThinking = true;
 
-			Player player = this;
+			var player = this;
 			_mMoveBest = null;
 			Move moveHash = null;
-			int alphaStart = Score;
+			var alphaStart = Score;
 
 /* Uncomment to switch-on opening book moves, once we have a decent opening book!
 			// Query Opening Book
@@ -524,8 +524,8 @@ namespace Chess.Core
 			}
 */
 			Move moveDepthBest = null;
-			int alpha = MinScore;
-			int beta = MaxScore;
+			var alpha = MinScore;
+			var beta = MaxScore;
 
 			_mIntRootScore = Score;
 
@@ -556,7 +556,7 @@ if (Game.DisplayMoveAnalysisTree)
 				moveHash = HashTable.ProbeForBestMove(player.Colour);
 
 				// Generate and sort moves
-				Moves movesPossible = new Moves();
+				var movesPossible = new Moves();
 				player.GenerateLegalMoves(movesPossible);
 				MIntTotalMoves = movesPossible.Count;
 
@@ -583,7 +583,7 @@ if (Game.DisplayMoveAnalysisTree)
 						
 					if (movex.PieceTaken!=null)
 					{
-						Move moveSee = movex.Piece.SeeMove(movex.Name, movex.To);
+						var moveSee = movex.Piece.SeeMove(movex.Name, movex.To);
 						movex.Score += -See(player.OtherPlayer, int.MinValue, int.MaxValue, movex.To);
 						Move.SeeUndo(moveSee);
 					}
@@ -664,15 +664,15 @@ if (Game.DisplayMoveAnalysisTree)
 
 		private int AlphaBeta(Player player, int depth, int alpha, int beta, bool verify, ref Move moveAnalysed)
 		{
-			int val = int.MinValue;
-			HashTable.EnmHashType hashType = HashTable.EnmHashType.Alpha;
+			var val = int.MinValue;
+			var hashType = HashTable.EnmHashType.Alpha;
 			Move moveBest = null;
 			Move moveHash = null;
-			bool blnPvNode = false;
-			int intScoreAtEntry = 0;
+			var blnPvNode = false;
+			var intScoreAtEntry = 0;
 //			bool failhigh = false;
 			bool blnAllMovesWereGenerated;
-			int intLegalMovesAttempted = 0;
+			var intLegalMovesAttempted = 0;
 
 			MIntPositionsSearched++;
 
@@ -743,7 +743,7 @@ if (Game.DisplayMoveAnalysisTree)
 			// The rest is normal Null-move forward pruning
 			if (depth >= 3 )
 			{
-				Move moveNull = new Move(Game.TurnNo, 0, Move.EnmName.NullMove, null, null, null, null, 0, 0);
+				var moveNull = new Move(Game.TurnNo, 0, Move.EnmName.NullMove, null, null, null, null, 0, 0);
 				val = -AlphaBeta(player.OtherPlayer, depth - _r - 1, -beta, -beta + 1, verify, ref moveNull);
 				if ((DateTime.Now-MPlayerClock.TurnStartTime) > _mTsnThinkingTimeMaxAllowed) goto TimeExpired;
 				if (val >= beta)
@@ -765,7 +765,7 @@ if (Game.DisplayMoveAnalysisTree)
 			}
 
 			// Generate moves
-			Moves movesPossible = new Moves();
+			var movesPossible = new Moves();
 
 			blnAllMovesWereGenerated=( depth>0 || (moveAnalysed.IsInCheck || moveAnalysed.IsEnemyInCheck));
 			if ( blnAllMovesWereGenerated ) 
@@ -964,13 +964,13 @@ TimeExpired:
 		{
 			// Static Exchange Evaluator
 
-			int val = int.MinValue;
-			int intScoreAtEntry = 0;
+			var val = int.MinValue;
+			var intScoreAtEntry = 0;
 
 			Move moveThis = null;
 
 			// Generate moves
-			Moves movesPossible = new Moves();
+			var movesPossible = new Moves();
 
 			squareCaptured.AttackerMoveList(movesPossible, player);
 
@@ -1054,7 +1054,7 @@ TimeExpired:
 		{
 			get
 			{
-				int intValue = 0;
+				var intValue = 0;
 				foreach (Piece piece in MColCapturedEnemyPieces)
 				{
 					intValue += piece.BasicValue;
@@ -1076,8 +1076,8 @@ TimeExpired:
 					return false;
 				}
 				Move move;
-				int intRepetitionCount = 0;
-				int intIndex=Game.MoveHistory.Count-1;
+				var intRepetitionCount = 0;
+				var intIndex=Game.MoveHistory.Count-1;
 				for (; intIndex>=0; intIndex--, intIndex--)
 				{
 					move = Game.MoveHistory.Item(intIndex);
@@ -1109,7 +1109,7 @@ TimeExpired:
 				//    ply. Pinned or trapped pieces are treated similarly. A special mating 
 				//    routine is used if one side has only a king and the other has mating 
 				//    material. 
-				int intPoints = 0;
+				var intPoints = 0;
 				int intIndex;
 				Piece piece;
 
@@ -1197,7 +1197,7 @@ TimeExpired:
 		{
 			get	
 			{ 
-				int intPoints = 0;
+				var intPoints = 0;
 				int intIndex;
 				Piece piece;
 
