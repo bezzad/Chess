@@ -210,10 +210,10 @@ namespace Chess.Core
 		{
 			get
 			{
-				if (this.IsInCheckMate ) return Player.EnmStatus.InCheckMate;
-				if (!this.CanMove) return Player.EnmStatus.InStaleMate;
-				if (this.IsInCheck) return Player.EnmStatus.InCheck;
-				return Player.EnmStatus.Normal;
+				if (IsInCheckMate ) return EnmStatus.InCheckMate;
+				if (!CanMove) return EnmStatus.InStaleMate;
+				if (IsInCheck) return EnmStatus.InCheck;
+				return EnmStatus.Normal;
 			}
 		}
 
@@ -221,7 +221,7 @@ namespace Chess.Core
 		{
 			get
 			{
-				return this.MMaterialCount;
+				return MMaterialCount;
 			}
 		}
 
@@ -248,9 +248,9 @@ namespace Chess.Core
 				int intTotalValue = 0;
 				int intIndex;
 				Piece piece;
-				for (intIndex=this.MColPieces.Count-1; intIndex>=0; intIndex--)
+				for (intIndex=MColPieces.Count-1; intIndex>=0; intIndex--)
 				{
-					piece = this.MColPieces.Item(intIndex);
+					piece = MColPieces.Item(intIndex);
 					intTotalValue += piece.PositionalValue;
 				}
 				return intTotalValue;
@@ -265,19 +265,19 @@ namespace Chess.Core
 				int intPoints;
 				int intIndex;
 
-				if ( (intPoints = HashTablePawn.ProbeHash(this.Colour)) == HashTablePawn.Unknown )
+				if ( (intPoints = HashTablePawn.ProbeHash(Colour)) == HashTablePawn.Unknown )
 				{
 					Piece piece;
 					intPoints = 0;
-					for (intIndex=this.MColPieces.Count-1; intIndex>=0; intIndex--)
+					for (intIndex=MColPieces.Count-1; intIndex>=0; intIndex--)
 					{
-						piece = this.MColPieces.Item(intIndex);
+						piece = MColPieces.Item(intIndex);
 						if (piece.Name==Piece.EnmName.Pawn)
 						{
 							intPoints += piece.PointsTotal;
 						}
 					}
-					HashTablePawn.RecordHash(intPoints, this.Colour);
+					HashTablePawn.RecordHash(intPoints, Colour);
 				}
 
 				return intPoints;
@@ -429,7 +429,7 @@ namespace Chess.Core
 
 		public bool DetermineCheckStatus()
 		{
-			return ((PieceKing)this.King.Top).DetermineCheckStatus();
+			return ((PieceKing)King.Top).DetermineCheckStatus();
 		}
 
 		public bool IsInCheck
@@ -465,7 +465,7 @@ namespace Chess.Core
 //			if (squareAttacking==null)
 //			{
 				// All moves as defined by movesType
-				foreach (Piece piece in this.MColPieces)
+				foreach (Piece piece in MColPieces)
 				{
 					piece.GenerateLazyMoves(moves, movesType);
 
@@ -512,7 +512,7 @@ namespace Chess.Core
 			Player player = this;
 			_mMoveBest = null;
 			Move moveHash = null;
-			int alphaStart = this.Score;
+			int alphaStart = Score;
 
 /* Uncomment to switch-on opening book moves, once we have a decent opening book!
 			// Query Opening Book
@@ -527,9 +527,9 @@ namespace Chess.Core
 			int alpha = MinScore;
 			int beta = MaxScore;
 
-			_mIntRootScore = this.Score;
+			_mIntRootScore = Score;
 
-			_mTsnThinkingTimeAllotted = new TimeSpan( this.MPlayerClock.TimeRemaining.Ticks / Math.Max(MIntGameMoves-(Game.TurnNo/2), 1) );
+			_mTsnThinkingTimeAllotted = new TimeSpan( MPlayerClock.TimeRemaining.Ticks / Math.Max(MIntGameMoves-(Game.TurnNo/2), 1) );
 			_mTsnThinkingTimeMaxAllowed = new TimeSpan( _mTsnThinkingTimeAllotted.Ticks*3 );
 			_mTsnThinkingTimeHalved = new TimeSpan( _mTsnThinkingTimeAllotted.Ticks/3);
 
@@ -614,7 +614,7 @@ if (Game.DisplayMoveAnalysisTree)
 						if ((DateTime.Now-MPlayerClock.TurnStartTime) > _mTsnThinkingTimeMaxAllowed) { Move.Undo(_mMoveCurrent); goto TimeExpired;}
 					}
 					
-					this.MoveConsidered();
+					MoveConsidered();
 
 if (Game.DisplayMoveAnalysisTree)
 {
@@ -644,7 +644,7 @@ if (Game.DisplayMoveAnalysisTree)
 				// Record best move
 				HashTable.RecordHash(Board.HashCodeA, Board.HashCodeB, _mIntSearchDepth, _mMoveBest.Score, HashTable.EnmHashType.Exact, _mMoveBest.From.Ordinal, _mMoveBest.To.Ordinal, _mMoveBest.Name, player.Colour);
 
-				this.MoveConsidered();
+				MoveConsidered();
 
 				if ((DateTime.Now-MPlayerClock.TurnStartTime) > _mTsnThinkingTimeHalved && _mIntSearchDepth >= MIntMinimumPlys ) goto TimeExpired;
 
@@ -653,10 +653,10 @@ if (Game.DisplayMoveAnalysisTree)
 
 
 			TimeExpired:
-			this.MoveConsidered();
+			MoveConsidered();
 
 			MBlnIsThinking = false;
-			this.MoveConsidered();
+			MoveConsidered();
 
 			return _mMoveBest;
 		}
@@ -1021,7 +1021,7 @@ TimeExpired:
 
 		public Player OtherPlayer
 		{
-			get { return this.MColour==Player.EnmColour.White ? Game.PlayerBlack : Game.PlayerWhite; }
+			get { return MColour==EnmColour.White ? Game.PlayerBlack : Game.PlayerWhite; }
 		}
 
 		public EnmColour Colour
@@ -1071,7 +1071,7 @@ TimeExpired:
 				{
 					return false;
 				}
-				if (this.Colour==Game.MoveHistory.Last.Piece.Player.Colour)
+				if (Colour==Game.MoveHistory.Last.Piece.Player.Colour)
 				{
 					return false;
 				}
@@ -1113,11 +1113,11 @@ TimeExpired:
 				int intIndex;
 				Piece piece;
 
-				intPoints += this.PawnPoints;
+				intPoints += PawnPoints;
 
-				for (intIndex=this.MColPieces.Count-1; intIndex>=0; intIndex--)
+				for (intIndex=MColPieces.Count-1; intIndex>=0; intIndex--)
 				{
-					piece = this.MColPieces.Item(intIndex);
+					piece = MColPieces.Item(intIndex);
 					if (piece.Name!=Piece.EnmName.Pawn)
 					{
 						intPoints += piece.PointsTotal;
@@ -1134,39 +1134,39 @@ TimeExpired:
 
 				// Factor in human 3 move repition draw condition
 				// If this player is "human" then a draw if scored high, else a draw is scored low
-				if (this.CanClaimThreeMoveRepetition)
+				if (CanClaimThreeMoveRepetition)
 				{
-					intPoints += (this.Intellegence==Player.EnmIntellegence.Human ? 1000000000: 0 );
+					intPoints += (Intellegence==EnmIntellegence.Human ? 1000000000: 0 );
 				}
 
 
-				if (this.QueensBishop.IsInPlay && this.KingsBishop.IsInPlay)
+				if (QueensBishop.IsInPlay && KingsBishop.IsInPlay)
 				{
 					intPoints += 500;
 				}
 
-				if (this.QueensRook.IsInPlay && this.KingsRook.IsInPlay)
+				if (QueensRook.IsInPlay && KingsRook.IsInPlay)
 				{
 					intPoints += 250;
 				}
 
-				if (this.HasCastled)
+				if (HasCastled)
 				{
 					intPoints += 117;
 				}
 				else
 				{
-					if (this.King.HasMoved)
+					if (King.HasMoved)
 					{
 						intPoints -= 147;
 					}
 					else
 					{
-						if (this.KingsRook.HasMoved)
+						if (KingsRook.HasMoved)
 						{
 							intPoints -= 107;
 						}
-						if (this.QueensRook.HasMoved)
+						if (QueensRook.HasMoved)
 						{
 							intPoints -= 107;
 						}
@@ -1174,9 +1174,9 @@ TimeExpired:
 				}
 
 
-				if (this.IsInCheck)
+				if (IsInCheck)
 				{
-					if (this.IsInCheckMate)
+					if (IsInCheckMate)
 					{
 						intPoints -= 999999999;
 					}
@@ -1190,7 +1190,7 @@ TimeExpired:
 
 		public int Score
 		{
-			get { return this.Points - this.OtherPlayer.Points; }
+			get { return Points - OtherPlayer.Points; }
 		}
 
 		public int SeePoints
@@ -1201,9 +1201,9 @@ TimeExpired:
 				int intIndex;
 				Piece piece;
 
-				for (intIndex=this.MColPieces.Count-1; intIndex>=0; intIndex--)
+				for (intIndex=MColPieces.Count-1; intIndex>=0; intIndex--)
 				{
-					piece = this.MColPieces.Item(intIndex);
+					piece = MColPieces.Item(intIndex);
 					intPoints += piece.Value;
 				}
 				return intPoints;
@@ -1212,7 +1212,7 @@ TimeExpired:
 
 		public int SeeScore
 		{
-			get { return this.SeePoints - this.OtherPlayer.SeePoints; }
+			get { return SeePoints - OtherPlayer.SeePoints; }
 		}
 
 	}

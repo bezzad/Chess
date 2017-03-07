@@ -24,20 +24,20 @@ namespace Chess.Forms
 
 		private void frmOptions_Load(object sender, System.EventArgs e)
 		{
-			this.chkShowThinking.Checked = Game.ShowThinking;
-			this.chkDisplayMoveAnalysisTree.Checked = Game.DisplayMoveAnalysisTree;
+			chkShowThinking.Checked = Game.ShowThinking;
+			chkDisplayMoveAnalysisTree.Checked = Game.DisplayMoveAnalysisTree;
 		}
 
 		private void btnOK_Click(object sender, System.EventArgs e)
 		{
-			Game.ShowThinking = this.chkShowThinking.Checked;
-			Game.DisplayMoveAnalysisTree  = this.chkDisplayMoveAnalysisTree.Checked;
-			this.Close();
+			Game.ShowThinking = chkShowThinking.Checked;
+			Game.DisplayMoveAnalysisTree  = chkDisplayMoveAnalysisTree.Checked;
+			Close();
 		}
 
 		private void btnCancel_Click(object sender, System.EventArgs e)
 		{
-			this.Close();
+			Close();
 		}
 
 	}

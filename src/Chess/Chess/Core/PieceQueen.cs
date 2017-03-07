@@ -49,16 +49,16 @@ namespace Chess.Core
 				{
 					if (_mBase.Player.Colour==Player.EnmColour.White)
 					{
-						intPoints -= this._mBase.Square.Rank * 7;
+						intPoints -= _mBase.Square.Rank * 7;
 					}
 					else
 					{
-						intPoints -= (7-this._mBase.Square.Rank) * 7;
+						intPoints -= (7-_mBase.Square.Rank) * 7;
 					}
 				}
 				else
 				{
-					intPoints -= this._mBase.TaxiCabDistanceToEnemyKingPenalty();
+					intPoints -= _mBase.TaxiCabDistanceToEnemyKingPenalty();
 				}
 
 				intPoints += _mBase.DefensePoints;
@@ -69,7 +69,7 @@ namespace Chess.Core
 
 		public int ImageIndex
 		{
-			get { return (this._mBase.Player.Colour==Player.EnmColour.White ? 11 : 10); }
+			get { return (_mBase.Player.Colour==Player.EnmColour.White ? 11 : 10); }
 		}
 	
 		public bool CanBeTaken

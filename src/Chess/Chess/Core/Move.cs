@@ -34,7 +34,7 @@ namespace Chess.Core
 		private Player.EnmStatus _mEnemyStatus = Player.EnmStatus.Normal;
 		private TimeSpan _mTsnTimeStamp;
 
-		public Move(int turnNo, int lastMoveTurnNo, Move.EnmName name, Piece piece, Square @from, Square to, Piece pieceTaken, int pieceTakenOrdinal, int score)
+		public Move(int turnNo, int lastMoveTurnNo, EnmName name, Piece piece, Square @from, Square to, Piece pieceTaken, int pieceTakenOrdinal, int score)
 		{
 			_mTurnNo = turnNo;
 			_mLastMoveTurnNo = lastMoveTurnNo;
@@ -50,8 +50,8 @@ namespace Chess.Core
 
 		public int CompareTo(object move)
 		{
-			if ( this._mScore < ((Move)move).Score) return 1;
-			if ( this._mScore > ((Move)move).Score) return -1;
+			if ( _mScore < ((Move)move).Score) return 1;
+			if ( _mScore > ((Move)move).Score) return -1;
 			return 0;
 		}
 
@@ -59,7 +59,7 @@ namespace Chess.Core
 		{
 			get
 			{
-				return (Piece!=null ? this.Piece.Player.Colour.ToString() + " " + this.Piece.Name.ToString() : "") + " " + this.From.Name+"-"+this.To.Name + " " + this.Description + " A: " + this.Alpha + " B: " + this.Beta + " Score: " + this.Score;// + " h: " + this.m_HashEntries.ToString() + " c:" + this.m_HashCaptures.ToString();
+				return (Piece!=null ? Piece.Player.Colour.ToString() + " " + Piece.Name.ToString() : "") + " " + From.Name+"-"+To.Name + " " + Description + " A: " + Alpha + " B: " + Beta + " Score: " + Score;// + " h: " + this.m_HashEntries.ToString() + " c:" + this.m_HashCaptures.ToString();
 			}
 		}
 
@@ -91,19 +91,19 @@ namespace Chess.Core
 
 				switch (_mName)
 				{
-					case Move.EnmName.CastleKingSide:
+					case EnmName.CastleKingSide:
 						strDescription += " Castle king-side";
 						break;
 
-					case Move.EnmName.CastleQueenSide:
+					case EnmName.CastleQueenSide:
 						strDescription += " Castle queen-side";
 						break;
 
-					case Move.EnmName.PawnPromotion:
-						strDescription += " Promoted: " + this.Piece.Name;
+					case EnmName.PawnPromotion:
+						strDescription += " Promoted: " + Piece.Name;
 						break;
 
-					case Move.EnmName.EnPassent:
+					case EnmName.EnPassent:
 						strDescription += " En passent ";
 						break;
 				}
@@ -239,7 +239,7 @@ namespace Chess.Core
 			move.Piece.LastMoveTurnNo = move.LastMoveTurnNo;
 			move.Piece.NoOfMoves--;
 
-			if (move.Name!=Move.EnmName.EnPassent)
+			if (move.Name!=EnmName.EnPassent)
 			{
 				move.To.Piece = move.PieceTaken;	// Return piece taken
 			}
@@ -273,7 +273,7 @@ namespace Chess.Core
 
 			switch (move.Name)
 			{
-				case Move.EnmName.CastleKingSide:
+				case EnmName.CastleKingSide:
 					Board.HashCodeA ^= move.Piece.Player.KingsRook.HashCodeA;
 					Board.HashCodeB ^= move.Piece.Player.KingsRook.HashCodeB;
 					move.Piece.Player.KingsRook.Square = Board.GetSquare(7, move.Piece.Square.Rank);
@@ -286,7 +286,7 @@ namespace Chess.Core
 					Board.HashCodeB ^= move.Piece.Player.KingsRook.HashCodeB;
 					break;
 
-				case Move.EnmName.CastleQueenSide:
+				case EnmName.CastleQueenSide:
 					Board.HashCodeA ^= move.Piece.Player.QueensRook.HashCodeA;
 					Board.HashCodeB ^= move.Piece.Player.QueensRook.HashCodeB;
 					move.Piece.Player.QueensRook.Square = Board.GetSquare(0, move.Piece.Square.Rank);
@@ -299,7 +299,7 @@ namespace Chess.Core
 					Board.HashCodeB ^= move.Piece.Player.QueensRook.HashCodeB;
 					break;
 
-				case Move.EnmName.PawnPromotion:
+				case EnmName.PawnPromotion:
 					move.Piece.Demote();
 					break;
 			}
@@ -324,7 +324,7 @@ namespace Chess.Core
 			move.Piece.LastMoveTurnNo = move.LastMoveTurnNo;
 			move.Piece.NoOfMoves--;
 
-			if (move.Name!=Move.EnmName.EnPassent)
+			if (move.Name!=EnmName.EnPassent)
 			{
 				move.To.Piece = move.PieceTaken;	// Return piece taken
 			}
@@ -351,20 +351,20 @@ namespace Chess.Core
 
 			switch (move.Name)
 			{
-				case Move.EnmName.PawnPromotion:
+				case EnmName.PawnPromotion:
 					move.Piece.Demote();
 					break;
 			}
 			Game.TurnNo--;
 		}
 		
-		public static Move.EnmName MoveNameFromString(string strMoveName)
+		public static EnmName MoveNameFromString(string strMoveName)
 		{
-			if (strMoveName==Move.EnmName.Standard.ToString()) return Move.EnmName.Standard;
-			if (strMoveName==Move.EnmName.CastleKingSide.ToString()) return Move.EnmName.CastleKingSide;
-			if (strMoveName==Move.EnmName.CastleQueenSide.ToString()) return Move.EnmName.CastleQueenSide;
-			if (strMoveName==Move.EnmName.EnPassent.ToString()) return Move.EnmName.EnPassent;
-			if (strMoveName==Move.EnmName.PawnPromotion.ToString()) return Move.EnmName.PawnPromotion;
+			if (strMoveName==EnmName.Standard.ToString()) return EnmName.Standard;
+			if (strMoveName==EnmName.CastleKingSide.ToString()) return EnmName.CastleKingSide;
+			if (strMoveName==EnmName.CastleQueenSide.ToString()) return EnmName.CastleQueenSide;
+			if (strMoveName==EnmName.EnPassent.ToString()) return EnmName.EnPassent;
+			if (strMoveName==EnmName.PawnPromotion.ToString()) return EnmName.PawnPromotion;
 			return 0;
 		}
 

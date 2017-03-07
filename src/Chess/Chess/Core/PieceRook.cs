@@ -58,7 +58,7 @@ namespace Chess.Core
 				// After the opening, Rooks are penalized slightly depending on "taxicab" distance to the enemy king.
 				if (Game.Stage != Game.EnmStage.Opening)
 				{
-					intPoints -= this._mBase.TaxiCabDistanceToEnemyKingPenalty();
+					intPoints -= _mBase.TaxiCabDistanceToEnemyKingPenalty();
 				}
 
 				if (Game.Stage != Game.EnmStage.End)
@@ -67,14 +67,14 @@ namespace Chess.Core
 					// 4(0) points if no enemy pawns lie on that file. 
 					bool blnHasFiendlyPawn = false;
 					bool blnHasEnemyPawn = false;
-					Square squareThis = Board.GetSquare(this._mBase.Square.File, 0);
+					Square squareThis = Board.GetSquare(_mBase.Square.File, 0);
 					Piece piece;
 					while (squareThis!=null)
 					{
 						piece = squareThis.Piece;
 						if (piece!=null && piece.Name==Piece.EnmName.Pawn)
 						{
-							if (piece.Player.Colour==this._mBase.Player.Colour)
+							if (piece.Player.Colour==_mBase.Player.Colour)
 							{
 								blnHasFiendlyPawn = true;
 							}
@@ -114,7 +114,7 @@ namespace Chess.Core
 
 		public int ImageIndex
 		{
-			get { return (this._mBase.Player.Colour==Player.EnmColour.White ? 3 : 2); }
+			get { return (_mBase.Player.Colour==Player.EnmColour.White ? 3 : 2); }
 		}
 	
 		public bool CanBeTaken

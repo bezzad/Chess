@@ -83,7 +83,7 @@ namespace Chess.Core
 			Square square;
 
 			intOrdinal += offset;
-			while ( (square = Board.GetSquare(intOrdinal))!=null )
+			while ( (square = GetSquare(intOrdinal))!=null )
 			{
 
 				if ( square.Piece==null )
@@ -109,7 +109,7 @@ namespace Chess.Core
 			Square square;
 
 			intOrdinal += offset;
-			while ( (square = Board.GetSquare(intOrdinal))!=null )
+			while ( (square = GetSquare(intOrdinal))!=null )
 			{
 
 				if ( square.Piece==null )
@@ -138,7 +138,7 @@ namespace Chess.Core
 			Square square;
 
 			intOrdinal += offset;
-			while ( (square = Board.GetSquare(intOrdinal))!=null )
+			while ( (square = GetSquare(intOrdinal))!=null )
 			{
 
 				if ( square.Piece==null )
@@ -170,7 +170,7 @@ namespace Chess.Core
 
 			intOrdinal += offset;
 			 
-			while ( intSquareCount<=2 && ((square = Board.GetSquare(intOrdinal))!=null && (square.Piece==null || (square.Piece.Name!=Piece.EnmName.Pawn && square.Piece.Name!=Piece.EnmName.Rook) || square.Piece.Player.Colour!=colour)))
+			while ( intSquareCount<=2 && ((square = GetSquare(intOrdinal))!=null && (square.Piece==null || (square.Piece.Name!=Piece.EnmName.Pawn && square.Piece.Name!=Piece.EnmName.Rook) || square.Piece.Player.Colour!=colour)))
 			{
 				intPenalty += 75;
 				intSquareCount++;
@@ -188,7 +188,7 @@ namespace Chess.Core
 			PawnHashCodeB = 0UL;
 			for (int intOrdinal=0; intOrdinal<SquareCount; intOrdinal++)
 			{
-				piece = Board.GetPiece(intOrdinal);
+				piece = GetPiece(intOrdinal);
 				if (piece!=null)
 				{
 					HashCodeA ^= piece.HashCodeAForSquareOrdinal(intOrdinal);
@@ -210,13 +210,13 @@ namespace Chess.Core
 				Square square;
 				Piece piece;
 				string strOutput = "";
-				int intOrdinal = Board.SquareCount-1;
+				int intOrdinal = SquareCount-1;
 
-				for (int intRank=0; intRank<Board.RankCount; intRank++)
+				for (int intRank=0; intRank<RankCount; intRank++)
 				{
-					for (int intFile=0; intFile<Board.FileCount; intFile++)
+					for (int intFile=0; intFile<FileCount; intFile++)
 					{
-						square = Board.GetSquare(intOrdinal);
+						square = GetSquare(intOrdinal);
 						if (square!=null)
 						{
 							if ((piece=square.Piece)!=null)

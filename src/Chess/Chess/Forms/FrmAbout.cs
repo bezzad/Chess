@@ -10,18 +10,18 @@ namespace Chess.Forms
             InitializeComponent();
         }
 
-        private void frmAbout_Load(object sender, System.EventArgs e)
+        private void frmAbout_Load(object sender, EventArgs e)
         {
             lblProductName.Text = Application.ProductName;
             lblVersion.Text = Application.ProductVersion;
         }
 
-        private void btnOK_Click(object sender, System.EventArgs e)
+        private void btnOK_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
 
-        private void llbWebSite_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
+        private void llbWebSite_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             System.Diagnostics.Process.Start("http://" + llbWebSite.Text);
         }

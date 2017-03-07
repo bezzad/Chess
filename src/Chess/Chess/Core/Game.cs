@@ -40,7 +40,7 @@ namespace Chess.Core
 			_mBlnShowThinking = ((string)registryKeySharpChess.GetValue("ShowThinking")=="1");
 			_mBlnDisplayMoveAnalysisTree = ((string)registryKeySharpChess.GetValue("DisplayMoveAnalysisTree")=="1");
 
-			Game.PlayerToPlay.Clock.Start();
+			PlayerToPlay.Clock.Start();
 		}
 
 		~Game()
@@ -187,19 +187,19 @@ namespace Chess.Core
 			}
 		}
 
-		public static Game.EnmStage Stage
+		public static EnmStage Stage
 		{
 			get
 			{
 				if (LowestMaterialValue >= MaxMaterialValue)
 				{
-					return Game.EnmStage.Opening;
+					return EnmStage.Opening;
 				}
 				else if (LowestMaterialValue <= 3)
 				{
-					return Game.EnmStage.End;
+					return EnmStage.End;
 				}
-				return Game.EnmStage.Middle;
+				return EnmStage.Middle;
 			}
 		}
 

@@ -54,20 +54,20 @@ namespace Chess.Core
 				bool blnIsIsolatedLeft = true;
 				bool blnIsIsolatedRight = true;
 				bool blnIsDouble = false;
-				for (intIndex=this._mBase.Player.Pawns.Count-1; intIndex>=0; intIndex--)
+				for (intIndex=_mBase.Player.Pawns.Count-1; intIndex>=0; intIndex--)
 				{
-					piece = this._mBase.Player.Pawns.Item(intIndex);
-					if (piece.IsInPlay && piece!=this._mBase)
+					piece = _mBase.Player.Pawns.Item(intIndex);
+					if (piece.IsInPlay && piece!=_mBase)
 					{
-						if (piece.Square.File==this._mBase.Square.File)
+						if (piece.Square.File==_mBase.Square.File)
 						{
 							blnIsDouble = true;
 						}
-						if (piece.Square.File==this._mBase.Square.File-1)
+						if (piece.Square.File==_mBase.Square.File-1)
 						{
 							blnIsIsolatedLeft = false;
 						}
-						if (piece.Square.File==this._mBase.Square.File+1)
+						if (piece.Square.File==_mBase.Square.File+1)
 						{
 							blnIsIsolatedRight = false;
 						}
@@ -75,7 +75,7 @@ namespace Chess.Core
 				}
 				if (blnIsIsolatedLeft)
 				{
-					switch (this._mBase.Square.File)
+					switch (_mBase.Square.File)
 					{
 						case 0: intPoints -=  10; break;
 						case 1: intPoints -=  30; break;
@@ -89,7 +89,7 @@ namespace Chess.Core
 				}
 				if (blnIsIsolatedRight)
 				{
-					switch (this._mBase.Square.File)
+					switch (_mBase.Square.File)
 					{
 						case 0: intPoints -=  10; break;
 						case 1: intPoints -=  30; break;
@@ -112,10 +112,10 @@ namespace Chess.Core
 
 				// Backward pawn
 				bool blnIsBackward = true;
-				if ( blnIsBackward && (piece = Board.GetPiece(this._mBase.Square.Ordinal-1                                       ))!=null && piece.Name==Piece.EnmName.Pawn && piece.Player.Colour==this._mBase.Player.Colour) blnIsBackward = false;
-				if ( blnIsBackward && (piece = Board.GetPiece(this._mBase.Square.Ordinal+1                                       ))!=null && piece.Name==Piece.EnmName.Pawn && piece.Player.Colour==this._mBase.Player.Colour) blnIsBackward = false;
-				if ( blnIsBackward && (piece = Board.GetPiece(this._mBase.Square.Ordinal-this._mBase.Player.PawnAttackLeftOffset ))!=null && piece.Name==Piece.EnmName.Pawn && piece.Player.Colour==this._mBase.Player.Colour) blnIsBackward = false;
-				if ( blnIsBackward && (piece = Board.GetPiece(this._mBase.Square.Ordinal-this._mBase.Player.PawnAttackRightOffset))!=null && piece.Name==Piece.EnmName.Pawn && piece.Player.Colour==this._mBase.Player.Colour) blnIsBackward = false;
+				if ( blnIsBackward && (piece = Board.GetPiece(_mBase.Square.Ordinal-1                                       ))!=null && piece.Name==Piece.EnmName.Pawn && piece.Player.Colour==_mBase.Player.Colour) blnIsBackward = false;
+				if ( blnIsBackward && (piece = Board.GetPiece(_mBase.Square.Ordinal+1                                       ))!=null && piece.Name==Piece.EnmName.Pawn && piece.Player.Colour==_mBase.Player.Colour) blnIsBackward = false;
+				if ( blnIsBackward && (piece = Board.GetPiece(_mBase.Square.Ordinal-_mBase.Player.PawnAttackLeftOffset ))!=null && piece.Name==Piece.EnmName.Pawn && piece.Player.Colour==_mBase.Player.Colour) blnIsBackward = false;
+				if ( blnIsBackward && (piece = Board.GetPiece(_mBase.Square.Ordinal-_mBase.Player.PawnAttackRightOffset))!=null && piece.Name==Piece.EnmName.Pawn && piece.Player.Colour==_mBase.Player.Colour) blnIsBackward = false;
 				if (blnIsBackward)
 				{
 					intPoints -= 30;
@@ -139,12 +139,12 @@ namespace Chess.Core
 				if (Game.Stage==Game.EnmStage.Opening)
 				{
 					//	Pawns on D or E files
-					if (this._mBase.Square.File==3 || this._mBase.Square.File==4)
+					if (_mBase.Square.File==3 || _mBase.Square.File==4)
 					{
 						//	still at rank 2
-						if (this._mBase.Player.Colour==Player.EnmColour.White && this._mBase.Square.Rank==1
+						if (_mBase.Player.Colour==Player.EnmColour.White && _mBase.Square.Rank==1
 							||
-							this._mBase.Player.Colour==Player.EnmColour.Black && this._mBase.Square.Rank==6
+							_mBase.Player.Colour==Player.EnmColour.Black && _mBase.Square.Rank==6
 							)
 						{
 							intPoints -= 300;
@@ -167,18 +167,18 @@ namespace Chess.Core
 
 				// Passed Pawns
 				bool blnIsPassed = true;
-				for (intIndex=this._mBase.Player.OtherPlayer.Pawns.Count-1; intIndex>=0; intIndex--)
+				for (intIndex=_mBase.Player.OtherPlayer.Pawns.Count-1; intIndex>=0; intIndex--)
 				{
-					piece = this._mBase.Player.OtherPlayer.Pawns.Item(intIndex);
+					piece = _mBase.Player.OtherPlayer.Pawns.Item(intIndex);
 					if (piece.IsInPlay)
 					{
 						if	(	(
-							this._mBase.Player.Colour==Player.EnmColour.White && piece.Square.Rank > this._mBase.Square.Rank
+							_mBase.Player.Colour==Player.EnmColour.White && piece.Square.Rank > _mBase.Square.Rank
 							||
-							this._mBase.Player.Colour==Player.EnmColour.Black && piece.Square.Rank < this._mBase.Square.Rank
+							_mBase.Player.Colour==Player.EnmColour.Black && piece.Square.Rank < _mBase.Square.Rank
 							)
 							&&
-							(piece.Square.File==this._mBase.Square.File || piece.Square.File==this._mBase.Square.File-1 || piece.Square.File==this._mBase.Square.File+1)
+							(piece.Square.File==_mBase.Square.File || piece.Square.File==_mBase.Square.File-1 || piece.Square.File==_mBase.Square.File+1)
 								
 							)
 						{
@@ -201,7 +201,7 @@ namespace Chess.Core
 
 		public int ImageIndex
 		{
-			get { return (this._mBase.Player.Colour==Player.EnmColour.White ? 9 : 8); }
+			get { return (_mBase.Player.Colour==Player.EnmColour.White ? 9 : 8); }
 		}
 	
 		public bool CanBeTaken
@@ -227,16 +227,16 @@ namespace Chess.Core
 		public void GenerateLazyMoves(Moves moves, Moves.EnmMovesType movesType)
 		{
 			Square square;
-			bool blnIsPromotion = this._mBase.Player.Colour==Player.EnmColour.White && this._mBase.Square.Rank==6
+			bool blnIsPromotion = _mBase.Player.Colour==Player.EnmColour.White && _mBase.Square.Rank==6
 									||
-									this._mBase.Player.Colour==Player.EnmColour.Black && this._mBase.Square.Rank==1;
+									_mBase.Player.Colour==Player.EnmColour.Black && _mBase.Square.Rank==1;
 
 			// Forward one
 			if (movesType==Moves.EnmMovesType.All || blnIsPromotion)
 			{
 				if ( (square = Board.GetSquare(_mBase.Square.Ordinal+_mBase.Player.PawnForwardOffset))!=null && square.Piece == null)
 				{
-					moves.Add(0, 0, (blnIsPromotion ? Move.EnmName.PawnPromotion : Move.EnmName.Standard), this._mBase, this._mBase.Square, square, square.Piece, 0, 0);
+					moves.Add(0, 0, (blnIsPromotion ? Move.EnmName.PawnPromotion : Move.EnmName.Standard), _mBase, _mBase.Square, square, square.Piece, 0, 0);
 				}
 			}
 
@@ -250,7 +250,7 @@ namespace Chess.Core
 					{
 						if ( (square = Board.GetSquare(_mBase.Square.Ordinal+_mBase.Player.PawnForwardOffset+_mBase.Player.PawnForwardOffset))!=null && square.Piece == null)
 						{
-							moves.Add(0, 0, Move.EnmName.Standard, this._mBase, this._mBase.Square, square, square.Piece, 0, 0);
+							moves.Add(0, 0, Move.EnmName.Standard, _mBase, _mBase.Square, square, square.Piece, 0, 0);
 						}
 					}
 				}
@@ -261,7 +261,7 @@ namespace Chess.Core
 			{
 				if (square.Piece != null && square.Piece.Player.Colour!=_mBase.Player.Colour && square.Piece.CanBeTaken)
 				{
-					moves.Add(0, 0, Move.EnmName.Standard, this._mBase, this._mBase.Square, square, square.Piece, 0, 0);
+					moves.Add(0, 0, Move.EnmName.Standard, _mBase, _mBase.Square, square, square.Piece, 0, 0);
 				}
 			}
 
@@ -270,15 +270,15 @@ namespace Chess.Core
 			{
 				if (square.Piece != null && square.Piece.Player.Colour!=_mBase.Player.Colour && square.Piece.CanBeTaken)
 				{
-					moves.Add(0, 0, Move.EnmName.Standard, this._mBase, this._mBase.Square, square, square.Piece, 0, 0);
+					moves.Add(0, 0, Move.EnmName.Standard, _mBase, _mBase.Square, square, square.Piece, 0, 0);
 				}
 			}
 
 			// En Passent 
 			if ( 
-				this._mBase.Square.Rank==4 && this._mBase.Player.Colour==Player.EnmColour.White 
+				_mBase.Square.Rank==4 && _mBase.Player.Colour==Player.EnmColour.White 
 				||
-				this._mBase.Square.Rank==3 && this._mBase.Player.Colour==Player.EnmColour.Black
+				_mBase.Square.Rank==3 && _mBase.Player.Colour==Player.EnmColour.Black
 				)
 			{
 				Piece piecePassed;
@@ -286,13 +286,13 @@ namespace Chess.Core
 				if ((piecePassed = Board.GetPiece(_mBase.Square.Ordinal-1))!=null && piecePassed.NoOfMoves==1 && piecePassed.LastMoveTurnNo==Game.TurnNo && piecePassed.Name==Piece.EnmName.Pawn && piecePassed.Player.Colour!=_mBase.Player.Colour)
 				{
 					square = Board.GetSquare(_mBase.Square.Ordinal+_mBase.Player.PawnAttackLeftOffset);
-					moves.Add(0, 0, Move.EnmName.EnPassent, this._mBase, this._mBase.Square, square, piecePassed, 0, 0);
+					moves.Add(0, 0, Move.EnmName.EnPassent, _mBase, _mBase.Square, square, piecePassed, 0, 0);
 				}
 				// Right
 				if ((piecePassed = Board.GetPiece(_mBase.Square.Ordinal+1))!=null && piecePassed.NoOfMoves==1 && piecePassed.LastMoveTurnNo==Game.TurnNo && piecePassed.Name==Piece.EnmName.Pawn && piecePassed.Player.Colour!=_mBase.Player.Colour)
 				{
 					square = Board.GetSquare(_mBase.Square.Ordinal+_mBase.Player.PawnAttackRightOffset);
-					moves.Add(0, 0, Move.EnmName.EnPassent, this._mBase, this._mBase.Square, square, piecePassed, 0, 0);
+					moves.Add(0, 0, Move.EnmName.EnPassent, _mBase, _mBase.Square, square, piecePassed, 0, 0);
 				}
 			}
 

@@ -9,7 +9,7 @@ namespace Chess.Forms
 	/// Summary description for frmMain.
 	/// </summary>
 
-	public partial class FrmMain : System.Windows.Forms.Form
+	public partial class FrmMain : Form
 	{
 		/// <summary>
 		/// Required designer variable.
@@ -19,8 +19,8 @@ namespace Chess.Forms
 	    private const int IntellegenceHuman = 0;
 	    private const int IntellegenceComputer = 1;
 
-		private readonly System.Drawing.Color _boardSquareColourWhite = System.Drawing.Color.FromArgb(229,197,105);
-		private readonly System.Drawing.Color _boardSquareColourBlack = System.Drawing.Color.FromArgb(189,117,53);
+		private readonly Color _boardSquareColourWhite = Color.FromArgb(229,197,105);
+		private readonly Color _boardSquareColourBlack = Color.FromArgb(189,117,53);
 
 	    private Square _mSquareFrom = null;
 	    private Moves _mMovesPossible = new Moves();
@@ -56,7 +56,7 @@ namespace Chess.Forms
 			if (Game.ShowThinking)
 			{
 				_mSquareLastFrom = Game.PlayerToPlay.CurrentMove.From;
-				_mPicSquares[_mSquareLastFrom.File, _mSquareLastFrom.Rank].BackColor=System.Drawing.Color.Yellow;
+				_mPicSquares[_mSquareLastFrom.File, _mSquareLastFrom.Rank].BackColor=Color.Yellow;
 				_mPicSquares[_mSquareLastFrom.File, _mSquareLastFrom.Rank].Refresh();
 			}
 
@@ -68,7 +68,7 @@ namespace Chess.Forms
 			if (Game.ShowThinking)
 			{
 				_mSquareLastTo = Game.PlayerToPlay.CurrentMove.To;
-				_mPicSquares[_mSquareLastTo.File, _mSquareLastTo.Rank].BackColor=System.Drawing.Color.Yellow;
+				_mPicSquares[_mSquareLastTo.File, _mSquareLastTo.Rank].BackColor=Color.Yellow;
 				_mPicSquares[_mSquareLastTo.File, _mSquareLastTo.Rank].Refresh();
 			}
 
@@ -77,7 +77,7 @@ namespace Chess.Forms
 			Application.DoEvents();
 		}	
 
-		private void frmMain_Load(object sender, System.EventArgs e)
+		private void frmMain_Load(object sender, EventArgs e)
 		{
 			_mGame = new Game();
 
@@ -91,7 +91,7 @@ namespace Chess.Forms
 			CreateBoard();
 			RenderBoard();
 			RenderClocks();
-			this.Text = Application.ProductName + " - " + Game.FileName;
+			Text = Application.ProductName + " - " + Game.FileName;
 			AssignMenuChecks();
 			SizeMainForm();
 
@@ -100,16 +100,11 @@ namespace Chess.Forms
 			SetFormState();
 		}
 
-		private void btnGo_Click(object sender, System.EventArgs e)
-		{
-			MakeNextComputerMove();
-		}
-
 
 		private void RenderClocks()
 		{
-			lblWhiteClock.Text = Game.PlayerWhite.Clock.TimeElapsed.Hours.ToString().PadLeft(2,'0') + ":" + Game.PlayerWhite.Clock.TimeElapsed.Minutes.ToString().PadLeft(2,'0') + ":" + Game.PlayerWhite.Clock.TimeElapsed.Seconds.ToString().PadLeft(2,'0');
-			lblBlackClock.Text = Game.PlayerBlack.Clock.TimeElapsed.Hours.ToString().PadLeft(2,'0') + ":" + Game.PlayerBlack.Clock.TimeElapsed.Minutes.ToString().PadLeft(2,'0') + ":" + Game.PlayerBlack.Clock.TimeElapsed.Seconds.ToString().PadLeft(2,'0');
+			lblWhiteClock.Text = Game.PlayerWhite.Clock.TimeElapsed.Hours.ToString().PadLeft(2,'0') + @":" + Game.PlayerWhite.Clock.TimeElapsed.Minutes.ToString().PadLeft(2,'0') + @":" + Game.PlayerWhite.Clock.TimeElapsed.Seconds.ToString().PadLeft(2,'0');
+			lblBlackClock.Text = Game.PlayerBlack.Clock.TimeElapsed.Hours.ToString().PadLeft(2,'0') + @":" + Game.PlayerBlack.Clock.TimeElapsed.Minutes.ToString().PadLeft(2,'0') + @":" + Game.PlayerBlack.Clock.TimeElapsed.Seconds.ToString().PadLeft(2,'0');
 		}
 
 		private void RenderBoard()
@@ -140,7 +135,7 @@ namespace Chess.Forms
 						_mPicSquares[square.File, square.Rank].Image = GetPieceImage(square.Piece);
 					}
 
-					_mPicSquares[square.File, square.Rank].BorderStyle = System.Windows.Forms.BorderStyle.None;
+					_mPicSquares[square.File, square.Rank].BorderStyle = BorderStyle.None;
 				}
 			}
 
@@ -157,8 +152,8 @@ namespace Chess.Forms
 			// Render Last Move highlights
 			if (Game.MoveHistory.Count>0)
 			{
-				_mPicSquares[Game.MoveHistory.Item(Game.MoveHistory.Count-1).From.File, Game.MoveHistory.Item(Game.MoveHistory.Count-1).From.Rank].BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-				_mPicSquares[Game.MoveHistory.Item(Game.MoveHistory.Count-1).To.File  , Game.MoveHistory.Item(Game.MoveHistory.Count-1).To.Rank  ].BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+				_mPicSquares[Game.MoveHistory.Item(Game.MoveHistory.Count-1).From.File, Game.MoveHistory.Item(Game.MoveHistory.Count-1).From.Rank].BorderStyle = BorderStyle.Fixed3D;
+				_mPicSquares[Game.MoveHistory.Item(Game.MoveHistory.Count-1).To.File  , Game.MoveHistory.Item(Game.MoveHistory.Count-1).To.Rank  ].BorderStyle = BorderStyle.Fixed3D;
 			}
 
 			// Render pieces taken
@@ -179,17 +174,17 @@ namespace Chess.Forms
 			// Render player status
 			if (Game.PlayerToPlay == Game.PlayerWhite)
 			{
-				lblWhiteScore.BackColor = Game.PlayerWhite.Status==Player.EnmStatus.InCheckMate ? Color.Red : (Game.PlayerWhite.IsInCheck ? Color.Orange: Color.FromName(System.Drawing.KnownColor.Control.ToString()) );
-				lblBlackScore.BackColor = Color.FromName(System.Drawing.KnownColor.Control.ToString());
+				lblWhiteScore.BackColor = Game.PlayerWhite.Status==Player.EnmStatus.InCheckMate ? Color.Red : (Game.PlayerWhite.IsInCheck ? Color.Orange: Color.FromName(KnownColor.Control.ToString()) );
+				lblBlackScore.BackColor = Color.FromName(KnownColor.Control.ToString());
 				lblWhiteClock.BackColor = Color.LightGray;
-				lblBlackClock.BackColor = Color.FromName(System.Drawing.KnownColor.Control.ToString());
+				lblBlackClock.BackColor = Color.FromName(KnownColor.Control.ToString());
 			}
 			else
 			{
-				lblWhiteScore.BackColor = Color.FromName(System.Drawing.KnownColor.Control.ToString());
-				lblBlackScore.BackColor = Game.PlayerBlack.Status==Player.EnmStatus.InCheckMate ? Color.Red : (Game.PlayerBlack.IsInCheck ? Color.Orange : Color.FromName(System.Drawing.KnownColor.Control.ToString()) );
+				lblWhiteScore.BackColor = Color.FromName(KnownColor.Control.ToString());
+				lblBlackScore.BackColor = Game.PlayerBlack.Status==Player.EnmStatus.InCheckMate ? Color.Red : (Game.PlayerBlack.IsInCheck ? Color.Orange : Color.FromName(KnownColor.Control.ToString()) );
 				lblBlackClock.BackColor = Color.LightGray;
-				lblWhiteClock.BackColor = Color.FromName(System.Drawing.KnownColor.Control.ToString());
+				lblWhiteClock.BackColor = Color.FromName(KnownColor.Control.ToString());
 			}
 			// Set form state
 			lblWhiteMaterial.Text = (Game.PlayerWhite.MaterialBasicValue+Game.PlayerWhite.PawnsInPlay).ToString();
@@ -219,7 +214,7 @@ namespace Chess.Forms
 
 			SetFormState();
 
-			this.Refresh();
+			Refresh();
 		}
 
 		private Image GetPieceImage(Piece piece)
@@ -288,14 +283,14 @@ namespace Chess.Forms
 
 			for (int intRank=0; intRank<Board.RankCount; intRank++)
 			{
-				lblRank = new System.Windows.Forms.Label();
-				lblRank.BackColor = System.Drawing.Color.Transparent;
-				lblRank.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+				lblRank = new Label();
+				lblRank.BackColor = Color.Transparent;
+				lblRank.Font = new Font("Arial", 12F, FontStyle.Bold, GraphicsUnit.Point, ((Byte)(0)));
 				lblRank.Name = "lblRank" + intRank.ToString();
-				lblRank.Size = new System.Drawing.Size(24, 48);
+				lblRank.Size = new Size(24, 48);
 				lblRank.TabIndex = 12;
 				lblRank.Text = Board.GetSquare(0, intRank).RankName;
-				lblRank.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+				lblRank.TextAlign = ContentAlignment.MiddleCenter;
 				lblRank.Left = 0;
 				lblRank.Top = (Board.RankCount-1)*SquareSize - intRank*SquareSize + 16;
 				pnlMain.Controls.Add( lblRank );
@@ -306,14 +301,14 @@ namespace Chess.Forms
 			for (int intFile=0; intFile<Board.FileCount; intFile++)
 			{
 
-				lblFile = new System.Windows.Forms.Label();
-				lblFile.BackColor = System.Drawing.Color.Transparent;
-				lblFile.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+				lblFile = new Label();
+				lblFile.BackColor = Color.Transparent;
+				lblFile.Font = new Font("Arial", 12F, FontStyle.Bold, GraphicsUnit.Point, ((Byte)(0)));
 				lblFile.Name = "lblFile" + intFile.ToString();
-				lblFile.Size = new System.Drawing.Size(48, 24);
+				lblFile.Size = new Size(48, 24);
 				lblFile.TabIndex = 12;
 				lblFile.Text = Board.GetSquare(intFile, 0).FileName;
-				lblFile.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+				lblFile.TextAlign = ContentAlignment.MiddleCenter;
 				lblFile.Left = intFile*SquareSize + 30;
 				lblFile.Top = (Board.RankCount)*SquareSize + 24;
 				pnlMain.Controls.Add( lblFile );
@@ -326,7 +321,7 @@ namespace Chess.Forms
 
 				if (square!=null)
 				{
-					picSquare = new System.Windows.Forms.PictureBox();
+					picSquare = new PictureBox();
 
 					picSquare.Left = square.File*SquareSize + 1;
 					picSquare.Top = (Board.RankCount-1)*SquareSize - square.Rank*SquareSize + 1;
@@ -339,12 +334,12 @@ namespace Chess.Forms
 						picSquare.BackColor = _boardSquareColourBlack;
 					}
 					picSquare.Name = "picSquare" + square.File.ToString() + square.Rank.ToString();
-					picSquare.Size = new System.Drawing.Size(SquareSize, SquareSize);
-					picSquare.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+					picSquare.Size = new Size(SquareSize, SquareSize);
+					picSquare.SizeMode = PictureBoxSizeMode.CenterImage;
 					picSquare.TabIndex = 0;
 					picSquare.TabStop = false;
 					picSquare.Tag = square.Ordinal;
-					picSquare.Click += new System.EventHandler(this.picSquare_Click);
+					picSquare.Click += new EventHandler(picSquare_Click);
 					pnlEdging.Controls.Add( picSquare );
 					_mPicSquares[square.File, square.Rank] = picSquare;
 				}
@@ -355,26 +350,26 @@ namespace Chess.Forms
 
 			for (int intIndex=0; intIndex<15; intIndex++)
 			{
-				picSquare = new System.Windows.Forms.PictureBox();
+				picSquare = new PictureBox();
 				picSquare.Left = intIndex*(SquareSize+1)+1;
 				picSquare.Top = 432;
-				picSquare.BackColor = System.Drawing.SystemColors.ControlDark;
+				picSquare.BackColor = SystemColors.ControlDark;
 				picSquare.Name = "picSquareWhite" + intIndex.ToString();
-				picSquare.Size = new System.Drawing.Size(SquareSize, SquareSize);
-				picSquare.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+				picSquare.Size = new Size(SquareSize, SquareSize);
+				picSquare.SizeMode = PictureBoxSizeMode.CenterImage;
 				picSquare.TabIndex = 0;
 				picSquare.TabStop = false;
 				picSquare.Tag = intIndex;
 				pnlMain.Controls.Add( picSquare );
 				_mPicWhitesCaptures[intIndex] = picSquare;
 
-				picSquare = new System.Windows.Forms.PictureBox();
+				picSquare = new PictureBox();
 				picSquare.Left = intIndex*(SquareSize+1)+1;
 				picSquare.Top = 432 + SquareSize+1;
-				picSquare.BackColor = System.Drawing.SystemColors.ControlDark;
+				picSquare.BackColor = SystemColors.ControlDark;
 				picSquare.Name = "picSquareBlack" + intIndex.ToString();
-				picSquare.Size = new System.Drawing.Size(SquareSize, SquareSize);
-				picSquare.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+				picSquare.Size = new Size(SquareSize, SquareSize);
+				picSquare.SizeMode = PictureBoxSizeMode.CenterImage;
 				picSquare.TabIndex = 0;
 				picSquare.TabStop = false;
 				picSquare.Tag = intIndex;
@@ -383,7 +378,7 @@ namespace Chess.Forms
 			}
 		}
 
-		private void picSquare_Click(object sender, System.EventArgs e)
+		private void picSquare_Click(object sender, EventArgs e)
 		{
 			int intOrdinal = Convert.ToInt32( ((PictureBox)sender).Tag );
 
@@ -499,7 +494,7 @@ namespace Chess.Forms
 			CheckIfAutoNextMove();
 		}
 
-		private void mnuUndoMove_Click(object sender, System.EventArgs e)
+		private void mnuUndoMove_Click(object sender, EventArgs e)
 		{
 			UndoMove();
 		}
@@ -563,7 +558,7 @@ namespace Chess.Forms
 			}
 		}
 
-		private void tvwMoves_AfterExpand(object sender, System.Windows.Forms.TreeViewEventArgs e)
+		private void tvwMoves_AfterExpand(object sender, TreeViewEventArgs e)
 		{
 			foreach (TreeNode tn in e.Node.Nodes)
 			{
@@ -571,7 +566,7 @@ namespace Chess.Forms
 			}
 		}
 
-		private void mnuExit_Click(object sender, System.EventArgs e)
+		private void mnuExit_Click(object sender, EventArgs e)
 		{
 			Application.Exit();
 		}
@@ -581,7 +576,7 @@ namespace Chess.Forms
 			lvwMoveHistory.Items.Clear();
 			Game.New();
 			RenderBoard();
-			this.Text = Application.ProductName + " - " + Game.FileName;
+			Text = Application.ProductName + " - " + Game.FileName;
 		}
 
 		private void OpenGame()
@@ -602,7 +597,7 @@ namespace Chess.Forms
 					RenderBoard();
 				}
 			}
-			this.Text = Application.ProductName + " - " + Game.FileName;
+			Text = Application.ProductName + " - " + Game.FileName;
 		}
 
 		private void SaveGame()
@@ -620,7 +615,7 @@ namespace Chess.Forms
 					Game.Save(saveFileDialog.FileName);
 				}
 			}
-			this.Text = Application.ProductName + " - " + Game.FileName;
+			Text = Application.ProductName + " - " + Game.FileName;
 		}
 
 		private void UndoMove()
@@ -659,43 +654,43 @@ namespace Chess.Forms
 			SetFormState();
 		}
 
-		private void cboIntellegenceWhite_SelectedIndexChanged(object sender, System.EventArgs e)
+		private void cboIntellegenceWhite_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			Game.PlayerWhite.Intellegence = cboIntellegenceWhite.SelectedIndex==IntellegenceHuman ? Player.EnmIntellegence.Human : Player.EnmIntellegence.Computer;
 		}
 
-		private void cboIntellegenceBlack_SelectedIndexChanged(object sender, System.EventArgs e)
+		private void cboIntellegenceBlack_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			Game.PlayerBlack.Intellegence = cboIntellegenceBlack.SelectedIndex==IntellegenceHuman ? Player.EnmIntellegence.Human : Player.EnmIntellegence.Computer;
 		}
 
-		private void mnuAbout_Click(object sender, System.EventArgs e)
+		private void mnuAbout_Click(object sender, EventArgs e)
 		{
 			var formAbout = new FrmAbout();
 			formAbout.ShowDialog(this);
 		}
 
-		private void mnuNew_Click(object sender, System.EventArgs e)
+		private void mnuNew_Click(object sender, EventArgs e)
 		{
 			NewGame();
 		}
 
-		private void mnuOpen_Click(object sender, System.EventArgs e)
+		private void mnuOpen_Click(object sender, EventArgs e)
 		{
 			OpenGame();
 		}
 
-		private void mnuSave_Click(object sender, System.EventArgs e)
+		private void mnuSave_Click(object sender, EventArgs e)
 		{
 			SaveGame();
 		}
 
-		private void mnuForceComputerMove_Click(object sender, System.EventArgs e)
+		private void mnuForceComputerMove_Click(object sender, EventArgs e)
 		{
 			MakeNextComputerMove();
 		}
 
-		private void tbr_ButtonClick(object sender, System.Windows.Forms.ToolBarButtonClickEventArgs e)
+		private void tbr_ButtonClick(object sender, ToolBarButtonClickEventArgs e)
 		{
 			switch(e.Button.Tag.ToString())
 			{
@@ -741,20 +736,20 @@ namespace Chess.Forms
 			}
 		}
 
-		private void mnuMoreOptions_Click(object sender, System.EventArgs e)
+		private void mnuMoreOptions_Click(object sender, EventArgs e)
 		{
 			var formOptions = new FrmOptions();
 			formOptions.ShowDialog(this);
 			AssignMenuChecks();
 		}
 
-		private void mnuShowThinking_Click(object sender, System.EventArgs e)
+		private void mnuShowThinking_Click(object sender, EventArgs e)
 		{
 			Game.ShowThinking = !Game.ShowThinking;
 			AssignMenuChecks();
 		}
 
-		private void mnuDisplayMoveAnalysisTree_Click(object sender, System.EventArgs e)
+		private void mnuDisplayMoveAnalysisTree_Click(object sender, EventArgs e)
 		{
 			Game.DisplayMoveAnalysisTree = !Game.DisplayMoveAnalysisTree;
 			AssignMenuChecks();
@@ -769,10 +764,10 @@ namespace Chess.Forms
 
 		private void SizeMainForm()
 		{
-			this.Width = Game.DisplayMoveAnalysisTree ? 1192: 744;
+			Width = Game.DisplayMoveAnalysisTree ? 1192: 744;
 		}
 
-		private void timer_Tick(object sender, System.EventArgs e)
+		private void timer_Tick(object sender, EventArgs e)
 		{
 			RenderClocks();
 		}

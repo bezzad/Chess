@@ -87,7 +87,7 @@ namespace Chess.Core
 
 		public int ImageIndex
 		{
-			get { return (this._mBase.Player.Colour==Player.EnmColour.White ? 1 : 0); }
+			get { return (_mBase.Player.Colour==Player.EnmColour.White ? 1 : 0); }
 		}
 	
 		public bool CanBeTaken
